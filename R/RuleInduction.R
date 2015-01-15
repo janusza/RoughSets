@@ -110,7 +110,7 @@ RI.hybridFS.FRST <- function(decision.table, control = list()){
 #' @return A class \code{"RuleSetFRST"} which has following components:
 #' \itemize{
 #' \item \code{rules}: It is a list containing two elements which are \code{rules} and \code{threshold}. 
-#'              The \code{rules} represent knowledge in dataset that can be expressed as an IF-THEN form.
+#'              The \code{rules} represent knowledge in data set that can be expressed as an IF-THEN form.
 #'              For example, we got the rule as follows: \code{90 8 2} and its colnames: \code{pres}, \code{preg}, and \code{class}. 
 #'              It refers to the following rule: \code{IF pres is about 90 and preg is about 8 THEN class is 2}.
 #'              In other words, while the last column represents the consequent part, 
@@ -122,8 +122,8 @@ RI.hybridFS.FRST <- function(decision.table, control = list()){
 #' \item \code{type.task}: It is the type of task. In this case, it is \code{"classification"}.
 #' \item \code{t.similariy}: It is the type of similarity equation. See \code{\link{BC.IND.relation.FRST}}.
 #' \item \code{t.tnorm}: It is the type of triangular operator. See \code{\link{BC.IND.relation.FRST}}.
-#' \item \code{variance.data}: It represents the variance of the dataset. It has \code{NA} values when the associated attributes are nominal values.
-#' \item \code{range.data}: It represents the range of the dataset. It has \code{NA} values when the associated attributes are nominal values.
+#' \item \code{variance.data}: It represents the variance of the data set. It has \code{NA} values when the associated attributes are nominal values.
+#' \item \code{range.data}: It represents the range of the data set. It has \code{NA} values when the associated attributes are nominal values.
 #' \item \code{antecedent.attr}: It is a list of attribute names involved in the antecedent part.
 #' \item \code{consequent.attr}: It is the attribute in the consequent part.
 #' \item \code{nominal.att}: It is a list of boolean that represent whether a attribute is nominal or not. 
@@ -467,33 +467,32 @@ RI.indiscernibilityBasedRules.RST <- function(decision.table, feature.set) {
 #' 
 #' @export
 RI.CN2Rules.RST <- function(decision.table, K = 3)  {
-	dataSet <- decision.table
   
-  if (!inherits(dataSet, "DecisionTable")) {
+  if (!inherits(decision.table, "DecisionTable")) {
     stop("Provided data should inherit from the \'DecisionTable\' class.")
   }
   
-  if(is.null(attr(dataSet, "decision.attr"))) {
+  if(is.null(attr(decision.table, "decision.attr"))) {
     stop("A decision attribute is not indicated.")
 	} 
-	else decIdx = attr(dataSet, "decision.attr")
+	else decIdx = attr(decision.table, "decision.attr")
   
-  if(!all(attr(dataSet, "nominal.attrs"))) {
+  if(!all(attr(decision.table, "nominal.attrs"))) {
     stop("Some of the attributes are numerical.
          Discretize attributes before calling RST-based rule induction methods.")
   }
   
-  clsVec <- dataSet[,decIdx]
+  clsVec <- decision.table[,decIdx]
   uniqueCls <- unique(clsVec)
-  decisionName = colnames(dataSet)[decIdx]
-  dataSet <- dataSet[, -decIdx]
+  decisionName = colnames(decision.table)[decIdx]
+  decision.table <- decision.table[, -decIdx]
   clsFreqs <- table(clsVec)
-  uncoveredObjIdx <- 1:nrow(dataSet)
+  uncoveredObjIdx <- 1:nrow(decision.table)
   
   rules = list()
   
   while (length(uncoveredObjIdx) > 0) {
-    rules[[length(rules)+1]] = findBestCN2Rule(dataSet[uncoveredObjIdx,], clsVec[uncoveredObjIdx], uniqueCls, K)
+    rules[[length(rules)+1]] = findBestCN2Rule(decision.table[uncoveredObjIdx,], clsVec[uncoveredObjIdx], uniqueCls, K)
     uncoveredObjIdx = uncoveredObjIdx[setdiff(1:length(uncoveredObjIdx), rules[[length(rules)]]$support)]
   }
   
@@ -502,7 +501,7 @@ RI.CN2Rules.RST <- function(decision.table, K = 3)  {
   attr(rules, "majorityCls") <- as.character(sort(uniqueCls)[which.max(clsFreqs)])
   attr(rules, "method") <- "CN2Rules"
   attr(rules, "dec.attr") <- decisionName
-  attr(rules, "colnames") <- colnames(dataSet)[-decIdx]
+  attr(rules, "colnames") <- colnames(decision.table)[-decIdx]
   
   rules = ObjectFactory(rules, classname = "RuleSetRST")
   
@@ -530,32 +529,31 @@ RI.CN2Rules.RST <- function(decision.table, K = 3)  {
 #' 
 #' @export
 RI.LEM2Rules.RST <- function(decision.table)  {
-	dataSet <- decision.table
   
-  if (!inherits(dataSet, "DecisionTable")) {
+  if (!inherits(decision.table, "DecisionTable")) {
     stop("Provided data should inherit from the \'DecisionTable\' class.")
   }
   
-  if(is.null(attr(dataSet, "decision.attr"))) {
+  if(is.null(attr(decision.table, "decision.attr"))) {
     stop("A decision attribute is not indicated.")
-  } else decIdx = attr(dataSet, "decision.attr")
+  } else decIdx = attr(decision.table, "decision.attr")
   
-  if(!all(attr(dataSet, "nominal.attrs"))) {
+  if(!all(attr(decision.table, "nominal.attrs"))) {
     stop("Some of the attributes are numerical.
          Discretize attributes before calling RST-based rule induction methods.")
   }
   
-  clsVec <- dataSet[,decIdx]
+  clsVec <- decision.table[,decIdx]
   uniqueCls <- unique(clsVec)
-  decisionName = colnames(dataSet)[decIdx]
+  decisionName = colnames(decision.table)[decIdx]
   clsFreqs <- table(clsVec)
   
-  INDrelation = BC.IND.relation.RST(dataSet, (1:ncol(dataSet))[-decIdx])
-  approximations = BC.LU.approximation.RST(dataSet, INDrelation)
+  INDrelation = BC.IND.relation.RST(decision.table, (1:ncol(decision.table))[-decIdx])
+  approximations = BC.LU.approximation.RST(decision.table, INDrelation)
   lowerApproximations = approximations$lower.approximation
   rm(INDrelation, approximations)
   
-  descriptorsList = attr(dataSet, "desc.attrs")[-decIdx]
+  descriptorsList = attr(decision.table, "desc.attrs")[-decIdx]
   descriptorCandidates = list()
 	for (i in 1:length(descriptorsList)) {
     descriptorCandidates = c(descriptorCandidates,
@@ -564,7 +562,7 @@ RI.LEM2Rules.RST <- function(decision.table)  {
   }
   
   attributeValuePairs = lapply(descriptorCandidates, laplaceEstimate, 
-                               dataSet[,-decIdx], clsVec, uniqueCls)
+                               decision.table[,-decIdx], clsVec, uniqueCls)
   rm(descriptorsList, descriptorCandidates)
   
   rules = list()
@@ -575,14 +573,14 @@ RI.LEM2Rules.RST <- function(decision.table)  {
   
   rules = unlist(rules, recursive = FALSE)
   rules = lapply(rules, function(x) laplaceEstimate(list(idx = x$idx, values = x$values), 
-                                                    dataSet, clsVec, uniqueCls, suppIdx = x$support))
+                                                    decision.table, clsVec, uniqueCls, suppIdx = x$support))
   
   attr(rules, "uniqueCls") <- as.character(sort(uniqueCls))
   attr(rules, "clsProbs") <- clsFreqs/sum(clsFreqs)
   attr(rules, "majorityCls") <- as.character(sort(uniqueCls)[which.max(clsFreqs)])
   attr(rules, "method") <- "LEM2Rules"
   attr(rules, "dec.attr") <- decisionName
-  attr(rules, "colnames") <- colnames(dataSet)[-decIdx]
+  attr(rules, "colnames") <- colnames(decision.table)[-decIdx]
   
   rules = ObjectFactory(rules, classname = "RuleSetRST")
   
@@ -613,37 +611,37 @@ RI.LEM2Rules.RST <- function(decision.table)  {
 #' 
 #' @export
 RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
-	dataSet <- decision.table
-	if (!inherits(dataSet, "DecisionTable")) {
+	
+  if (!inherits(decision.table, "DecisionTable")) {
 		stop("Provided data should inherit from the \'DecisionTable\' class.")
 	}
   
-	if (is.null(attr(dataSet, "decision.attr"))) {
+	if (is.null(attr(decision.table, "decision.attr"))) {
 		stop("A decision attribute is not indicated.")
-	} else decIdx = attr(dataSet, "decision.attr")
+	} else decIdx = attr(decision.table, "decision.attr")
   
-	if (!all(attr(dataSet, "nominal.attrs"))) {
+	if (!all(attr(decision.table, "nominal.attrs"))) {
 		stop("Some of the attributes are numerical.
          Discretize attributes before calling RST-based rule induction methods.")
 	}
   
-	clsVec <- dataSet[,decIdx]
+	clsVec <- decision.table[,decIdx]
 	uniqueCls <- unique(clsVec)
-	decisionName = colnames(dataSet)[decIdx]
+	decisionName = colnames(decision.table)[decIdx]
 	clsFreqs <- table(clsVec)
   
-	INDrelation = BC.IND.relation.RST(dataSet, (1:ncol(dataSet))[-decIdx])
-	approximations = BC.LU.approximation.RST(dataSet, INDrelation)
+	INDrelation = BC.IND.relation.RST(decision.table, (1:ncol(decision.table))[-decIdx])
+	approximations = BC.LU.approximation.RST(decision.table, INDrelation)
 	lowerApproximations = approximations$lower.approximation
 	rm(INDrelation, approximations)
   
-	descriptorsList = attr(dataSet, "desc.attrs")[-decIdx]
+	descriptorsList = attr(decision.table, "desc.attrs")[-decIdx]
 	descriptorCandidates = list()
 	for (i in 1:length(descriptorsList)) {
 		tmpDescriptors = lapply(descriptorsList[[i]],
                             function(v, x) return(list(idx = x, values = v)), i)
 		tmpDescriptors = lapply(tmpDescriptors, laplaceEstimate, 
-                            dataSet[,-decIdx], clsVec, uniqueCls)
+		                        decision.table[,-decIdx], clsVec, uniqueCls)
 		names(tmpDescriptors) = descriptorsList[[i]]
 		descriptorCandidates[[length(descriptorCandidates) + 1]] = tmpDescriptors
 	}
@@ -654,20 +652,20 @@ RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
 	for(i in 1:length(lowerApproximations)) {
 		rules[[i]] = computeAQcovering(as.integer(lowerApproximations[[i]]),
                                    descriptorCandidates, 
-                                   dataSet[,-decIdx], 
+		                               decision.table[,-decIdx], 
                                    epsilon = epsilon, K = timesCovered)
 	}
   
 	rules = unlist(rules, recursive = FALSE)
 	rules = lapply(rules, function(x) laplaceEstimate(list(idx = x$idx, values = x$values), 
-                                                    dataSet, clsVec, uniqueCls, suppIdx = x$support))
+	                                                  decision.table, clsVec, uniqueCls, suppIdx = x$support))
   
 	attr(rules, "uniqueCls") <- as.character(sort(uniqueCls))
 	attr(rules, "clsProbs") <- clsFreqs/sum(clsFreqs)
 	attr(rules, "majorityCls") <- as.character(sort(uniqueCls)[which.max(clsFreqs)])
 	attr(rules, "method") <- "AQRules"
 	attr(rules, "dec.attr") <- decisionName
-	attr(rules, "colnames") <- colnames(dataSet)[-decIdx]
+	attr(rules, "colnames") <- colnames(decision.table)[-decIdx]
   
 	rules = ObjectFactory(rules, classname = "RuleSetRST")
   
@@ -698,7 +696,7 @@ RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
 #'            type.relation = c("tolerance", "eq.1"), t.implicator = "lukasiewicz")
 #' rules.hybrid <- RI.hybridFS.FRST(decision.table, control)
 #'
-#' ## in this case, we are using the same dataset as training data
+#' ## in this case, we are using the same data set as the training data
 #' res.1 <- predict(rules.hybrid, decision.table[, -ncol(decision.table)])
 #'
 #' ## using RI.GFRS.FRST for generating rules
@@ -706,7 +704,7 @@ RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
 #'                 type.relation = c("tolerance", "eq.3"), t.implicator = "lukasiewicz")						 
 #' rules.gfrs <- RI.GFRS.FRST(decision.table, control)
 #'
-#' ## in this case, we are using the same dataset as training data
+#' ## in this case, we are using the same data set as the training data
 #' res.2 <- predict(rules.gfrs, decision.table[, -ncol(decision.table)])
 #'
 #' ##############################################
@@ -720,7 +718,7 @@ RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
 #'            type.relation = c("tolerance", "eq.1"), t.implicator = "lukasiewicz")
 #' rules <- RI.hybridFS.FRST(decision.table, control)
 #'
-#' ## in this case, we are using the same dataset as training data
+#' ## in this case, we are using the same data set as the training data
 #' res.1 <- predict(rules, decision.table[, -ncol(decision.table)])
 #'
 #' @aliases predict.FRST
@@ -844,7 +842,7 @@ predict.RuleSetFRST <- function(object, newdata, ...) {
 #' rules.rst <- RI.indiscernibilityBasedRules.RST(decision.table, reduct)
 #'					
 #' ## predicting newdata
-#' ## in this case, we are using the same dataset as training data
+#' ## in this case, we are using the same data set as the training data
 #' res.1 <- predict(rules.rst, decision.table[, -ncol(decision.table)])
 #'
 #' @aliases predict.RST
