@@ -1,0 +1,31 @@
+FRNN.iris  FRNN for classification task: Iris data sets
+FRNN.O.iris	  FRNN.O for classification task: Iris data sets
+POSNN.iris	  POSNN for classification: Iris data sets
+BasicConcept.RST	 An example: basic concept of RST
+BasicConcept.FRST	 An example: basic concept of FRST
+DiscernibilityMatrix.RST	An example constructing discernibility matrix based on RST
+DiscernibilityMatrix.FRST	An example constructing discernibility matrix based on FRST
+FS.QuickReduct.RST	 Feature selection using QuickReduct based on RST
+FS.permutation.heuristic.reduct.RST	Feature selection using FS.permutation.heuristic.reduct.RST function
+FS.greedy.heuristic.reduct.RST	Feature selection using FS.greedy.heuristic.reduct.RST
+FS.greedy.heuristic.superreduct.RST	Feature selection using FS.greedy.heuristic.superreduct.RST
+FS.QuickReduct.FRST.Ex1	  Feature selection using QuickReduct based on FRST
+FS.QuickReduct.FRST.Ex2	  Feature selection using QuickReduct based on FRST
+FS.QuickReduct.FRST.Ex3	  Feature selection using QuickReduct based on FRST
+FS.QuickReduct.FRST.Ex4	  Feature selection using QuickReduct based on FRST
+FS.QuickReduct.FRST.Ex5	  Feature selection using QuickReduct based on FRST
+FS.nearOpt.fvprs.FRST	Feature selection using FS.nearOpt.fvprs.FRST
+IS.FRIS.FRST	 Instance selection using FRIS algorithm based on FRST
+IS.FRPS.FRST	 Instance selection using FRPS algorithm based on FRST
+RI.classification.FRST	 Rule induction on classification task using RI.hybrid and RI.GFRS algorithms based on FRST
+RI.regression.FRST	 Rule induction on regression task using RI.hybrid algorithm based on FRST
+RI.indiscernibilityBasedRules.RST Rule induction on classification task using RI.indiscernibilityBasedRules.RST
+D.local.discernibility.matrix.RST	Discretization using D.local.discernibility.matrix.RST
+D.max.discernibility.matrix.RST	Discretization using D.max.discernibility.matrix.RST
+D.global.discernibility.heuristic.RST Discretization using D.global.discernibility.heuristic.RST
+D.discretize.equal.intervals.RST Discretization using D.discretize.equal.intervals.RST
+D.discretize.quantiles.RST Discretization using D.discretize.quantiles.RST
+MV.simpleData Examples showing function for dealing with missing value
+SimulationDataAnalysisWine	Examples of data analysis using the Wine dataset 
+GettingStarted.B Example of data analysis in the getting started page
+GettingStarted.A Example of the basic concept in the getting started page

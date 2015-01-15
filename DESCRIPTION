@@ -1,0 +1,30 @@
+Package: RoughSets
+Maintainer: Christoph Bergmeir <c.bergmeir@decsai.ugr.es>
+License: GPL (>=2)
+Title: Data Analysis Using Rough Set and Fuzzy Rough Set Theories.
+Author: Lala Septem Riza, Andrzej Janusz, Chris Cornelis, Francisco
+    Herrera, Dominik Slezak, and Jose Manuel Benitez
+Description: This package provides comprehensive implementations of algorithms
+    based on rough set theory (RST) and fuzzy rough set theory (FRST), and
+    integrates these two theories into a single package. It provides
+    implementations, not only for the basic concepts of RST and FRST, but also
+    most common methods based on them for handling some: discretization,
+    feature selection, instance selection, rule induction, and classification
+    based on nearest neighbors. RST was introduced by Zdzislaw Pawlak in 1982
+    as a sophisticated mathematical tool based on indiscernibility relations to
+    model and process imprecise or incomplete information. It works on
+    symbolic-valued datasets for tackling the data analysis problems. By using
+    the indiscernibility relation for objects/instances, RST does not require
+    additional parameters to analyze the data. FRST is an extension of RST. The
+    FRST combines concepts of vagueness and indiscernibility that are expressed
+    with fuzzy sets (as proposed by Zadeh, in 1965) and RST. In addition, we
+    provide a new feature in this version which is missing value completion.
+    Finally, our package should be considered as an alternative software
+    library for analyzing data based on RST and FRST. Furthermore, in this
+    version we provide some algorithms for dealing with missing values.
+Version: 1.2-0
+URL: http://sci2s.ugr.es/dicits/software/RoughSets
+Date: 2014-02-04
+Suggests:
+    sets,
+    class
