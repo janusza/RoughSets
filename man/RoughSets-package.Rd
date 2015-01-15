@@ -131,9 +131,14 @@ It is implemented in \code{\link{FS.greedy.heuristic.superreduct.RST}}.
                       }
                       It should be noted that the outputs of the functions are decision reducts. So, for generating a new decision table according to the decision reduct,
                       we need to call \code{\link{SF.applyDecTable}}.
-           \item Rule induction: We provide the function \code{\link{RI.indiscernibilityBasedRules.RST}} to generate rules. This function requires the output of
-                      the feature selection functions. After obtaining the rules,
-                      we execute \code{\link{predict.RuleSetRST}} considering our rules and given newdata/testing data to obtain predicted values/classes.
+           \item Rule induction: We provide several functions used to generate rules, as follows:
+                      \itemize{
+                          \item The function \code{\link{RI.indiscernibilityBasedRules.RST}}: This function requires the output of the feature selection functions.
+                          \item The function \code{\link{RI.CN2Rules.RST}}: It is a rule induction method based on the CN2 algorithm.
+                          \item The function \code{\link{RI.LEM2Rules.RST}}: It implements a rule induction method based on the LEM2 algorithm.
+                          \item The function \code{\link{RI.AQRules.RST}}: It is a rule induction based on the AQ-style algorithm.
+                      }
+                       After obtaining the rules, we execute \code{\link{predict.RuleSetRST}} considering our rules and given newdata/testing data to obtain predicted values/classes.
              }
 \item \bold{The implementations of FRST}: As in the \code{RST} part, this part contains several algorithms that can be classified into several groups based on their purpose.
           The following is a description of all methods that have been implemented in functions:

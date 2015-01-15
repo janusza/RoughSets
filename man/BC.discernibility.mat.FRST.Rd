@@ -179,7 +179,7 @@ res.4 <- BC.discernibility.mat.FRST(decision.table, type.discernibility = "min.e
 ## Example 2: Constructing the decision-relative discernibility matrix
 ## In this case, we are using the Hiring dataset containing nominal values
 #######################################################################
-data(RoughSetData)
+\dontrun{data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
 control.1 <- list(type.relation = c("crisp"),
@@ -190,7 +190,7 @@ res.1 <- BC.discernibility.mat.FRST(decision.table, type.discernibility = "stand
 
 control.2 <- list(epsilon = 0)
 res.2 <- BC.discernibility.mat.FRST(decision.table, type.discernibility = "gaussian.red",
-                                    control = control.2)
+                                    control = control.2)}
 }
 \references{
 D. Chen, L. Zhang, S. Zhao, Q. Hu, and P. Zhu, "A Novel Algorithm for Finding Reducts

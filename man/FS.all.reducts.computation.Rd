@@ -39,7 +39,7 @@ new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.red
 ## Example 2: Generate all reducts and
 ##            a new decision table using FRST
 ##############################################################
-data(RoughSetData)
+\dontrun{data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
 ## build the decision-relation discernibility matrix
@@ -53,6 +53,6 @@ res.1 <- BC.discernibility.mat.FRST(decision.table, type.discernibility = "stand
 reduct <- FS.all.reducts.computation(res.1)
 
 ## generate new decision table
-new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))
+new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))}
 }
 

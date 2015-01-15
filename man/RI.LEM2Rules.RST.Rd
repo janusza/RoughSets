@@ -4,9 +4,31 @@
 \alias{RI.LEM2Rules.RST}
 \title{Rule induction using the LEM2 algorithm}
 \usage{
-RI.LEM2Rules.RST(dataSet)
+RI.LEM2Rules.RST(decision.table)
+}
+\arguments{
+\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+}
+\value{
+A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
 }
 \description{
 It is
+}
+\examples{
+###########################################################
+## Example
+##############################################################
+data(RoughSetData)
+decision.table <- RoughSetData$hiring.dt
+
+rules <- RI.LEM2Rules.RST(decision.table)
+}
+\references{
+J.W. Grzymala-Busse, "A New Version of the Rule Induction System LERS",
+Fundamenta Informaticae, 31, p. 27 - 39 (1997).
+}
+\seealso{
+\code{\link{predict.RuleSetFRST}}.
 }
 

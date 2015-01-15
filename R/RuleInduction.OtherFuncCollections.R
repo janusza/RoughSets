@@ -247,32 +247,32 @@ rulesVoting <- function(object, ruleSet, votingMethod = X.ruleStrength) {
   return(prediction)
 }
 
-# A function returning a weight of rule's vote understood as strength of the rule. 
-# It is defined as a product of cardinality of matching training object set and rule length.
-#
-# @title Rule voting by strength of the rule
-# @return weight of the vote
-# @export
+#' A function returning a weight of rule's vote understood as strength of the rule. 
+#' It is defined as a product of cardinality of matching training object set and rule length.
+#'
+#' @title Rule voting by strength of the rule
+#' @return weight of the vote
+#' @export
 X.ruleStrength <- function(rule) {
 	return(length(rule$support) * length(rule$idx))
 }
 
-# A function returning a weight of rule's vote understood as the laplace estimate of its confidence. 
-#
-# @title Rule voting by laplace estimate
-# @param a decision rule, i.e. element of an "RuleSetRST" object 
-# @return weight of the vote
-# @export
+#' A function returning a weight of rule's vote understood as the laplace estimate of its confidence. 
+#'
+#' @title Rule voting by laplace estimate
+#' @param a decision rule, i.e. element of an "RuleSetRST" object 
+#' @return weight of the vote
+#' @export
 X.laplace <- function(rule) {
 	return(rule$laplace)
 }
 
-# A function returning an equal vote's weight for every rule. 
-#
-# @title Rule voting by counting matching rules
-# @param a decision rule, i.e. element of an "RuleSetRST" object 
-# @return weight of the vote
-# @export
+#' A function returning an equal vote's weight for every rule. 
+#'
+#' @title Rule voting by counting matching rules
+#' @param a decision rule, i.e. element of an "RuleSetRST" object 
+#' @return weight of the vote
+#' @export
 X.rulesCounting = function(rule) {
 	return(1)
 }

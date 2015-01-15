@@ -4,9 +4,33 @@
 \alias{RI.CN2Rules.RST}
 \title{Rule induction using the CN2 algorithm}
 \usage{
-RI.CN2Rules.RST(dataSet, K = 3)
+RI.CN2Rules.RST(decision.table, K = 3)
+}
+\arguments{
+\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+
+\item{K}{}
+}
+\value{
+A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
 }
 \description{
 It is
+}
+\examples{
+###########################################################
+## Example
+##############################################################
+data(RoughSetData)
+decision.table <- RoughSetData$hiring.dt
+
+rules <- RI.CN2Rules.RST(decision.table, K = 3)
+}
+\references{
+P.E. Clark and T. Niblett, "The CN2 Induction algorithm",
+Machine Learning, 3, p. 261 - 284 (1986).
+}
+\seealso{
+\code{\link{predict.RuleSetFRST}}.
 }
 

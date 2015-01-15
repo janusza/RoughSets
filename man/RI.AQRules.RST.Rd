@@ -4,9 +4,31 @@
 \alias{RI.AQRules.RST}
 \title{Rule induction using the AQ-style algorithm}
 \usage{
-RI.AQRules.RST(dataSet, epsilon = 0, timesCovered = 1)
+RI.AQRules.RST(decision.table, epsilon = 0, timesCovered = 1)
+}
+\arguments{
+\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+
+\item{epsilon}{a numeric value representing small margin.}
+
+\item{timesCovered}{an integer value representing the number of coverage.}
+}
+\value{
+A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
 }
 \description{
 It is
+}
+\examples{
+###########################################################
+## Example
+##############################################################
+data(RoughSetData)
+decision.table <- RoughSetData$hiring.dt
+
+rules <- RI.AQRules.RST(decision.table)
+}
+\seealso{
+\code{\link{predict.RuleSetFRST}}.
 }
 

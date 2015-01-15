@@ -43,14 +43,14 @@ information about the reduct from this function.
 #########################################################
 ## Example 1: Hiring dataset containing 8 objects with 5 attributes
 #########################################################
-data(RoughSetData)
+\dontrun{data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
 ## get reduct as FeatureSubset class
 reduct.1 <- FS.nearOpt.fvprs.FRST(decision.table)
 
 ## get new decision table according to the reduct
-new.decTable <- SF.applyDecTable(decision.table, reduct.1)
+new.decTable <- SF.applyDecTable(decision.table, reduct.1)}
 
 #########################################################
 ## Example 2: Pima dataset containing 7 objects with 9 attributes
