@@ -22,11 +22,11 @@ FS.greedy.heuristic.reduct.RST(decision.table,
 \item \code{X.nOfConflictsSqrt}: See \code{\link{X.nOfConflictsSqrt}}.
 }}
 
-\item{nAttrs}{a vector representing indexes of conditional attributes.}
+\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
 
-\item{epsilon}{a numeric value between [0, 1] representing whether it is using approximate reducts or not.}
+\item{epsilon}{a numeric value between [0, 1) representing an approximate threshold. It indicates whether to compute approximate reducts or not. If it equals 0 (default) a standard decision reduct is computed.}
 
-\item{...}{other parameters.}
+\item{...}{other parameters passed to quality functions (unsupported).}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:
@@ -35,6 +35,7 @@ A class \code{"FeatureSubset"} that contains the following components:
 \item \code{type.method}: a string representing the type of method which is \code{"greedy.heuristic"}.
 \item \code{type.task}: a string showing the type of task which is \code{"feature selection"}.
 \item \code{model}: a string representing the type of model. In this case, it is \code{"RST"} which means rough set theory.
+\item \code{epsilon}: the approximation threshold.
 }
 }
 \description{
@@ -82,6 +83,6 @@ D. Slezak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 
 J. Wroblewski, "Ensembles of Classifiers Based on Approximate Reducts", Fundamenta Informaticae, vol. 47, no. 3 - 4, p. 351 - 360 (2001).
 }
 \seealso{
-\code{\link{FS.quickreduct.RST}} and \code{\link{FS.reduct.computation}}.
+\code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
 }
 

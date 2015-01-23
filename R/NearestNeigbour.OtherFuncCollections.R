@@ -18,12 +18,12 @@
 #
 #############################################################################
 
-# This function is to get k nearest neighbor
-#
-# @param decision.table data are used for training
-# @param newdata data are used for testing
-# @param k number of neighbor
-# @param method.type a type of method used to calculate distance
+#' This function is to get k nearest neighbor
+#'
+#' @param decision.table data are used for training
+#' @param newdata data are used for testing
+#' @param k number of neighbor
+#' @param method.type a type of method used to calculate distance
 get.knearest <- function(decision.table, newdata.i, k, method.type){
 	nearest.dt <- matrix(nrow = 1, ncol = (ncol(decision.table) + 1))
 
@@ -53,10 +53,10 @@ get.knearest <- function(decision.table, newdata.i, k, method.type){
 	return(nearest.dt)
 }
 
-# This function is to calculate degree of similarity
-#
-# @param nearest.dt a matrix of data of nearest neighbor
-# @param control a list of parameters
+#' This function is to calculate degree of similarity
+#'
+#' @param nearest.dt a matrix of data of nearest neighbor
+#' @param control a list of parameters
 calc.similarityDegree <- function(nearest.dt, control){	
 	num.class <- control$num.class
 	m <- control$m
@@ -74,11 +74,11 @@ calc.similarityDegree <- function(nearest.dt, control){
 	return(miu)
 }
 
-# This function is to calculate membership class of nearest neighbor 
-#
-# @param nearest.dt a matrix of data of nearest neighbor
-# @param num.class the number of class
-# @param control a list of parameters
+#' This function is to calculate membership class of nearest neighbor 
+#'
+#' @param nearest.dt a matrix of data of nearest neighbor
+#' @param num.class the number of class
+#' @param control a list of parameters
 calc.membershipClass <- function(nearest.dt, num.class, type = "gradual"){
 
 	numClass <- matrix(nrow = 1, ncol = num.class)
@@ -116,39 +116,39 @@ calc.membershipClass <- function(nearest.dt, num.class, type = "gradual"){
 	return(miu.class)
 }
 
-# This is a function that implements the fuzzy-rough nearest neighbour algorithm.
-# 
-# @title The fuzzy-rough nearest neighbour algorithm
-#
-# @param decision.table a data frame representing the decision table. See \code{\link{BC.IND.relation.FRST}}. 
-# @param newdata a data frame or matrix (p x n) of data for the test process, where p is the number of instances and 
-#        n is the number of conditional attributes (input variables); 
-# @param control a list of other parameters which depends on two approaches we are going to choose, as follows:
-#        \itemize{
-#        \item implicator/t-norm based model: we should set \code{type.LU = "implicator.tnorm"} and following parameters.
-#                 \itemize{
-#                  \item \code{k}: the number of neighbours. The default value is 5.
-#                  \item \code{type.aggregation}: the type of aggregation.
-#                  \item \code{type.relation}: the type of relation. The default value is \code{c("tolerance", "eq.1")}.
-#                  \item \code{type.implicator}: the type of implicator operator. The default value is "lukasiewicz".
-#                 }
-#        \item vaquely quantified rough set model: for using this type, we should set \code{type.LU = "vqrs"} and following parameters.
-#                 \itemize{
-#                  \item \code{k}:  the number of neighbor. The default value is 5.
-#                  \item \code{q.some}: a numeric of alpha and beta parameter of VQRS. The default value is \code{c(0.1, 0.6)}.
-#                  \item \code{q.most}: a numeric of alpha and beta parameter of VQRS. The default value is \code{c(0.2, 1)}.
-#                  \item \code{type.relation}:  the type of relation. The default value is \code{c("tolerance", "eq.1")}.
-#                  \item \code{type.aggregation}: the type of aggregation.
-#                  } 
-#        }
-#        The description of those parameters could be seen at \code{\link{BC.LU.approximation.FRST}}.
-# @seealso \code{\link{C.FRNN.O.FRST}}, 
-# \code{\link{C.POSNN.FRST}} 
-# @return a matrix of predicted classes of newdata. 
-# @references
-# Richard Jensen and Chris Cornelis, "Fuzzy-rough Nearest Neighbour Classificition and Prediction",
-# Theoretical Computer Science, vol. 412, p. 5871 - 5884 (2011). 
-#
+#' This is a function that implements the fuzzy-rough nearest neighbour algorithm.
+#' 
+#' @title The fuzzy-rough nearest neighbour algorithm
+#'
+#' @param decision.table a data frame representing the decision table. See \code{\link{BC.IND.relation.FRST}}. 
+#' @param newdata a data frame or matrix (p x n) of data for the test process, where p is the number of instances and 
+#'        n is the number of conditional attributes (input variables); 
+#' @param control a list of other parameters which depends on two approaches we are going to choose, as follows:
+#'        \itemize{
+#'        \item implicator/t-norm based model: we should set \code{type.LU = "implicator.tnorm"} and following parameters.
+#'                \itemize{
+#'                  \item \code{k}: the number of neighbours. The default value is 5.
+#'                  \item \code{type.aggregation}: the type of aggregation.
+#'                  \item \code{type.relation}: the type of relation. The default value is \code{c("tolerance", "eq.1")}.
+#'                  \item \code{type.implicator}: the type of implicator operator. The default value is "lukasiewicz".
+#'                 }
+#'        \item vaquely quantified rough set model: for using this type, we should set \code{type.LU = "vqrs"} and following parameters.
+#'                 \itemize{
+#'                  \item \code{k}:  the number of neighbor. The default value is 5.
+#'                  \item \code{q.some}: a numeric of alpha and beta parameter of VQRS. The default value is \code{c(0.1, 0.6)}.
+#'                  \item \code{q.most}: a numeric of alpha and beta parameter of VQRS. The default value is \code{c(0.2, 1)}.
+#'                  \item \code{type.relation}:  the type of relation. The default value is \code{c("tolerance", "eq.1")}.
+#'                  \item \code{type.aggregation}: the type of aggregation.
+#'                  } 
+#'        }
+#'        The description of those parameters could be seen at \code{\link{BC.LU.approximation.FRST}}.
+#' @seealso \code{\link{C.FRNN.O.FRST}}, 
+#' \code{\link{C.POSNN.FRST}} 
+#' @return a matrix of predicted classes of newdata. 
+#' @references
+#' Richard Jensen and Chris Cornelis, "Fuzzy-rough Nearest Neighbour Classificition and Prediction",
+#' Theoretical Computer Science, vol. 412, p. 5871 - 5884 (2011). 
+#'
 # @export
 FRNN.alg <- function(decision.table, newdata, type.method = "C.FRNN.FRST", control = list()){
 	## get the data

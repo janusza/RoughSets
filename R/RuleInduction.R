@@ -724,7 +724,6 @@ RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
 #' @aliases predict.FRST
 #' @export  
 #' @method predict RuleSetFRST
-#' @S3method predict RuleSetFRST
 predict.RuleSetFRST <- function(object, newdata, ...) {
 	if(!inherits(object, "RuleSetFRST")) stop("not a legitimate rules based on FRST model")
 	
@@ -848,7 +847,6 @@ predict.RuleSetFRST <- function(object, newdata, ...) {
 #' @aliases predict.RST
 #' @export  
 #' @method predict RuleSetRST
-#' @S3method predict RuleSetRST
 predict.RuleSetRST <- function(object, newdata, ...) {
   
   if(!inherits(object, "RuleSetRST")) stop("Not a legitimate rules based on RST model.")
@@ -866,7 +864,7 @@ predict.RuleSetRST <- function(object, newdata, ...) {
   
   predVec = switch(method, 
                    indiscernibilityBasedRules = {
-                     ruleSet = object[order(sapply(object, function(X) X$laplace), decreasing = T)]
+                     ruleSet = object[order(sapply(object, function(X) X$laplace), decreasing = TRUE)]
                      INDclasses = sapply(ruleSet, function(x) paste(unlist(x$values), collapse = " "))
                      consequents = sapply(ruleSet, function(x) x$consequent)
                      

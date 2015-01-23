@@ -37,7 +37,7 @@ reduct <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NUL
 rules.rst <- RI.indiscernibilityBasedRules.RST(decision.table, reduct)
 
 ## predicting newdata
-## in this case, we are using the same dataset as training data
+## in this case, we are using the same data set as the training data
 res.1 <- predict(rules.rst, decision.table[, -ncol(decision.table)])
 }
 \seealso{

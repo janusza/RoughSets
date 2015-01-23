@@ -196,7 +196,6 @@ SF.asDecisionTable <- function(dataset, decision.attr = NULL, indx.nominal = NUL
 #' summary(res.2)
 #' @export  
 #' @method summary RuleSetFRST
-#' @S3method summary RuleSetFRST
 summary.RuleSetFRST <- function(object, ...){
   
  if(!inherits(object, "RuleSetFRST")) stop("not a legitimate object in this package")
@@ -256,7 +255,6 @@ summary.RuleSetFRST <- function(object, ...){
 #' summary(rules)
 #' @export  
 #' @method summary RuleSetRST
-#' @S3method summary RuleSetRST
 summary.RuleSetRST <- function(object, ...){
   
  if(!inherits(object, "RuleSetRST")) stop("not a legitimate object in this package")
@@ -291,7 +289,6 @@ summary.RuleSetRST <- function(object, ...){
 #' print(rules)
 #' @export  
 #' @method print RuleSetRST
-#' @S3method print RuleSetRST
 print.RuleSetRST <- function(object, ...){
   
   if(!inherits(object, "RuleSetRST")) stop("not a legitimate object in this package")
@@ -335,7 +332,6 @@ print.RuleSetRST <- function(object, ...){
 #' summary(IND)
 #' @export  
 #' @method summary IndiscernibilityRelation
-#' @S3method summary IndiscernibilityRelation
 summary.IndiscernibilityRelation <- function(object, ...){
   
  if(!inherits(object, "IndiscernibilityRelation")) stop("not a legitimate object in this package")
@@ -381,7 +377,6 @@ summary.IndiscernibilityRelation <- function(object, ...){
 #' summary(roughset)
 #' @export  
 #' @method summary LowerUpperApproximation
-#' @S3method summary LowerUpperApproximation
 summary.LowerUpperApproximation <- function(object, ...){
   
  if(!inherits(object, "LowerUpperApproximation")) stop("not a legitimate object in this package")
@@ -440,7 +435,6 @@ summary.LowerUpperApproximation <- function(object, ...){
 #' summary(region)
 #' @export  
 #' @method summary PositiveRegion
-#' @S3method summary PositiveRegion
 summary.PositiveRegion <- function(object, ...){
  if(!inherits(object, "PositiveRegion")) stop("not a legitimate object in this package")
  cat("The name of model: ", object$type.model, "\n")

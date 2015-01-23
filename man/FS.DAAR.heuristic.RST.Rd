@@ -2,7 +2,7 @@
 % Please edit documentation in R/FeatureSelection.R
 \name{FS.DAAR.heuristic.RST}
 \alias{FS.DAAR.heuristic.RST}
-\title{The DAAR.heuristic}
+\title{The DAAR heuristic for computation of decision reducts}
 \usage{
 FS.DAAR.heuristic.RST(decision.table, decisionIdx = ncol(decision.table),
   qualityF = X.gini, nAttrs = NULL,
@@ -23,13 +23,15 @@ FS.DAAR.heuristic.RST(decision.table, decisionIdx = ncol(decision.table),
 \item \code{X.nOfConflictsSqrt}: See \code{\link{X.nOfConflictsSqrt}}.
 }}
 
-\item{nAttrs}{a vector representing indexes of conditional attributes.}
+\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
 
-\item{allowedRandomness}{a number of dataset that will be shuffled.}
+\item{allowedRandomness}{a threshold for attribute relevance. Computations will be terminated when the relevance of a selected attribute fall below this threshold.}
 
-\item{nOfProbes}{a number of dataset.}
+\item{nOfProbes}{a number of random probes used for estimating the attribute relevance (see the references).}
 
-\item{...}{other parameters.}
+\item{permsWithinINDclasses}{a logical value indicating whether the permutation test should be conducted within indescernibility classes.}
+
+\item{...}{other parameters passed to quality functions.}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:
@@ -38,12 +40,12 @@ A class \code{"FeatureSubset"} that contains the following components:
 \item \code{type.method}: a string representing the type of method which is \code{"greedy.heuristic"}.
 \item \code{type.task}: a string showing the type of task which is \code{"feature selection"}.
 \item \code{model}: a string representing the type of model. In this case, it is \code{"RST"} which means rough set theory.
-\item \code{relevanceProbabilities}: average the probability of attribute relevance using random probes
-\item \code{epsilon}: a value between 0 and 1 representing a margin.
+\item \code{relevanceProbabilities}: an intiger vector with estimated relevances of selected attributes.
+\item \code{epsilon}: a value between 0 and 1 representing the estimated approximation threshold.
 }
 }
 \description{
-This is a function used for implementing a DAAR heuristic method for feature selection based on RST.
+This function implements a Dynamically Adjusted Approximate Reducts heuristic (DAAR) for feature selection based on RST.
 }
 \examples{
 ###################################################
@@ -59,7 +61,13 @@ res.1 <- FS.DAAR.heuristic.RST(decision.table)
 ## generate a new decision table corresponding to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 }
+\references{
+A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
+Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
+A. Janusz and D. Ślęzak, "Random Probes in Computation and Assessment of Approximate Reducts",
+Proceedings of {RSEISP} 2014, Springer, LNCS vol. 8537: p. 53 - 64 (2014).
+}
 \seealso{
-\code{\link{FS.quickreduct.RST}} and \code{\link{FS.reduct.computation}}.
+\code{\link{FS.greedy.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
 }
 

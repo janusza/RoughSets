@@ -26,7 +26,7 @@ RI.GFRS.FRST(decision.table, control = list())
 A class \code{"RuleSetFRST"} which has following components:
 \itemize{
 \item \code{rules}: It is a list containing two elements which are \code{rules} and \code{threshold}.
-             The \code{rules} represent knowledge in dataset that can be expressed as an IF-THEN form.
+             The \code{rules} represent knowledge in data set that can be expressed as an IF-THEN form.
              For example, we got the rule as follows: \code{90 8 2} and its colnames: \code{pres}, \code{preg}, and \code{class}.
              It refers to the following rule: \code{IF pres is about 90 and preg is about 8 THEN class is 2}.
              In other words, while the last column represents the consequent part,
@@ -38,8 +38,8 @@ A class \code{"RuleSetFRST"} which has following components:
 \item \code{type.task}: It is the type of task. In this case, it is \code{"classification"}.
 \item \code{t.similariy}: It is the type of similarity equation. See \code{\link{BC.IND.relation.FRST}}.
 \item \code{t.tnorm}: It is the type of triangular operator. See \code{\link{BC.IND.relation.FRST}}.
-\item \code{variance.data}: It represents the variance of the dataset. It has \code{NA} values when the associated attributes are nominal values.
-\item \code{range.data}: It represents the range of the dataset. It has \code{NA} values when the associated attributes are nominal values.
+\item \code{variance.data}: It represents the variance of the data set. It has \code{NA} values when the associated attributes are nominal values.
+\item \code{range.data}: It represents the range of the data set. It has \code{NA} values when the associated attributes are nominal values.
 \item \code{antecedent.attr}: It is a list of attribute names involved in the antecedent part.
 \item \code{consequent.attr}: It is the attribute in the consequent part.
 \item \code{nominal.att}: It is a list of boolean that represent whether a attribute is nominal or not.

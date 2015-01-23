@@ -14,12 +14,11 @@ FS.greedy.heuristic.superreduct.RST(decision.table,
 \item{decisionIdx}{a integer value representing an index of decision attribute.}
 
 \item{qualityF}{a function calculating quality on a set of attributes.
+See \code{\link{FS.greedy.heuristic.reduct.RST}}.}
 
-       See \code{\link{FS.greedy.heuristic.reduct.RST}}.}
+\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
 
-\item{nAttrs}{a vector representing indexes of conditional attributes.}
-
-\item{...}{other parameters.}
+\item{...}{other parameters passed to quality function (unsupported).}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:
@@ -31,7 +30,7 @@ A class \code{"FeatureSubset"} that contains the following components:
 }
 }
 \description{
-It is used to get the feature subset (superreduct) based on the greedy heuristic algorithm
+It is used to get a feature subset (superreduct) based on the greedy heuristic algorithm
 employing some quality measurements. Regarding the quality measurements, the detailed description can be seen in \code{\link{FS.greedy.heuristic.reduct.RST}}.
 }
 \examples{
