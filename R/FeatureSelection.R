@@ -351,14 +351,10 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
       INDrelation = compute_indiscernibility(INDrelation, 
                                              as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]),
                                              attrDescriptions[[tmpAttrSub[tmpBestIdx]]])
-      tmpLengths = sapply(INDrelation, length)
-      tmpIdx = which(tmpLengths <= 1)
-      if(length(tmpIdx) > 0) INDrelation = INDrelation[-tmpIdx]
       if(length(INDrelation) == 0) endFlag = TRUE
       
       attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
       iteration = iteration + 1
-      rm(tmpAttrSub, attrScoresVec, tmpBestIdx, tmpIdx, tmpLengths)
     }
   }
   
@@ -534,9 +530,6 @@ FS.DAAR.heuristic.RST = function(decision.table, attrDescriptions,
         INDrelation = compute_indiscernibility(INDrelation, 
                                                as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]),
                                                attrDescriptions[[tmpAttrSub[tmpBestIdx]]])
-        tmpLengths = sapply(INDrelation, length)
-        tmpIdx = which(tmpLengths <= 1)
-        if(length(tmpIdx) > 0) INDrelation = INDrelation[-tmpIdx]
         if(length(INDrelation) == 0) {
           endFlag = TRUE
           approxThereshold = tmpDependencyInData
@@ -846,14 +839,10 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table, attrDescriptions
       INDrelation = compute_indiscernibility(INDrelation, 
                                              as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]),
                                              attrDescriptions[[tmpAttrSub[tmpBestIdx]]])
-#      tmpLengths = sapply(INDrelation, length)
-#      tmpIdx = which(tmpLengths <= 1)
-#      if(length(tmpIdx) > 0) INDrelation = INDrelation[-tmpIdx]
       if(length(INDrelation) == 0) endFlag = TRUE
       
       attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
       iteration = iteration + 1
-#      rm(tmpAttrSub, attrScoresVec, tmpBestIdx)
     }
   }
   
