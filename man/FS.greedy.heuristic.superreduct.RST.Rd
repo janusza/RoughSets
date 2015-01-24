@@ -4,12 +4,14 @@
 \alias{FS.greedy.heuristic.superreduct.RST}
 \title{The greedy heuristic method for determining superreduct based on RST}
 \usage{
-FS.greedy.heuristic.superreduct.RST(decision.table,
+FS.greedy.heuristic.superreduct.RST(decision.table, attrDescriptions,
   decisionIdx = ncol(decision.table), qualityF = X.gini, nAttrs = NULL,
   ...)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing decision table. See \code{\link{SF.asDecisionTable}}.}
+
+\item{attrDescriptions}{a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
 
 \item{decisionIdx}{a integer value representing an index of decision attribute.}
 

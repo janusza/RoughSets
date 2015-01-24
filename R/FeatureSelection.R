@@ -82,12 +82,20 @@ FS.reduct.computation <- function(decision.table, method = "greedy.heuristic", .
   
 	if (is.null(attr(decision.table, "decision.attr"))) stop("A decision attribute is not indicated.")
 	else decIdx = attr(decision.table, "decision.attr")
+  
+	if (is.null(attr(decision.table, "desc.attrs"))) stop("No description of attribute values.")
+	else desc.attrs = attr(decision.table, "desc.attrs")
 
 	## call the chosen method
 	reduct = switch(method,  
-                  greedy.heuristic = FS.greedy.heuristic.reduct.RST(decision.table, decisionIdx = decIdx, ...),
-                  DAAR.heuristic = FS.DAAR.heuristic.RST(decision.table, decisionIdx = decIdx, ...),
-                  permutation.heuristic = FS.permutation.heuristic.reduct.RST(decision.table, decisionIdx = decIdx, ...),
+                  greedy.heuristic = FS.greedy.heuristic.reduct.RST(decision.table, 
+                                                                    attrDescriptions = desc.attrs,
+                                                                    decisionIdx = decIdx, ...),
+                  DAAR.heuristic = FS.DAAR.heuristic.RST(decision.table, 
+                                                         attrDescriptions = desc.attrs,
+                                                         decisionIdx = decIdx, ...),
+                  permutation.heuristic = FS.permutation.heuristic.reduct.RST(decision.table, 
+                                                                              decisionIdx = decIdx, ...),
                   nearOpt.fvprs = FS.nearOpt.fvprs.FRST(decision.table, ...) )
   
 	return(reduct)  		
@@ -212,6 +220,7 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table, permutation = NU
 #' @title The greedy heuristic algorithm for determining a reduct
 #
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
+#' @param attrDescriptions a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.
 #' @param decisionIdx an integer value representing an index of the decision attribute. 
 #' @param qualityF a function representing the quality of subset of attributes. In this package, the following functions have been included:
 #'        \itemize{
@@ -256,7 +265,8 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table, permutation = NU
 #' ## generate a new decision table corresponding to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.1)  
 #' @export
-FS.greedy.heuristic.reduct.RST <- function(decision.table, decisionIdx = ncol(decision.table), 
+FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
+                                           decisionIdx = ncol(decision.table), 
                                            qualityF = X.gini, nAttrs = NULL, 
                                            epsilon = 0.0, ...)  {
   ## get the data 
@@ -278,14 +288,19 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, decisionIdx = ncol(de
   INDrelation = list(1:nrow(decision.table))
   clsContingencyTab = as.matrix(table(dummyAttr, decision.table[[decisionIdx]]))
   decisionChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table)))
-  attrScoresVec = sapply(decision.table[tmpAttrSub], qualityGain, 
-                         decision.table[[decisionIdx]], INDrelation, decisionChaos, chaosFunction = qualityF)
+  attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
+                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                                         INDclasses = INDrelation, 
+                                         baseChaos = decisionChaos, 
+                                         chaosFunction = qualityF),
+                         SIMPLIFY = TRUE, USE.NAMES = FALSE)
   tmpBestIdx = which.max(attrScoresVec)
   rm(dummyAttr, clsContingencyTab)
   
   selectedAttrIdxVec  = tmpAttrSub[tmpBestIdx]
   INDrelation = compute_indiscernibility(INDrelation, 
-                                         as.character(decision.table[[selectedAttrIdxVec]]))
+                                         as.character(decision.table[[selectedAttrIdxVec]]),
+                                         attrDescriptions[[selectedAttrIdxVec]])
   attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
   
   endFlag = FALSE
@@ -325,13 +340,17 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, decisionIdx = ncol(de
       if (!is.null(nAttrs)) {
         tmpAttrSub = sample(attrIdxVec, min(nAttrs, length(attrIdxVec)))
       }	else tmpAttrSub = attrIdxVec
-      attrScoresVec = sapply(decision.table[tmpAttrSub], 
-                             qualityGain, 
-                             decision.table[[decisionIdx]], INDrelation, tmpChaos, chaosFunction = qualityF)
+      attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],  
+                             MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                                             INDclasses = INDrelation, 
+                                             baseChaos = tmpChaos, 
+                                             chaosFunction = qualityF),
+                             SIMPLIFY = TRUE, USE.NAMES = FALSE)
       tmpBestIdx = which.max(attrScoresVec)
       selectedAttrIdxVec[iteration + 1] = tmpAttrSub[tmpBestIdx]
       INDrelation = compute_indiscernibility(INDrelation, 
-                                             as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]))
+                                             as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]),
+                                             attrDescriptions[[tmpAttrSub[tmpBestIdx]]])
       tmpLengths = sapply(INDrelation, length)
       tmpIdx = which(tmpLengths <= 1)
       if(length(tmpIdx) > 0) INDrelation = INDrelation[-tmpIdx]
@@ -373,6 +392,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, decisionIdx = ncol(de
 #' @title The DAAR heuristic for computation of decision reducts
 #
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
+#' @param attrDescriptions a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.
 #' @param decisionIdx an integer value representing an index of the decision attribute. 
 #' @param qualityF a function representing the quality of subset of attributes. In this package, the following functions have been included:
 #'        \itemize{
@@ -417,7 +437,8 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, decisionIdx = ncol(de
 #' ## generate a new decision table corresponding to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.1)  
 #' @export
-FS.DAAR.heuristic.RST = function(decision.table, decisionIdx = ncol(decision.table), 
+FS.DAAR.heuristic.RST = function(decision.table, attrDescriptions,
+                                 decisionIdx = ncol(decision.table), 
                                  qualityF = X.gini, nAttrs = NULL,
                                  allowedRandomness = 1/ncol(decision.table), 
                                  nOfProbes = ncol(decision.table), 
@@ -441,10 +462,15 @@ FS.DAAR.heuristic.RST = function(decision.table, decisionIdx = ncol(decision.tab
   INDrelation = list(1:nrow(decision.table))
   clsContingencyTab = as.matrix(table(dummyAttr, decision.table[[decisionIdx]]))
   decisionChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table)))
-  attrScoresVec = sapply(decision.table[tmpAttrSub], qualityGain, 
-                         decision.table[[decisionIdx]], INDrelation, decisionChaos, chaosFunction = qualityF)
+  attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
+                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                                         INDclasses = INDrelation, 
+                                         baseChaos = decisionChaos, 
+                                         chaosFunction = qualityF),
+                         SIMPLIFY = TRUE, USE.NAMES = FALSE)
   tmpBestIdx = which.max(attrScoresVec)
   relevanceProbVec = computeRelevanceProb(INDrelation, decision.table[[tmpAttrSub[tmpBestIdx]]], 
+                                          attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
                                           attrScoresVec[tmpBestIdx], decision.table[[decisionIdx]], 
                                           decisionChaos, qualityF, nOfProbes, 
                                           withinINDclasses = permsWithinINDclasses)
@@ -452,7 +478,8 @@ FS.DAAR.heuristic.RST = function(decision.table, decisionIdx = ncol(decision.tab
   
   selectedAttrIdxVec = tmpAttrSub[tmpBestIdx]
   INDrelation = compute_indiscernibility(INDrelation, 
-                                         as.character(decision.table[[selectedAttrIdxVec]]))
+                                         as.character(decision.table[[selectedAttrIdxVec]]),
+                                         attrDescriptions[[selectedAttrIdxVec]])
   attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
   
   endFlag = FALSE
@@ -490,18 +517,23 @@ FS.DAAR.heuristic.RST = function(decision.table, decisionIdx = ncol(decision.tab
       }
       else tmpAttrSub = attrIdxVec
       
-      attrScoresVec = sapply(decision.table[tmpAttrSub], 
-                             qualityGain, 
-                             decision.table[[decisionIdx]], INDrelation, tmpChaos, chaosFunction = qualityF)
+      attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],  
+                             MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                                             INDclasses = INDrelation, 
+                                             baseChaos = tmpChaos, 
+                                             chaosFunction = qualityF),
+                             SIMPLIFY = TRUE, USE.NAMES = FALSE)
       tmpBestIdx = which.max(attrScoresVec)
-      tmpProbeP = computeRelevanceProb(INDrelation, decision.table[[tmpAttrSub[tmpBestIdx]]], 
+      tmpProbeP = computeRelevanceProb(INDrelation, decision.table[[tmpAttrSub[tmpBestIdx]]],
+                                       attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
                                        attrScoresVec[tmpBestIdx], decision.table[[decisionIdx]], 
                                        tmpChaos, qualityF, nOfProbes, 
                                        withinINDclasses = permsWithinINDclasses)
       if(tmpProbeP > (1 - allowedRandomness)) {
         selectedAttrIdxVec[iteration + 1] = tmpAttrSub[tmpBestIdx]
         INDrelation = compute_indiscernibility(INDrelation, 
-                                               as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]))
+                                               as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]),
+                                               attrDescriptions[[tmpAttrSub[tmpBestIdx]]])
         tmpLengths = sapply(INDrelation, length)
         tmpIdx = which(tmpLengths <= 1)
         if(length(tmpIdx) > 0) INDrelation = INDrelation[-tmpIdx]
@@ -622,8 +654,13 @@ FS.feature.subset.computation <- function(decision.table, method = "greedy.heuri
 	if (is.null(attr(decision.table, "decision.attr"))) stop("A decision attribute is not indicated.")
 	else decIdx = attr(decision.table, "decision.attr")
   
+	if (is.null(attr(decision.table, "desc.attrs"))) stop("No description of attribute values.")
+	else desc.attrs = attr(decision.table, "desc.attrs")
+  
 	superreduct = switch(method,  
-                       greedy.heuristic.superreduct = FS.greedy.heuristic.superreduct.RST(decision.table, decisionIdx = decIdx, ...),
+                       greedy.heuristic.superreduct = FS.greedy.heuristic.superreduct.RST(decision.table, 
+                                                                                          attrDescriptions = desc.attrs,
+                                                                                          decisionIdx = decIdx, ...),
                        quickreduct.rst = FS.quickreduct.RST(decision.table, ...),
                        quickreduct.frst = FS.quickreduct.FRST(decision.table, ...) )
   
@@ -697,7 +734,8 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #' employing some quality measurements. Regarding the quality measurements, the detailed description can be seen in \code{\link{FS.greedy.heuristic.reduct.RST}}.
 #' 
 #' @title The greedy heuristic method for determining superreduct based on RST
-#' @param decision.table a \code{"DecisionTable"} class representing decision table. See \code{\link{SF.asDecisionTable}}. 
+#' @param decision.table a \code{"DecisionTable"} class representing decision table. See \code{\link{SF.asDecisionTable}}.
+#' @param attrDescriptions a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}. 
 #' @param decisionIdx a integer value representing an index of decision attribute. 
 #' @param qualityF a function calculating quality on a set of attributes. 
 #'        See \code{\link{FS.greedy.heuristic.reduct.RST}}.
@@ -733,7 +771,8 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #' ## generate new decision table according to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.1)
 #' @export
-FS.greedy.heuristic.superreduct.RST <- function(decision.table, decisionIdx = ncol(decision.table), 
+FS.greedy.heuristic.superreduct.RST <- function(decision.table, attrDescriptions, 
+                                                decisionIdx = ncol(decision.table), 
                                                 qualityF = X.gini, nAttrs = NULL, ...)  {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
@@ -749,14 +788,19 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table, decisionIdx = nc
   INDrelation = list(1:nrow(decision.table))
   clsContingencyTab = as.matrix(table(dummyAttr, decision.table[[decisionIdx]]))
   decisionChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table)))
-  attrScoresVec = sapply(decision.table[tmpAttrSub], qualityGain, 
-                         decision.table[[decisionIdx]], INDrelation, decisionChaos, chaosFunction = qualityF)
+  attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
+                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                                         INDclasses = INDrelation, 
+                                         baseChaos = decisionChaos, 
+                                         chaosFunction = qualityF),
+                         SIMPLIFY = TRUE, USE.NAMES = FALSE)
   tmpBestIdx = which.max(attrScoresVec)
   rm(dummyAttr, clsContingencyTab)
   
   selectedAttrIdxVec  = tmpAttrSub[tmpBestIdx]
   INDrelation = compute_indiscernibility(INDrelation, 
-                                         as.character(decision.table[[selectedAttrIdxVec]]))
+                                         as.character(decision.table[[selectedAttrIdxVec]]),
+                                         attrDescriptions[[selectedAttrIdxVec]])
   attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
   
   endFlag = F
@@ -791,20 +835,25 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table, decisionIdx = nc
       if (!is.null(nAttrs)) {
         tmpAttrSub = sample(attrIdxVec, min(nAttrs, length(attrIdxVec)))
       }  else tmpAttrSub = attrIdxVec
-      attrScoresVec = sapply(decision.table[tmpAttrSub], qualityGain, 
-                             decision.table[[decisionIdx]], INDrelation, tmpChaos, chaosFunction = qualityF)
+      attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],  
+                             MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                                             INDclasses = INDrelation, 
+                                             baseChaos = tmpChaos, 
+                                             chaosFunction = qualityF),
+                             SIMPLIFY = TRUE, USE.NAMES = FALSE)
       tmpBestIdx = which.max(attrScoresVec)
       selectedAttrIdxVec[iteration + 1] = tmpAttrSub[tmpBestIdx]
       INDrelation = compute_indiscernibility(INDrelation, 
-                                             as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]))
-      tmpLengths = sapply(INDrelation, length)
-      tmpIdx = which(tmpLengths <= 1)
-      if(length(tmpIdx) > 0) INDrelation = INDrelation[-tmpIdx]
+                                             as.character(decision.table[[tmpAttrSub[tmpBestIdx]]]),
+                                             attrDescriptions[[tmpAttrSub[tmpBestIdx]]])
+#      tmpLengths = sapply(INDrelation, length)
+#      tmpIdx = which(tmpLengths <= 1)
+#      if(length(tmpIdx) > 0) INDrelation = INDrelation[-tmpIdx]
       if(length(INDrelation) == 0) endFlag = TRUE
       
       attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
       iteration = iteration + 1
-      rm(tmpAttrSub, attrScoresVec, tmpBestIdx, tmpIdx, tmpLengths)
+#      rm(tmpAttrSub, attrScoresVec, tmpBestIdx)
     }
   }
   

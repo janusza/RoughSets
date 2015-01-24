@@ -4,13 +4,15 @@
 \alias{FS.DAAR.heuristic.RST}
 \title{The DAAR heuristic for computation of decision reducts}
 \usage{
-FS.DAAR.heuristic.RST(decision.table, decisionIdx = ncol(decision.table),
-  qualityF = X.gini, nAttrs = NULL,
+FS.DAAR.heuristic.RST(decision.table, attrDescriptions,
+  decisionIdx = ncol(decision.table), qualityF = X.gini, nAttrs = NULL,
   allowedRandomness = 1/ncol(decision.table),
   nOfProbes = ncol(decision.table), permsWithinINDclasses = FALSE, ...)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+
+\item{attrDescriptions}{a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
 
 \item{decisionIdx}{an integer value representing an index of the decision attribute.}
 

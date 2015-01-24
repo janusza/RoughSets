@@ -667,13 +667,12 @@ X.nOfConflictsSqrt <- function(decisionDistrib)  {
 }
 
 #' This is an auxiliary function for computing decision reducts
-qualityGain <- function(vec, decisionVec, INDclasses, baseChaos, chaosFunction = X.gini)  {
+qualityGain <- function(vec, uniqueValues, decisionVec, INDclasses, baseChaos, chaosFunction = X.gini)  {
 
-  INDclasses = compute_indiscernibility(INDclasses, 
-                                        as.character(vec))
-  tmpLengths = sapply(INDclasses, length)
-  tmpIdx = which(tmpLengths <= 1)
-  if(length(tmpIdx) > 0) INDclasses = INDclasses[-tmpIdx]
+  INDclasses = compute_indiscernibility(INDclasses, as.character(vec), uniqueValues)
+#  tmpLengths = sapply(INDclasses, length)
+#  tmpIdx = which(tmpLengths <= 1)
+#  if(length(tmpIdx) > 0) INDclasses = INDclasses[-tmpIdx]
   
   if(length(INDclasses) > 0) {
     contingencyTabs = lapply(INDclasses, function(x,y) table(y[x]), decisionVec)
@@ -906,7 +905,8 @@ computeCore = function(reductList) {
 
 #' An auxiliary function for computing attribute relevance using random probes.
 #' It is used by FS.DAAR.heuristic.RST function.
-computeRelevanceProb = function(INDclasses, attributeVec, attrScore, decisionVec, baseChaos,
+computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues, 
+                                attrScore, decisionVec, baseChaos,
                                 qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)
 {
   if(withinINDclasses) {
@@ -914,12 +914,12 @@ computeRelevanceProb = function(INDclasses, attributeVec, attrScore, decisionVec
     probeScores = replicate(nOfProbes, 
                             {tmpAttribute = unlist(lapply(attributeVec, sample), 
                                                    use.names = FALSE);
-                             qualityGain(tmpAttribute, decisionVec,
+                             qualityGain(tmpAttribute, uniqueValues, decisionVec,
                                          INDclasses, baseChaos, chaosFunction = qualityF)})
   } else {
     probeScores = replicate(nOfProbes, 
                             {tmpAttribute = sample(attributeVec);
-                             qualityGain(tmpAttribute, decisionVec,
+                             qualityGain(tmpAttribute, uniqueValues, decisionVec,
                                          INDclasses, baseChaos, chaosFunction = qualityF)})
   }
 

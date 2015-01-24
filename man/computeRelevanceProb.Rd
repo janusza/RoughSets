@@ -5,8 +5,9 @@
 \title{An auxiliary function for computing attribute relevance using random probes.
 It is used by FS.DAAR.heuristic.RST function.}
 \usage{
-computeRelevanceProb(INDclasses, attributeVec, attrScore, decisionVec,
-  baseChaos, qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)
+computeRelevanceProb(INDclasses, attributeVec, uniqueValues, attrScore,
+  decisionVec, baseChaos, qualityF = X.gini, nOfProbes = 100,
+  withinINDclasses = FALSE)
 }
 \description{
 An auxiliary function for computing attribute relevance using random probes.

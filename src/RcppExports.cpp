@@ -6,15 +6,16 @@
 using namespace Rcpp;
 
 // compute_indiscernibility
-List compute_indiscernibility(List input, CharacterVector attr_val);
-RcppExport SEXP RoughSets_compute_indiscernibility(SEXP inputSEXP, SEXP attr_valSEXP) {
+List compute_indiscernibility(List input, CharacterVector attr_val, CharacterVector unique_attr_val);
+RcppExport SEXP RoughSets_compute_indiscernibility(SEXP inputSEXP, SEXP attr_valSEXP, SEXP unique_attr_valSEXP) {
 BEGIN_RCPP
     SEXP __sexp_result;
     {
         Rcpp::RNGScope __rngScope;
         Rcpp::traits::input_parameter< List >::type input(inputSEXP );
         Rcpp::traits::input_parameter< CharacterVector >::type attr_val(attr_valSEXP );
-        List __result = compute_indiscernibility(input, attr_val);
+        Rcpp::traits::input_parameter< CharacterVector >::type unique_attr_val(unique_attr_valSEXP );
+        List __result = compute_indiscernibility(input, attr_val, unique_attr_val);
         PROTECT(__sexp_result = Rcpp::wrap(__result));
     }
     UNPROTECT(1);

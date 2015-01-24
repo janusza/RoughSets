@@ -4,7 +4,8 @@
 \alias{qualityGain}
 \title{This is an auxiliary function for computing decision reducts}
 \usage{
-qualityGain(vec, decisionVec, INDclasses, baseChaos, chaosFunction = X.gini)
+qualityGain(vec, uniqueValues, decisionVec, INDclasses, baseChaos,
+  chaosFunction = X.gini)
 }
 \description{
 This is an auxiliary function for computing decision reducts
