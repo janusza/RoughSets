@@ -4,9 +4,10 @@
 \alias{FS.greedy.heuristic.reduct.RST}
 \title{The greedy heuristic algorithm for determining a reduct}
 \usage{
-FS.greedy.heuristic.reduct.RST(decision.table, attrDescriptions,
+FS.greedy.heuristic.reduct.RST(decision.table,
+  attrDescriptions = attr(decision.table, "desc.attrs"),
   decisionIdx = ncol(decision.table), qualityF = X.gini, nAttrs = NULL,
-  epsilon = 0, ...)
+  epsilon = 0, inconsistentDecisionTable = FALSE, ...)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -27,6 +28,8 @@ FS.greedy.heuristic.reduct.RST(decision.table, attrDescriptions,
 \item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
 
 \item{epsilon}{a numeric value between [0, 1) representing an approximate threshold. It indicates whether to compute approximate reducts or not. If it equals 0 (default) a standard decision reduct is computed.}
+
+\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected to be inconsistent.}
 
 \item{...}{other parameters passed to quality functions (unsupported).}
 }

@@ -667,18 +667,14 @@ X.nOfConflictsSqrt <- function(decisionDistrib)  {
 }
 
 #' This is an auxiliary function for computing decision reducts
-qualityGain <- function(vec, uniqueValues, decisionVec, INDclasses, baseChaos, chaosFunction = X.gini)  {
+qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions, 
+                        INDclasses, baseChaos, chaosFunction = X.gini)  {
 
   INDclasses = compute_indiscernibility(INDclasses, as.character(vec), uniqueValues)
-#  tmpLengths = sapply(INDclasses, length)
-#  tmpIdx = which(tmpLengths <= 1)
-#  if(length(tmpIdx) > 0) INDclasses = INDclasses[-tmpIdx]
   
   if(length(INDclasses) > 0) {
-    contingencyTabs = lapply(INDclasses, function(x,y) table(y[x]), decisionVec)
-    chaosVec = sapply(contingencyTabs, chaosFunction)
-    sumsVec = sapply(contingencyTabs, sum)
-    remainingChaos = sum(chaosVec*(sumsVec/length(vec)))
+    remainingChaos = compute_chaos(INDclasses, as.character(decisionVec),
+                                   uniqueDecisions, chaosFunction)
   } else remainingChaos = 0.0
   
   return(as.numeric(baseChaos - remainingChaos))
@@ -906,20 +902,23 @@ computeCore = function(reductList) {
 #' An auxiliary function for computing attribute relevance using random probes.
 #' It is used by FS.DAAR.heuristic.RST function.
 computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues, 
-                                attrScore, decisionVec, baseChaos,
+                                attrScore, decisionVec, uniqueDecisions, baseChaos,
                                 qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)
 {
   if(withinINDclasses) {
-    attributeVec = lapply(INDclasses, function(x, y) y[x], attributeVec)
+    attributeList = lapply(INDclasses, function(x, y) y[x], attributeVec)
+    tmpAttribute = attributeVec
+    flattenINDclasses = unlist(INDclasses, use.names = FALSE)
     probeScores = replicate(nOfProbes, 
-                            {tmpAttribute = unlist(lapply(attributeVec, sample), 
-                                                   use.names = FALSE);
-                             qualityGain(tmpAttribute, uniqueValues, decisionVec,
+                            {tmpAttributePermutation = unlist(lapply(attributeList, sample), 
+                                                              use.names = FALSE);
+                             tmpAttribute[flattenINDclasses] = tmpAttributePermutation;
+                             qualityGain(tmpAttribute, uniqueValues, decisionVec, uniqueDecisions,
                                          INDclasses, baseChaos, chaosFunction = qualityF)})
   } else {
     probeScores = replicate(nOfProbes, 
                             {tmpAttribute = sample(attributeVec);
-                             qualityGain(tmpAttribute, uniqueValues, decisionVec,
+                             qualityGain(tmpAttribute, uniqueValues, decisionVec, uniqueDecisions,
                                          INDclasses, baseChaos, chaosFunction = qualityF)})
   }
 

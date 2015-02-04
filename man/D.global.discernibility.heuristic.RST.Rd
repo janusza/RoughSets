@@ -5,7 +5,7 @@
 \title{The global maximum discernibility heuristic}
 \usage{
 D.global.discernibility.heuristic.RST(decision.table, maxNOfCuts = 2 *
-  ncol(decision.table), attrSampleSize = ncol(infoSystem),
+  ncol(decision.table), attrSampleSize = ncol(decision.table) - 1,
   cutCandidatesList = NULL, discFunction = global.discernibility, ...)
 }
 \arguments{

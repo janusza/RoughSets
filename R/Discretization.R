@@ -603,7 +603,7 @@ D.discretize.equal.intervals.RST <- function(decision.table, nOfIntervals = 4, .
 #' new.decTable <- SF.applyDecTable(decision.table, cut.values)
 #' @export
 D.global.discernibility.heuristic.RST <- function(decision.table, maxNOfCuts = 2*ncol(decision.table),
-                                                 attrSampleSize = ncol(infoSystem),
+                                                 attrSampleSize = ncol(decision.table)-1,
                                                  cutCandidatesList = NULL,
                                                  discFunction = global.discernibility, ...)  {
 

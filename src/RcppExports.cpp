@@ -22,3 +22,21 @@ BEGIN_RCPP
     return __sexp_result;
 END_RCPP
 }
+// compute_chaos
+double compute_chaos(List input, CharacterVector dec_val, CharacterVector unique_dec_val, Function chaosF);
+RcppExport SEXP RoughSets_compute_chaos(SEXP inputSEXP, SEXP dec_valSEXP, SEXP unique_dec_valSEXP, SEXP chaosFSEXP) {
+BEGIN_RCPP
+    SEXP __sexp_result;
+    {
+        Rcpp::RNGScope __rngScope;
+        Rcpp::traits::input_parameter< List >::type input(inputSEXP );
+        Rcpp::traits::input_parameter< CharacterVector >::type dec_val(dec_valSEXP );
+        Rcpp::traits::input_parameter< CharacterVector >::type unique_dec_val(unique_dec_valSEXP );
+        Rcpp::traits::input_parameter< Function >::type chaosF(chaosFSEXP );
+        double __result = compute_chaos(input, dec_val, unique_dec_val, chaosF);
+        PROTECT(__sexp_result = Rcpp::wrap(__result));
+    }
+    UNPROTECT(1);
+    return __sexp_result;
+END_RCPP
+}

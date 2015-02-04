@@ -232,6 +232,7 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table, permutation = NU
 #'        }
 #' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.
 #' @param epsilon a numeric value between [0, 1) representing an approximate threshold. It indicates whether to compute approximate reducts or not. If it equals 0 (default) a standard decision reduct is computed.
+#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected to be inconsistent.
 #' @param ... other parameters passed to quality functions (unsupported).
 #' @seealso \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
 #' @return A class \code{"FeatureSubset"} that contains the following components:
@@ -265,11 +266,11 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table, permutation = NU
 #' ## generate a new decision table corresponding to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.1)  
 #' @export
-FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
+FS.greedy.heuristic.reduct.RST <- function(decision.table, 
+                                           attrDescriptions = attr(decision.table, "desc.attrs"),
                                            decisionIdx = ncol(decision.table), 
                                            qualityF = X.gini, nAttrs = NULL, 
-                                           epsilon = 0.0, ...)  {
-  ## get the data 
+                                           epsilon = 0.0, inconsistentDecisionTable = FALSE, ...)  {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
   
@@ -284,18 +285,17 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
     stop("Wrong value of the parameter epsilon. It must be within [0,1) interval.")
   }
   
-  dummyAttr = rep(1,nrow(decision.table))
   INDrelation = list(1:nrow(decision.table))
-  clsContingencyTab = as.matrix(table(dummyAttr, decision.table[[decisionIdx]]))
-  decisionChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table)))
+  decisionChaos = compute_chaos(INDrelation, decision.table[[decisionIdx]], 
+                                attrDescriptions[[decisionIdx]], qualityF)
   attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
-                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
+                                         uniqueDecisions = attrDescriptions[[decisionIdx]],
                                          INDclasses = INDrelation, 
                                          baseChaos = decisionChaos, 
                                          chaosFunction = qualityF),
                          SIMPLIFY = TRUE, USE.NAMES = FALSE)
   tmpBestIdx = which.max(attrScoresVec)
-  rm(dummyAttr, clsContingencyTab)
   
   selectedAttrIdxVec  = tmpAttrSub[tmpBestIdx]
   INDrelation = compute_indiscernibility(INDrelation, 
@@ -305,30 +305,27 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
   
   endFlag = FALSE
   iteration = 1
-  if(ncol(decision.table) > 1000) {
-    clsContingencyTab = as.matrix(table(1:nrow(decision.table), 
-                                        decision.table[[decisionIdx]]))
-  } else clsContingencyTab = as.matrix(table(do.call(paste, decision.table[-decisionIdx]), 
-                                             decision.table[[decisionIdx]]))
-  totalChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table))) 
-  totalDependencyInData = decisionChaos - totalChaos
+  if(inconsistentDecisionTable) totalChaos = compute_chaos(split(1:nrow(decision.table), 
+                                                                 do.call(paste, decision.table[-decisionIdx])),
+                                                           as.character(decision.table[[decisionIdx]]),
+                                                           attrDescriptions[[decisionIdx]], qualityF)
+  else totalChaos = 0
+  totalDependencyInData = decisionChaos - totalChaos - 10^(-15)
   approxThereshold = (1 - epsilon)*totalDependencyInData
-  rm(clsContingencyTab)
   
   while (!endFlag) {
     contingencyTabs = lapply(INDrelation, 
                              function(x,y) table(y[x]), 
                              decision.table[[decisionIdx]])
     chaosVec = sapply(contingencyTabs, qualityF)
-    sumsVec = sapply(contingencyTabs, sum)
     if(any(chaosVec == 0)) {
       tmpIdx = which(chaosVec == 0)
       INDrelation = INDrelation[-tmpIdx]
       contingencyTabs = contingencyTabs[-tmpIdx]
       chaosVec = chaosVec[-tmpIdx]
-      sumsVec = sumsVec[-tmpIdx]
       rm(tmpIdx)
     }
+    sumsVec = sapply(contingencyTabs, sum)
     if(length(INDrelation) > 0) tmpChaos = sum(chaosVec*(sumsVec/nrow(decision.table)))
     else tmpChaos = 0
     tmpDependencyInData = decisionChaos - tmpChaos
@@ -342,6 +339,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
       }	else tmpAttrSub = attrIdxVec
       attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],  
                              MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                                             uniqueDecisions = attrDescriptions[[decisionIdx]],
                                              INDclasses = INDrelation, 
                                              baseChaos = tmpChaos, 
                                              chaosFunction = qualityF),
@@ -363,7 +361,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
     iteration = iteration - 1
     while (!endFlag) {
       clsContingencyTab = as.matrix(table(do.call(paste, decision.table[selectedAttrIdxVec[-iteration]]), decision.table[[decisionIdx]]))
-      tmpChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table))) 
+      tmpChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table)))
       tmpDependencyInData = decisionChaos - tmpChaos
       if (approxThereshold <= tmpDependencyInData) {
         selectedAttrIdxVec = selectedAttrIdxVec[-iteration]
@@ -402,6 +400,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
 #' @param allowedRandomness a threshold for attribute relevance. Computations will be terminated when the relevance of a selected attribute fall below this threshold.
 #' @param nOfProbes a number of random probes used for estimating the attribute relevance (see the references).
 #' @param permsWithinINDclasses a logical value indicating whether the permutation test should be conducted within indescernibility classes.
+#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected to be inconsistent.
 #' @param ... other parameters passed to quality functions.
 #' @seealso \code{\link{FS.greedy.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
 #' @return A class \code{"FeatureSubset"} that contains the following components:
@@ -433,12 +432,14 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table, attrDescriptions,
 #' ## generate a new decision table corresponding to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.1)  
 #' @export
-FS.DAAR.heuristic.RST = function(decision.table, attrDescriptions,
+FS.DAAR.heuristic.RST = function(decision.table, 
+                                 attrDescriptions = attr(decision.table, "desc.attrs"),
                                  decisionIdx = ncol(decision.table), 
                                  qualityF = X.gini, nAttrs = NULL,
                                  allowedRandomness = 1/ncol(decision.table), 
                                  nOfProbes = ncol(decision.table), 
-                                 permsWithinINDclasses = FALSE, ...) 
+                                 permsWithinINDclasses = FALSE, 
+                                 inconsistentDecisionTable = FALSE, ...) 
 {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
@@ -454,23 +455,26 @@ FS.DAAR.heuristic.RST = function(decision.table, attrDescriptions,
     stop("Wrong value of the allowedRandomness parameter. It must be within [0,1) interval.")
   }
   
-  dummyAttr = rep(1,nrow(decision.table))
   INDrelation = list(1:nrow(decision.table))
-  clsContingencyTab = as.matrix(table(dummyAttr, decision.table[[decisionIdx]]))
-  decisionChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table)))
+  decisionChaos = compute_chaos(INDrelation, decision.table[[decisionIdx]], 
+                                attrDescriptions[[decisionIdx]], qualityF)
   attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
-                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
+                                         uniqueDecisions = attrDescriptions[[decisionIdx]],
                                          INDclasses = INDrelation, 
                                          baseChaos = decisionChaos, 
                                          chaosFunction = qualityF),
                          SIMPLIFY = TRUE, USE.NAMES = FALSE)
   tmpBestIdx = which.max(attrScoresVec)
   relevanceProbVec = computeRelevanceProb(INDrelation, decision.table[[tmpAttrSub[tmpBestIdx]]], 
-                                          attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
-                                          attrScoresVec[tmpBestIdx], decision.table[[decisionIdx]], 
-                                          decisionChaos, qualityF, nOfProbes, 
+                                          uniqueValues = attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
+                                          attrScore = attrScoresVec[tmpBestIdx], 
+                                          decisionVec = decision.table[[decisionIdx]], 
+                                          uniqueDecisions = attrDescriptions[[decisionIdx]],
+                                          baseChaos = decisionChaos, 
+                                          qualityF = qualityF, 
+                                          nOfProbes = nOfProbes, 
                                           withinINDclasses = permsWithinINDclasses)
-  rm(dummyAttr, clsContingencyTab)
   
   selectedAttrIdxVec = tmpAttrSub[tmpBestIdx]
   INDrelation = compute_indiscernibility(INDrelation, 
@@ -480,30 +484,27 @@ FS.DAAR.heuristic.RST = function(decision.table, attrDescriptions,
   
   endFlag = FALSE
   iteration = 1
-  if(ncol(decision.table) > 1000) {
-    clsContingencyTab = as.matrix(table(1:nrow(decision.table), 
-                                        decision.table[[decisionIdx]]))
-  } else clsContingencyTab = as.matrix(table(do.call(paste, decision.table[-decisionIdx]), 
-                                             decision.table[[decisionIdx]]))
-  totalChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table))) 
-  totalDependencyInData = decisionChaos - totalChaos
-  rm(clsContingencyTab)
+  if(inconsistentDecisionTable) totalChaos = compute_chaos(split(1:nrow(decision.table), 
+                                                                 do.call(paste, decision.table[-decisionIdx])),
+                                                           decision.table[[decisionIdx]],
+                                                           attrDescriptions[[decisionIdx]], qualityF)
+  else totalChaos = 0
+  totalDependencyInData = decisionChaos - totalChaos - 10^(-16)
   
   while (!endFlag) {
     contingencyTabs = lapply(INDrelation, 
                              function(x,y) table(y[x]), 
                              decision.table[[decisionIdx]])
     chaosVec = sapply(contingencyTabs, qualityF)
-    sumsVec = sapply(contingencyTabs, sum)
     if(any(chaosVec == 0)) {
       tmpIdx = which(chaosVec == 0)
       INDrelation = INDrelation[-tmpIdx]
       contingencyTabs = contingencyTabs[-tmpIdx]
       chaosVec = chaosVec[-tmpIdx]
-      sumsVec = sumsVec[-tmpIdx]
       rm(tmpIdx)
     }
     if(length(INDrelation) > 0) {
+      sumsVec = sapply(contingencyTabs, sum)
       tmpChaos = sum(chaosVec*(sumsVec/nrow(decision.table)))
       tmpDependencyInData = decisionChaos - tmpChaos
       rm(contingencyTabs, sumsVec, chaosVec)
@@ -514,16 +515,21 @@ FS.DAAR.heuristic.RST = function(decision.table, attrDescriptions,
       else tmpAttrSub = attrIdxVec
       
       attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],  
-                             MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                             MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
+                                             uniqueDecisions = attrDescriptions[[decisionIdx]],
                                              INDclasses = INDrelation, 
                                              baseChaos = tmpChaos, 
                                              chaosFunction = qualityF),
                              SIMPLIFY = TRUE, USE.NAMES = FALSE)
       tmpBestIdx = which.max(attrScoresVec)
       tmpProbeP = computeRelevanceProb(INDrelation, decision.table[[tmpAttrSub[tmpBestIdx]]],
-                                       attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
-                                       attrScoresVec[tmpBestIdx], decision.table[[decisionIdx]], 
-                                       tmpChaos, qualityF, nOfProbes, 
+                                       uniqueValues = attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
+                                       attrScore = attrScoresVec[tmpBestIdx], 
+                                       decisionVec = decision.table[[decisionIdx]], 
+                                       uniqueDecisions = attrDescriptions[[decisionIdx]],
+                                       baseChaos = tmpChaos, 
+                                       qualityF = qualityF, 
+                                       nOfProbes = nOfProbes,
                                        withinINDclasses = permsWithinINDclasses)
       if(tmpProbeP > (1 - allowedRandomness)) {
         selectedAttrIdxVec[iteration + 1] = tmpAttrSub[tmpBestIdx]
@@ -733,6 +739,7 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #' @param qualityF a function calculating quality on a set of attributes. 
 #'        See \code{\link{FS.greedy.heuristic.reduct.RST}}.
 #' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.
+#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected to be inconsistent.
 #' @param ... other parameters passed to quality function (unsupported).
 #' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
 #' @return A class \code{"FeatureSubset"} that contains the following components:
@@ -764,9 +771,11 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #' ## generate new decision table according to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.1)
 #' @export
-FS.greedy.heuristic.superreduct.RST <- function(decision.table, attrDescriptions, 
+FS.greedy.heuristic.superreduct.RST <- function(decision.table, 
+                                                attrDescriptions = attr(decision.table, "desc.attrs"), 
                                                 decisionIdx = ncol(decision.table), 
-                                                qualityF = X.gini, nAttrs = NULL, ...)  {
+                                                qualityF = X.gini, nAttrs = NULL, 
+                                                inconsistentDecisionTable = FALSE, ...)  {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
   
@@ -777,18 +786,17 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table, attrDescriptions
     tmpAttrSub = sample(attrIdxVec, min(nAttrs, length(attrIdxVec)))
   }  else tmpAttrSub = attrIdxVec
   
-  dummyAttr = rep(1,nrow(decision.table))
   INDrelation = list(1:nrow(decision.table))
-  clsContingencyTab = as.matrix(table(dummyAttr, decision.table[[decisionIdx]]))
-  decisionChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table)))
+  decisionChaos = compute_chaos(INDrelation, decision.table[[decisionIdx]], 
+                                attrDescriptions[[decisionIdx]], qualityF)
   attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
-                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
+                                         uniqueDecisions = attrDescriptions[[decisionIdx]],
                                          INDclasses = INDrelation, 
                                          baseChaos = decisionChaos, 
                                          chaosFunction = qualityF),
                          SIMPLIFY = TRUE, USE.NAMES = FALSE)
   tmpBestIdx = which.max(attrScoresVec)
-  rm(dummyAttr, clsContingencyTab)
   
   selectedAttrIdxVec  = tmpAttrSub[tmpBestIdx]
   INDrelation = compute_indiscernibility(INDrelation, 
@@ -798,27 +806,26 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table, attrDescriptions
   
   endFlag = F
   iteration = 1
-  if(ncol(decision.table) > 1000) {
-    clsContingencyTab = as.matrix(table(1:nrow(decision.table), decision.table[[decisionIdx]]))
-  } else clsContingencyTab = as.matrix(table(do.call(paste, decision.table[-decisionIdx]), decision.table[[decisionIdx]]))
-  totalChaos = sum(apply(clsContingencyTab, 1, qualityF)*(rowSums(clsContingencyTab)/nrow(decision.table))) 
-  totalDependencyInData = decisionChaos - totalChaos
-  rm(clsContingencyTab)
+  if(inconsistentDecisionTable) totalChaos = compute_chaos(split(1:nrow(decision.table), 
+                                                                 do.call(paste, decision.table[-decisionIdx])),
+                                                           decision.table[[decisionIdx]],
+                                                           attrDescriptions[[decisionIdx]], qualityF)
+  else totalChaos = 0
+  totalDependencyInData = decisionChaos - totalChaos - 10^(-16)
   
   while (!endFlag) {
     contingencyTabs = lapply(INDrelation, 
                              function(x,y) table(y[x]), 
                              decision.table[[decisionIdx]])
     chaosVec = sapply(contingencyTabs, qualityF)
-    sumsVec = sapply(contingencyTabs, sum)
     if(any(chaosVec == 0)) {
       tmpIdx = which(chaosVec == 0)
       INDrelation = INDrelation[-tmpIdx]
       contingencyTabs = contingencyTabs[-tmpIdx]
       chaosVec = chaosVec[-tmpIdx]
-      sumsVec = sumsVec[-tmpIdx]
       rm(tmpIdx)
     }
+    sumsVec = sapply(contingencyTabs, sum)
     if(length(INDrelation) > 0) tmpChaos = sum(chaosVec*(sumsVec/nrow(decision.table)))
     else tmpChaos = 0
     tmpDependencyInData = decisionChaos - tmpChaos
@@ -829,7 +836,8 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table, attrDescriptions
         tmpAttrSub = sample(attrIdxVec, min(nAttrs, length(attrIdxVec)))
       }  else tmpAttrSub = attrIdxVec
       attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],  
-                             MoreArgs = list(decisionVec = decision.table[[decisionIdx]], 
+                             MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
+                                             uniqueDecisions = attrDescriptions[[decisionIdx]],
                                              INDclasses = INDrelation, 
                                              baseChaos = tmpChaos, 
                                              chaosFunction = qualityF),

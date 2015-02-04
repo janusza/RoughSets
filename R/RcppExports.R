@@ -5,3 +5,7 @@ compute_indiscernibility <- function(input, attr_val, unique_attr_val) {
     .Call('RoughSets_compute_indiscernibility', PACKAGE = 'RoughSets', input, attr_val, unique_attr_val)
 }
 
+compute_chaos <- function(input, dec_val, unique_dec_val, chaosF) {
+    .Call('RoughSets_compute_chaos', PACKAGE = 'RoughSets', input, dec_val, unique_dec_val, chaosF)
+}
+

@@ -1,9 +1,9 @@
 Package: RoughSets
-Maintainer: Christoph Bergmeir <c.bergmeir@decsai.ugr.es>
+Maintainer: Andrzej Janusz <janusza@mimuw.edu.pl>
 License: GPL (>=2)
 Title: Data Analysis Using Rough Set and Fuzzy Rough Set Theories.
-Author: Lala Septem Riza, Andrzej Janusz, Chris Cornelis, Francisco
-    Herrera, Dominik Slezak, and Jose Manuel Benitez
+Author: Lala Septem Riza, Andrzej Janusz 
+Supervision: Dominik Slezak, Chris Cornelis, Francisco Herrera and Jose Manuel Benitez
 Description: This package provides comprehensive implementations of algorithms
     based on rough set theory (RST) and fuzzy rough set theory (FRST), and
     integrates these two theories into a single package. It provides

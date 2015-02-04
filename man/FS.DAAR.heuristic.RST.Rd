@@ -4,10 +4,11 @@
 \alias{FS.DAAR.heuristic.RST}
 \title{The DAAR heuristic for computation of decision reducts}
 \usage{
-FS.DAAR.heuristic.RST(decision.table, attrDescriptions,
-  decisionIdx = ncol(decision.table), qualityF = X.gini, nAttrs = NULL,
-  allowedRandomness = 1/ncol(decision.table),
-  nOfProbes = ncol(decision.table), permsWithinINDclasses = FALSE, ...)
+FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
+  "desc.attrs"), decisionIdx = ncol(decision.table), qualityF = X.gini,
+  nAttrs = NULL, allowedRandomness = 1/ncol(decision.table),
+  nOfProbes = ncol(decision.table), permsWithinINDclasses = FALSE,
+  inconsistentDecisionTable = FALSE, ...)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -32,6 +33,8 @@ FS.DAAR.heuristic.RST(decision.table, attrDescriptions,
 \item{nOfProbes}{a number of random probes used for estimating the attribute relevance (see the references).}
 
 \item{permsWithinINDclasses}{a logical value indicating whether the permutation test should be conducted within indescernibility classes.}
+
+\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected to be inconsistent.}
 
 \item{...}{other parameters passed to quality functions.}
 }

@@ -6,8 +6,8 @@
 It is used by FS.DAAR.heuristic.RST function.}
 \usage{
 computeRelevanceProb(INDclasses, attributeVec, uniqueValues, attrScore,
-  decisionVec, baseChaos, qualityF = X.gini, nOfProbes = 100,
-  withinINDclasses = FALSE)
+  decisionVec, uniqueDecisions, baseChaos, qualityF = X.gini,
+  nOfProbes = 100, withinINDclasses = FALSE)
 }
 \description{
 An auxiliary function for computing attribute relevance using random probes.

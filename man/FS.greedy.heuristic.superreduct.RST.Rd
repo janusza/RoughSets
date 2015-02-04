@@ -4,9 +4,10 @@
 \alias{FS.greedy.heuristic.superreduct.RST}
 \title{The greedy heuristic method for determining superreduct based on RST}
 \usage{
-FS.greedy.heuristic.superreduct.RST(decision.table, attrDescriptions,
+FS.greedy.heuristic.superreduct.RST(decision.table,
+  attrDescriptions = attr(decision.table, "desc.attrs"),
   decisionIdx = ncol(decision.table), qualityF = X.gini, nAttrs = NULL,
-  ...)
+  inconsistentDecisionTable = FALSE, ...)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -19,6 +20,8 @@ FS.greedy.heuristic.superreduct.RST(decision.table, attrDescriptions,
 See \code{\link{FS.greedy.heuristic.reduct.RST}}.}
 
 \item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
+
+\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected to be inconsistent.}
 
 \item{...}{other parameters passed to quality function (unsupported).}
 }
