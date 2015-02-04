@@ -318,7 +318,7 @@
 BC.IND.relation.FRST <- function(decision.table, attributes = NULL, control = list()){
 	## set default values of all parameters
 	control <- setDefaultParametersIfMissing(control, list(type.aggregation = c("t.tnorm", "lukasiewicz"), 
-	           type.relation = c("tolerance", "eq.1"), disc.mat = FALSE, type.MVCompletion = FALSE))
+	           type.relation = c("tolerance", "eq.1"), disc.mat = FALSE, type.MVCompletion = FALSE, alpha = 1))
 	
 	## check missing values
 	if (any(is.na(decision.table))){
@@ -343,7 +343,7 @@ BC.IND.relation.FRST <- function(decision.table, attributes = NULL, control = li
 	## calculate fuzzy similarity relation based on the chosen type.relation
 	if (type.relation[1] == "crisp"){
 		miu.Ra <- calc.fsimilarity(decision.table, attributes, t.tnorm = type.aggregation[[2]], disc.mat = disc.mat, 
-		                           t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion)	
+		                           t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion, alpha = control$alpha)	
 	}
 	else if (type.relation[1] == "tolerance"){
 		## set default value
@@ -353,7 +353,7 @@ BC.IND.relation.FRST <- function(decision.table, attributes = NULL, control = li
 		
 		## calculate relation
 		miu.Ra <- calc.fsimilarity(decision.table, attributes, t.similarity, t.tnorm = type.aggregation[[2]], FUN = NULL, 
-		                           disc.mat = disc.mat, t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion)	
+		                           disc.mat = disc.mat, t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion, alpha = control$alpha)	
 	}
 	else if (type.relation[1] == "transitive.kernel"){
 		## set the default values
@@ -365,7 +365,7 @@ BC.IND.relation.FRST <- function(decision.table, attributes = NULL, control = li
 		## calculate relation
 		type.relation <- list(type = type.relation[1], equation = t.similarity, delta = delta)
 		miu.Ra <- calc.fsimilarity(decision.table, attributes, t.similarity, t.tnorm = type.aggregation[[2]], FUN = NULL, disc.mat = disc.mat, 
-		                           delta = delta, t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion)	
+		                           delta = delta, t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion, alpha = control$alpha)	
 	}
 	else if (type.relation[1] == "kernel.frst"){
 		## set the default values
@@ -392,13 +392,13 @@ BC.IND.relation.FRST <- function(decision.table, attributes = NULL, control = li
 		## calculate relation
 		type.relation <- list(type = type.relation[1], equation = t.similarity, delta = delta)
 		miu.Ra <- calc.fsimilarity(decision.table, attributes, t.similarity, t.tnorm = t.tnorm, FUN = NULL, disc.mat = disc.mat, 
-		                           delta = delta, t.aggregation = "kernel.frst", type.MVCompletion = type.MVCompletion)	
+		                           delta = delta, t.aggregation = "kernel.frst", type.MVCompletion = type.MVCompletion, alpha = control$alpha)	
 	}
 	else if (type.relation[1] == "custom"){
 		FUN <- type.relation[[2]]
 		type.relation <- list(type = type.relation[1], equation = FUN)
 		miu.Ra <- calc.fsimilarity(decision.table = decision.table, attributes = attributes, FUN = FUN, t.tnorm = type.aggregation[[2]], 
-		                          disc.mat = disc.mat, t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion) 
+		                          disc.mat = disc.mat, t.aggregation = type.aggregation[[1]], type.MVCompletion = type.MVCompletion, alpha = control$alpha) 
 	}
 	else if (type.relation[1] == "transitive.closure"){
 		if (is.na(type.relation[2])) t.similarity <- c("eq.1")
@@ -407,7 +407,7 @@ BC.IND.relation.FRST <- function(decision.table, attributes = NULL, control = li
 		type.relation <- list(type = type.relation[1], equation = t.similarity)
 		IND.relation.tolerance <- calc.fsimilarity(decision.table, attributes, t.similarity, t.tnorm = type.aggregation[[2]], 
 		                                          FUN = NULL, disc.mat = disc.mat, t.aggregation = type.aggregation[[1]], 
-												  type.MVCompletion = type.MVCompletion)	
+												  type.MVCompletion = type.MVCompletion, alpha = control$alpha)	
 		miu.Ra <- calc.transitive.closure(IND.relation.tolerance, type.MVCompletion = type.MVCompletion)
 	}
 	else {

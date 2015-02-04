@@ -70,7 +70,7 @@
 #'
 #' ## evaluate index of objects
 #' res.1 <- IS.FRIS.FRST(decision.table = decision.table, control = 
-#'                         list(threshold.tau = 0.5, alpha = 1, 
+#'                         list(threshold.tau = 0.5, alpha = 0.8, 
 #'                         type.aggregation = c("t.tnorm", "lukasiewicz"), 
 #'                         t.implicator = "lukasiewicz"))
 #' 
@@ -82,7 +82,7 @@
 #' Proceedings of the 19th International Conference on Fuzzy Systems (FUZZ-IEEE 2010), 
 #' p. 1776 - 1782 (2010).
 #' @export
-IS.FRIS.FRST <- function(decision.table, control){
+IS.FRIS.FRST <- function(decision.table, control = list()){
 	## set default values of all parameters
 	control <- setDefaultParametersIfMissing(control, list(threshold.tau = 0.95, type.aggregation = c("t.tnorm", "lukasiewicz"),
                                      	t.implicator = "kleene_dienes", alpha = 1))
