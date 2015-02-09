@@ -11,7 +11,7 @@ FS.reduct.computation(decision.table, method = "greedy.heuristic", ...)
 
 \item{method}{a character representing the type of computation method to use. See in Section \code{Details}.}
 
-\item{...}{other parameters. See the parameters on \code{\link{FS.greedy.heuristic.reduct.RST}},
+\item{...}{other parameters. See the parameters of \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}},
        \code{\link{FS.nearOpt.fvprs.FRST}} and \code{\link{FS.permutation.heuristic.reduct.RST}}.}
 }
 \value{
