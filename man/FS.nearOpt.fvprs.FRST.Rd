@@ -7,7 +7,7 @@
 FS.nearOpt.fvprs.FRST(decision.table, alpha.precision = 0.05, ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
 In this case, the decision attribute must be nominal.}
 
 \item{alpha.precision}{a numeric value representing variable precision of FVPRS.

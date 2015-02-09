@@ -8,14 +8,17 @@ FS.permutation.heuristic.reduct.RST(decision.table, permutation = NULL,
   decisionIdx = ncol(decision.table), ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
-\item{permutation}{a value representing whether we will randomize the conditional attributes or not.
-The values of this parameter are \code{NULL} as default one and \code{FALSE}.}
+\item{permutation}{a logical value, an integer vector or\code{NULL} (the default). If an integer vector with a length
+equal the cardinality of the conditional attribute set of the decision table is given (it must contain a permutation of
+integers from 1:(ncol(decision.table) - 1) ), then it will define the elimination order. Otherwise, if \code{permutation}
+is \code{NULL} or \code{TRUE} a random permutation will be generated. In the case when \code{permutation} is FALSE, the
+elimination will be performed in the order of attributes in the decision system.}
 
-\item{decisionIdx}{an index of decision attribute. The default value is the last column of decision table.}
+\item{decisionIdx}{an index of the decision attribute. The default value is the last column of a decision table.}
 
-\item{...}{other parameters.}
+\item{...}{parameters passes to other functions (currently omitted).}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:
@@ -24,6 +27,7 @@ A class \code{"FeatureSubset"} that contains the following components:
 \item \code{type.method}: a string representing the type of method which is \code{"permutation.heuristic"}.
 \item \code{type.task}: a string showing the type of task which is \code{"feature selection"}.
 \item \code{model}: a string representing the type of model. In this case, it is \code{"RST"} which means rough set theory.
+\item \code{epsilon}: the approximation threshold.
 }
 }
 \description{
@@ -51,12 +55,18 @@ decision.table <- RoughSetData$hiring.dt
 ## generate single reduct
 res.1 <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NULL,
                         decisionIdx = 5)
+print(res.1)
+
+res.2 <- FS.permutation.heuristic.reduct.RST(decision.table,
+                                             permutation = 4:1,
+                                             decisionIdx = 5)
+print(res.2)
 
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 }
 \references{
-A. Janusz and D. Slezak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data"
+A. Janusz and D. Ślęzak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data"
 										Proceedings of Federated Conference on Computer Science and Information Systems - FedCSIS, p. 295 - 302 (2012).
 }
 \seealso{

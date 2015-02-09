@@ -7,37 +7,37 @@
 FS.reduct.computation(decision.table, method = "greedy.heuristic", ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
-\item{method}{a character representing the type of methods. See in Section \code{Details}.}
+\item{method}{a character representing the type of computation method to use. See in Section \code{Details}.}
 
 \item{...}{other parameters. See the parameters on \code{\link{FS.greedy.heuristic.reduct.RST}},
-
        \code{\link{FS.nearOpt.fvprs.FRST}} and \code{\link{FS.permutation.heuristic.reduct.RST}}.}
 }
 \value{
-A class \code{"FeatureSubset"}. See \code{\link{FS.greedy.heuristic.reduct.RST}}
-
-or \code{\link{FS.nearOpt.fvprs.FRST}}.
+An object of a class \code{"FeatureSubset"}. See \code{\link{FS.greedy.heuristic.reduct.RST}},
+\code{\link{FS.DAAR.heuristic.RST}}, \code{\link{FS.permutation.heuristic.reduct.RST}} or \code{\link{FS.nearOpt.fvprs.FRST}} for more details.
 }
 \description{
-It is an additional function aimed as wrapper of approaches calculating a reduct.
+It is a function aimed as a wrapper for computing different types of decision reducts and approximate decision reducts.
 }
 \details{
-There exist three methods considered in this function based on RST and FRST as follows:
+The implemented functions include the following approaches:
 \itemize{
-\item \code{"greedy.heuristic"}: it is the greedy heuristic method based on RST.
+\item \code{"greedy.heuristic"}: a greedy heuristic method for computation of decision reducts (or approximate decision reducts) based on RST.
+                                 See \code{\link{FS.greedy.heuristic.reduct.RST}}.
 
-See \code{\link{FS.greedy.heuristic.reduct.RST}}.
-\item \code{"nearOpt.fvprs"}: it is the near-optimal reduction algorithm based on FRST.
+\item \code{"DAAR.heuristic"}: Dynamically Adapted Approximate Reduct heuristic, which is a modification of the greedy heuristic with a random probe test to avoid inclusion of irrelevant attributes to the reduct.
+                              See \code{\link{FS.DAAR.heuristic.RST}}.
 
-See \code{\link{FS.nearOpt.fvprs.FRST}}.
-\item \code{"permutation.heuristic"}: it is the permutation heuristic approach based on RST.
+\item \code{"nearOpt.fvprs"}: the near-optimal reduction algorithm based on FRST.
+                              See \code{\link{FS.nearOpt.fvprs.FRST}}.
 
-See \code{\link{FS.permutation.heuristic.reduct.RST}}.
+\item \code{"permutation.heuristic"}: a permutation-based elimination heuristic for computation of decision reducts based on RST.
+                                      See \code{\link{FS.permutation.heuristic.reduct.RST}}.
 }
-Those methods can be selected by assigning the parameter \code{method}.
-Additionally, \code{\link{SF.applyDecTable}} has been provided to generate the new decision table.
+Those methods can be selected by setting the parameter \code{method}.
+Additionally, \code{\link{SF.applyDecTable}} has been provided to generate a new decision table.
 }
 \examples{
 ##############################################################

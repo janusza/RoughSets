@@ -7,7 +7,7 @@
 FS.quickreduct.RST(decision.table, control = list(), ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{control}{other parameters. It contains the following component:
 \itemize{

@@ -8,7 +8,7 @@ FS.feature.subset.computation(decision.table,
   method = "greedy.heuristic.superreduct", ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{method}{a string representing the type of methods. See in Section \code{Details}.}
 

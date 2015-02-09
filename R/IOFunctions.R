@@ -300,6 +300,33 @@ print.RuleSetRST <- function(x, ...){
   invisible(x)	
 }
 
+#' This is a print method for FeatureSubset objects. 
+#'
+#' @title The print function of FeatureSubset objects
+#' 
+#' @param x an object inheriting from \code{"FeatureSubset"} class. See \code{\link{FS.reduct.computation}}.
+#' @param ...  parameters passes to other functions (currently omitted).
+#' @return Prints its argument and returns it invisibly.
+#' @examples
+#' ###########################################################
+#' ## Example : Classification problem
+#' ###########################################################
+#' data(RoughSetData)
+#' decision.table <- RoughSetData$hiring.dt     					 
+#'						 
+#' res.1 <- FS.reduct.computation(decision.table)
+#' print(res.1)
+#' @export  
+#' @method print FeatureSubset
+print.FeatureSubset <- function(x, ...){
+  
+  if(!inherits(x, "FeatureSubset")) stop("not a legitimate FeatureSubset object")
+  cat("A feature subset consisting of", length(x$reduct), " attributes:\n")
+  cat(paste(names(x$reduct), collapse = ", "), "\n", sep = "")
+  
+  invisible(x)	
+}
+
 
 #' This function enables the output of a summary of the indiscernibility relation functions. 
 #'

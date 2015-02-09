@@ -606,12 +606,12 @@ func.conorm <- function(right.val, init.val, t.conorm){
 	}
 }
 
-#' It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
+#' An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 #' It is based on the \emph{gini} index as a measure of information (Stoffel and Raileanu, 2000). 
 #'
-#' @title The gini-index gain measure function
-#' @param decisionDistrib a distribution of values on the decision attribute.
-#' @return \code{qualityF}. 
+#' @title The gini-index measure
+#' @param decisionDistrib an integer vector corresponding to a distribution of attribute values
+#' @return a numeric value indicating the gini index of an attribute. 
 #' @references
 #' K. Stoffel and L. E. Raileanu, "Selecting Optimal Split-Functions with Linear Threshold Unit Trees and Madaline-Style Networks",
 #' in: Research and Development in Intelligent Systems XVII, BCS Conference Series (2000).
@@ -621,12 +621,12 @@ X.gini <- function(decisionDistrib)  {
   return(1 - sum((decisionDistrib/sum(decisionDistrib))^2))
 }
 
-#' It is an auxiliary function for \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
+#' An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 #' It is based on \emph{entropy} as a measure of information(Shannon, 1948).
 #'
-#' @title The information gain measure function
-#' @param decisionDistrib a distribution of values on the decision attribute.
-#' @return \code{qualityF}.
+#' @title The entropy measure
+#' @param decisionDistrib an integer vector corresponding to a distribution of attribute values
+#' @return a numeric value indicating entropy of an attribute.
 #' @references
 #' C. E. Shannon, "A Mathematical Theory of Communication", Bell System Technical Journal, vol. 27, p. 379 - 423, 623 - 656 (1948).
 #'
@@ -638,30 +638,28 @@ X.entropy <- function(decisionDistrib)  {
 
 #' It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 #'
-#' @title  The discernibility measure function
-#' @param decisionDistrib a distribution of values on the decision attribute.
-#' @return \code{qualityF}. 
+#' @title  The discernibility measure
+#' @param decisionDistrib an integer vector corresponding to a distribution of decision attribute values
+#' @return a numeric value indicating a number of conflicts in a decision attribute
 #' @export
 X.nOfConflicts <- function(decisionDistrib)  {
   return(as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * as.numeric(decisionDistrib))))
 }
 
-#' It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
-#'
-#' @title The discernibility measure function based on \code{log2}
-#' @param decisionDistrib a distribution of values on the decision attribute.
-#' @return \code{qualityF}. 
-#' @export
+# It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
+#
+# @title The discernibility measure function based on \code{log2}
+# @param decisionDistrib a distribution of values on the decision attribute.
+# @return \code{qualityF}. 
 X.nOfConflictsLog <- function(decisionDistrib)  {
   return(log2(1+as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * decisionDistrib))))
 }
 
-#' It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
-#'
-#' @title The discernibility measure function based on \code{sqrt}
-#' @param decisionDistrib a distribution of values on the decision attribute.
-#' @return \code{qualityF}. 
-#' @export
+# It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
+#
+# @title The discernibility measure function based on \code{sqrt}
+# @param decisionDistrib a distribution of values on the decision attribute.
+# @return \code{qualityF}. 
 X.nOfConflictsSqrt <- function(decisionDistrib)  {
   return(sqrt(as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * as.numeric(decisionDistrib)))))
 }

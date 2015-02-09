@@ -8,7 +8,7 @@ FS.quickreduct.FRST(decision.table, type.method = "fuzzy.dependency",
   type.QR = "fuzzy.QR", control = list(), ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{type.method}{a string representing the type of methods.
 The complete description can be found in Section \code{Details}.}

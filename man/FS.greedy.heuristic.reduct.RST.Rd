@@ -10,7 +10,7 @@ FS.greedy.heuristic.reduct.RST(decision.table,
   epsilon = 0, inconsistentDecisionTable = FALSE, ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{attrDescriptions}{a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
 
@@ -21,8 +21,6 @@ FS.greedy.heuristic.reduct.RST(decision.table,
 \item \code{X.entropy}: See \code{\link{X.entropy}}.
 \item \code{X.gini}: See \code{\link{X.gini}}.
 \item \code{X.nOfConflicts}: See \code{\link{X.nOfConflicts}}.
-\item \code{X.nOfConflictsLog}: See \code{\link{X.nOfConflictsLog}}.
-\item \code{X.nOfConflictsSqrt}: See \code{\link{X.nOfConflictsSqrt}}.
 }}
 
 \item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
@@ -44,7 +42,7 @@ A class \code{"FeatureSubset"} that contains the following components:
 }
 }
 \description{
-This is a function used for implementing a greedy heuristic method for feature selection based on RST.
+This function implements a greedy heuristic algorithm for computing decision reducts (or approximate decision reducts) based on RST.
 }
 \details{
 In this function, we have provided some quality measures of subsets of attributes. The measure are important to
@@ -83,9 +81,9 @@ new.decTable <- SF.applyDecTable(decision.table, res.1)
 A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
 Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
 
-D. Slezak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 3 - 4, p. 365 - 390 (2002).
+D. Ślęzak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 3 - 4, p. 365 - 390 (2002).
 
-J. Wroblewski, "Ensembles of Classifiers Based on Approximate Reducts", Fundamenta Informaticae, vol. 47, no. 3 - 4, p. 351 - 360 (2001).
+J. Wróblewski, "Ensembles of Classifiers Based on Approximate Reducts", Fundamenta Informaticae, vol. 47, no. 3 - 4, p. 351 - 360 (2001).
 }
 \seealso{
 \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.reduct.computation}}.

@@ -4,14 +4,14 @@
 \alias{FS.one.reduct.computation}
 \title{The function for computing one reducts}
 \usage{
-FS.one.reduct.computation(discernibilityMatrix, greedy = TRUE, power = 2)
+FS.one.reduct.computation(discernibilityMatrix, greedy = TRUE, power = 1)
 }
 \arguments{
 \item{discernibilityMatrix}{a \code{"DiscernibilityMatrix"} class representing the discernibility matrix of RST and FRST.}
 
-\item{greedy}{a boolean value whether we are using the greedy heuristic or a randomized search.}
+\item{greedy}{a boolean value indicating whether the greedy heuristic or a randomized search should be used in computations.}
 
-\item{power}{a numeric representing a parameter of the greedy heuristic.
+\item{power}{a numeric representing a parameter of the randomized search heuristic.
 
 See \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}.}
 }

@@ -2,18 +2,18 @@
 % Please edit documentation in R/FeatureSelection.OtherFuncCollections.R
 \name{X.gini}
 \alias{X.gini}
-\title{The gini-index gain measure function}
+\title{The gini-index measure}
 \usage{
 X.gini(decisionDistrib)
 }
 \arguments{
-\item{decisionDistrib}{a distribution of values on the decision attribute.}
+\item{decisionDistrib}{an integer vector corresponding to a distribution of attribute values}
 }
 \value{
-\code{qualityF}.
+a numeric value indicating the gini index of an attribute.
 }
 \description{
-It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
+An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 It is based on the \emph{gini} index as a measure of information (Stoffel and Raileanu, 2000).
 }
 \references{

@@ -11,7 +11,7 @@ FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
   inconsistentDecisionTable = FALSE, ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{attrDescriptions}{a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
 
@@ -22,8 +22,6 @@ FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
 \item \code{X.entropy}: See \code{\link{X.entropy}}.
 \item \code{X.gini}: See \code{\link{X.gini}}.
 \item \code{X.nOfConflicts}: See \code{\link{X.nOfConflicts}}.
-\item \code{X.nOfConflictsLog}: See \code{\link{X.nOfConflictsLog}}.
-\item \code{X.nOfConflictsSqrt}: See \code{\link{X.nOfConflictsSqrt}}.
 }}
 
 \item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}

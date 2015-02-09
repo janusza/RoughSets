@@ -3,6 +3,7 @@
 importFrom(Rcpp)
 S3method(predict,RuleSetFRST)
 S3method(predict,RuleSetRST)
+S3method(print,FeatureSubset)
 S3method(print,RuleSetRST)
 S3method(summary,IndiscernibilityRelation)
 S3method(summary,LowerUpperApproximation)

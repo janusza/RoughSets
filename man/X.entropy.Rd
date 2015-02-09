@@ -2,18 +2,18 @@
 % Please edit documentation in R/FeatureSelection.OtherFuncCollections.R
 \name{X.entropy}
 \alias{X.entropy}
-\title{The information gain measure function}
+\title{The entropy measure}
 \usage{
 X.entropy(decisionDistrib)
 }
 \arguments{
-\item{decisionDistrib}{a distribution of values on the decision attribute.}
+\item{decisionDistrib}{an integer vector corresponding to a distribution of attribute values}
 }
 \value{
-\code{qualityF}.
+a numeric value indicating entropy of an attribute.
 }
 \description{
-It is an auxiliary function for \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
+An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 It is based on \emph{entropy} as a measure of information(Shannon, 1948).
 }
 \references{

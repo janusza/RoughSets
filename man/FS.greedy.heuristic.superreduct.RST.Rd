@@ -10,7 +10,7 @@ FS.greedy.heuristic.superreduct.RST(decision.table,
   inconsistentDecisionTable = FALSE, ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{attrDescriptions}{a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
 
