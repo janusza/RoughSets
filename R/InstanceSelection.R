@@ -181,7 +181,7 @@ IS.FRIS.FRST <- function(decision.table, control = list()){
 #'
 #' @export
 IS.FRPS.FRST <- function(decision.table, type.alpha = "FRPS.1"){
-	req.suc <- requireNamespaces("class", quietly=TRUE)
+	req.suc <- requireNamespace("class", quietly=TRUE)
 	if(!req.suc) stop("In order to use this function, you need to install the package class.")
 
 	## get parameters

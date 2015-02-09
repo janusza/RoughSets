@@ -2,16 +2,25 @@ Package: RoughSets
 Maintainer: Andrzej Janusz <janusza@mimuw.edu.pl>
 License: GPL (>=2)
 Encoding: UTF-8
-Title: Data Analysis Using Rough Set and Fuzzy Rough Set Theories.
-Author: Lala Septem Riza, Andrzej Janusz 
-Supervision: Dominik Ślęzak, Chris Cornelis, Francisco Herrera and Jose Manuel Benitez
+Title: Data Analysis Using Rough Set and Fuzzy Rough Set Theories
+Authors@R: c(person("Lala Septem", "Riza", role = "aut",
+                     email = "lala_s_riza@yahoo.com"),
+             person("Andrzej", "Janusz", role = c("aut", "cre"),
+                    email = "janusza@mimuw.edu.pl"),
+             person("Dominik", "Ślęzak", role = "ctb"),
+             person("Chris", "Cornelis", role = "ctb"),
+             person("Francisco", "Herrera", role = "ctb"),
+             person("Jose Manuel", "Benitez", role = "ctb"),
+             person("Christoph", "Bergmeir", role = "ctb",
+                    email = "c.bergmeir@decsai.ugr.es"),
+             person("Sebastian", "Stawicki", role = "ctb"))
 Description: This package provides comprehensive implementations of algorithms
     based on rough set theory (RST) and fuzzy rough set theory (FRST), and
     integrates these two theories into a single package. It provides
     implementations, not only for the basic concepts of RST and FRST, but also
     most common methods based on them for handling some: discretization,
     feature selection, instance selection, rule induction, and classification
-    based on nearest neighbors. RST was introduced by Zdzislaw Pawlak in 1982
+    based on nearest neighbors. RST was introduced by Zdzisław Pawlak in 1982
     as a sophisticated mathematical tool based on indiscernibility relations to
     model and process imprecise or incomplete information. It works on
     symbolic-valued datasets for tackling the data analysis problems. By using

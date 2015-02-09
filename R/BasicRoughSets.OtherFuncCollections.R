@@ -223,7 +223,7 @@ calc.fsimilarity <- function(decision.table, attributes, t.similarity = "eq.1", 
 			}
 			## construct indiscernibility relation
 			temp <- 1 - outer(c(obj[, i]), c(obj[, i]), 
-						 function(x, y) similarity.equation(x, y, t.similarity, delta, t.range.data[i], t.variance.data[i], FUN, decision.table, alpha))			 
+						 function(x, y) similarity.equation(x, y, t.similarity.new, delta, t.range.data[i], t.variance.data[i], FUN, decision.table, alpha))			 
 			
 			if (is.null(temp.init)){
 				temp.init <- as.list(temp)
@@ -1070,9 +1070,11 @@ min.disc.mat.FRST <- function(decision.table, t.tnorm = "lukasiewicz", type.rela
 			## calculate the similarity between two objects based on type of similarity				
 			if (nominal.att[h] == TRUE){
 				## overwrite type of similarity when crisp
-				t.similarity <- "boolean"
-			}						
-			temp.miu.Ra <- unlist(similarity.equation(temp, obj[j], t.similarity, delta, range.data, variance.data))
+				t.similarity.new <- "boolean"
+			}	else {
+			  t.similarity.new <- t.similarity
+			}		
+			temp.miu.Ra <- unlist(similarity.equation(temp, obj[j], t.similarity.new, delta, range.data, variance.data))
 
 			## check discernibility among objects					
 			if ((1 - temp.miu.Ra) >= (fuzzy.lower[[which(names(fuzzy.lower) == obj.decisionAttr[i, 1])]][i])){	
