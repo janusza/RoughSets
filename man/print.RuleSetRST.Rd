@@ -4,15 +4,15 @@
 \alias{print.RuleSetRST}
 \title{The print function of rules based on RST}
 \usage{
-\method{print}{RuleSetRST}(object, ...)
+\method{print}{RuleSetRST}(x, ...)
 }
 \arguments{
-\item{object}{a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.}
+\item{x}{a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.}
 
 \item{...}{the other parameters.}
 }
 \value{
-print prints its argument and returns it invisibly
+prints its argument and returns it invisibly
 }
 \description{
 This is a print method for RuleSetRST objects.

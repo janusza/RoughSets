@@ -843,8 +843,8 @@ build.discMatrix.FRST <- function(decision.table, type.discernibility = "fuzzy.d
 		return (list(IND.conditionAttr = IND.cond, IND.decisionAttr = IND.dec))
 	}	
 	else if (any(type.discernibility == c("standard.red", "gaussian.red", "consistence.degree", "alpha.red"))){
-		req.suc <- require("sets", quietly=TRUE)
-		if(!req.suc) stop("In order to use this function, you need to install the package sets.")
+#		req.suc <- require("sets", quietly=TRUE)
+#		if(!req.suc) stop("In order to use this function, you need to install the package sets.")
 
 		## Perform fuzzy indiscernibility relation for all conditional attributes ####
 		attributes <- c(seq(1, (num.att - 1)))
@@ -1010,8 +1010,8 @@ formula.discernibilityMatrix <- function(IND.cond, type.discernibility, fuzzy.lo
 # @param t.implicator a type of implicator operator
 # @param type.LU a type of lower/upper approximation
 min.disc.mat.FRST <- function(decision.table, t.tnorm = "lukasiewicz", type.relation = c("tolerance", "eq.1"), t.implicator = "lukasiewicz", type.LU = "implicator.tnorm"){
-	req.suc <- require("sets", quietly=TRUE)
-	if(!req.suc) stop("In order to use this function, you need to install the package sets.")	  
+#	req.suc <- require("sets", quietly=TRUE)
+#	if(!req.suc) stop("In order to use this function, you need to install the package sets.")	  
 		
 	## get data
 	objects <- decision.table

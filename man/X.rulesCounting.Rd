@@ -7,7 +7,7 @@
 X.rulesCounting(rule)
 }
 \arguments{
-\item{a}{decision rule, i.e. element of an "RuleSetRST" object}
+\item{rule}{a decision rule, i.e. element of an "RuleSetRST" object}
 }
 \value{
 weight of the vote

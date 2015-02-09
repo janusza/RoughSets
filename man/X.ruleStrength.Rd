@@ -6,6 +6,9 @@
 \usage{
 X.ruleStrength(rule)
 }
+\arguments{
+\item{rule}{a decision rule, i.e. element of an "RuleSetRST" object}
+}
 \value{
 weight of the vote
 }

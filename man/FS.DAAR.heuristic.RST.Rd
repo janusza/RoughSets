@@ -73,6 +73,6 @@ A. Janusz and D. Ślęzak, "Random Probes in Computation and Assessment of Appro
 Proceedings of {RSEISP} 2014, Springer, LNCS vol. 8537: p. 53 - 64 (2014).
 }
 \seealso{
-\code{\link{FS.greedy.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
+\code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
 }
 

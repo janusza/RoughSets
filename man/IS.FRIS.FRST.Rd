@@ -4,7 +4,7 @@
 \alias{IS.FRIS.FRST}
 \title{The fuzzy rough instance selection algorithm}
 \usage{
-IS.FRIS.FRST(decision.table, control)
+IS.FRIS.FRST(decision.table, control = list())
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -63,7 +63,7 @@ decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 3, indx.n
 
 ## evaluate index of objects
 res.1 <- IS.FRIS.FRST(decision.table = decision.table, control =
-                        list(threshold.tau = 0.5, alpha = 1,
+                        list(threshold.tau = 0.5, alpha = 0.8,
                         type.aggregation = c("t.tnorm", "lukasiewicz"),
                         t.implicator = "lukasiewicz"))
 

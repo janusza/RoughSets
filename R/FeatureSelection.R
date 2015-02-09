@@ -382,7 +382,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 }
 
 #' This function implements a Dynamically Adjusted Approximate Reducts heuristic (DAAR) for feature selection based on RST. 
-#'
+#' 
 #' @title The DAAR heuristic for computation of decision reducts
 #
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
@@ -402,7 +402,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 #' @param permsWithinINDclasses a logical value indicating whether the permutation test should be conducted within indescernibility classes.
 #' @param inconsistentDecisionTable logical indicating whether the decision table is suspected to be inconsistent.
 #' @param ... other parameters passed to quality functions.
-#' @seealso \code{\link{FS.greedy.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
+#' @seealso \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
 #' \item \code{reduct}: a list representing a single reduct. In this case, it could be a superreduct or just a subset of features.

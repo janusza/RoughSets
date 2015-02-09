@@ -171,15 +171,15 @@ laplaceEstimate <- function(rule, dataS, clsVec, uniqueCls, suppIdx = NULL) {
 	return(rule)
 }
 
-#' An auxiliary function that performs the best-first voting strategy.
-#'
-#' @title the best-first voting strategy function
-#' @param object a class "RuleSetRST". 
-#' @param ruleValues values of rules.
-#' @param consequents values on the consequent part.
-#' @param majorityCls  a value representing majority class of decision attribute.
-#' @param ... other parameters.
-#' @return predicted values. 
+# An auxiliary function that performs the best-first voting strategy.
+#
+# @title the best-first voting strategy function
+# @param object a class "RuleSetRST". 
+# @param ruleValues values of rules.
+# @param consequents values on the consequent part.
+# @param majorityCls  a value representing majority class of decision attribute.
+# @param ... other parameters.
+# @return predicted values. 
 bestFirst <- function(object, ruleValues, consequents, majorityCls, ...) { 
 	matchIdx <- which(ruleValues == object)
 	if (length(matchIdx) > 0) {
@@ -192,12 +192,12 @@ bestFirst <- function(object, ruleValues, consequents, majorityCls, ...) {
 	return(prediction)
 }
 
-#' An auxiliary function that performs the first-win voting strategy.
-#'
-#' @title the first-win voting strategy
-#' @param a data vector representing the object for which predictions are to be made
-#' @param object a class "RuleSetRST"
-#' @return a predicted value 
+# An auxiliary function that performs the first-win voting strategy.
+#
+# @title the first-win voting strategy
+# @param a data vector representing the object for which predictions are to be made
+# @param object a class "RuleSetRST"
+# @return a predicted value 
 firstWin <- function(object, ruleSet, ...) {
   rulesCount = length(ruleSet)
   i = 1
@@ -251,6 +251,7 @@ rulesVoting <- function(object, ruleSet, votingMethod = X.ruleStrength) {
 #' It is defined as a product of cardinality of matching training object set and rule length.
 #'
 #' @title Rule voting by strength of the rule
+#' @param rule a decision rule, i.e. element of an "RuleSetRST" object 
 #' @return weight of the vote
 #' @export
 X.ruleStrength <- function(rule) {
@@ -260,7 +261,7 @@ X.ruleStrength <- function(rule) {
 #' A function returning a weight of rule's vote understood as the laplace estimate of its confidence. 
 #'
 #' @title Rule voting by laplace estimate
-#' @param a decision rule, i.e. element of an "RuleSetRST" object 
+#' @param rule a decision rule, i.e. element of an "RuleSetRST" object 
 #' @return weight of the vote
 #' @export
 X.laplace <- function(rule) {
@@ -270,7 +271,7 @@ X.laplace <- function(rule) {
 #' A function returning an equal vote's weight for every rule. 
 #'
 #' @title Rule voting by counting matching rules
-#' @param a decision rule, i.e. element of an "RuleSetRST" object 
+#' @param rule a decision rule, i.e. element of an "RuleSetRST" object 
 #' @return weight of the vote
 #' @export
 X.rulesCounting = function(rule) {
@@ -327,8 +328,8 @@ addDescriptorCN2 <- function(rulesList, descCandidates) {
   return(candidates)
 }
 
-#' Computation of a covering of a lower approximation of a concept by decision rules using the LEM2 algorithm.
-#' It is an auxiliary function.
+# Computation of a covering of a lower approximation of a concept by decision rules using the LEM2 algorithm.
+# It is an auxiliary function.
 computeLEM2covering <- function(concept, attributeValuePairs, decisionValues, uniqueCls) {
   
   if(length(concept) == 0) stop("Empty lower approximation of a decision class.")
@@ -394,8 +395,8 @@ computeLEM2covering <- function(concept, attributeValuePairs, decisionValues, un
   return(rules)  
 }
 
-#' Computation of a covering of a lower approximation of a concept by decision rules using the AQ algorithm.
-#' It is an auxiliary function.
+# Computation of a covering of a lower approximation of a concept by decision rules using the AQ algorithm.
+# It is an auxiliary function.
 computeAQcovering <- function(concept, attributeValuePairs, dataTab, epsilon = 0.05, K = 2) {
   
   if(length(concept) == 0) stop("Empty lower approximation of a decision class.")

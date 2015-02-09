@@ -17,21 +17,21 @@
 #  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 #############################################################################
-#' This is a function for implementing the algorithms of quick reduct for feature selection 
-#' based on rough set theory and fuzzy rough set theory.
-#' 
-#' There are several variety of algorithms based on QuickReduct algorithm (\code{\link{FS.quickreduct.RST}}) and 
-#' (\code{\link{FS.quickreduct.FRST}})
-#' It should be noted that new decision table is produced based on one chosen reduct. 
-#'
-#' @title QuickReduct algorithm based on rough set theory and fuzzy rough set theory
-#' 
-#' @param decision.table a data frame representing decision table. See \code{\link{BC.IND.relation.FRST}}. 
-#' @param type.method a type of the methods 
-#' @param type.QR a type of quick reduct
-#' @param control a list of other parameters 
-#' @seealso \code{\link{FS.brute.force.RST}}, \code{\link{FS.heuristic.filter.RST}}
-#' @return reduct. 
+# This is a function for implementing the algorithms of quick reduct for feature selection 
+# based on rough set theory and fuzzy rough set theory.
+# 
+# There are several variety of algorithms based on QuickReduct algorithm (\code{\link{FS.quickreduct.RST}}) and 
+# (\code{\link{FS.quickreduct.FRST}})
+# It should be noted that new decision table is produced based on one chosen reduct. 
+#
+# @title QuickReduct algorithm based on rough set theory and fuzzy rough set theory
+# 
+# @param decision.table a data frame representing decision table. See \code{\link{BC.IND.relation.FRST}}. 
+# @param type.method a type of the methods 
+# @param type.QR a type of quick reduct
+# @param control a list of other parameters 
+# @seealso \code{\link{FS.brute.force.RST}}, \code{\link{FS.heuristic.filter.RST}}
+# @return reduct. 
 quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", type.QR = "fuzzy.QR", control = list()){
 	options(warn=-1)
 	## set default values of all parameters
@@ -544,10 +544,10 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 	}
 }
 
-#' this function is used to calculate degree of satisfaction
-#' @param IND.cond indiscernibility matrix for all conditional attributes
-#' @param IND.dec indiscernibility matrix for decision attribute
-#' @param attributes a list of considered attributes
+# this function is used to calculate degree of satisfaction
+# @param IND.cond indiscernibility matrix for all conditional attributes
+# @param IND.dec indiscernibility matrix for decision attribute
+# @param attributes a list of considered attributes
 calc.SAT <- function(IND.cond, IND.dec, attributes){
 	
 	SAT	<- matrix()
@@ -573,13 +573,13 @@ calc.SAT <- function(IND.cond, IND.dec, attributes){
 	return(SAT)
 }
 
-#' This function is used to calculate conorm all relations
-#'
-#' @title conorm calculation
-#' @param func.conorm a function to calculate 2 variable using a certain conorm 
-#' @param data a vector of data
-#' @param init.val a value of attribute
-#' @param t.conorm a type of t-conorm
+# This function is used to calculate conorm all relations
+#
+# @title conorm calculation
+# @param func.conorm a function to calculate 2 variable using a certain conorm 
+# @param data a vector of data
+# @param init.val a value of attribute
+# @param t.conorm a type of t-conorm
 calc.conorm <- function(func.conorm, data, init.val, t.conorm = "lukasiewicz", ...){
 	n <- length(data)
 	conorm.val <- func.conorm(data[1], init.val, t.conorm)
@@ -592,12 +592,12 @@ calc.conorm <- function(func.conorm, data, init.val, t.conorm = "lukasiewicz", .
 	
 }
 
-#' This function is used to calculate conorm of two variables
-#'
-#' @title conorm calculation on two variables
-#' @param right.val a value of one attribute on right side
-#' @param init.val a value of attribute
-#' @param cotnorm a type of t-norm
+# This function is used to calculate conorm of two variables
+#
+# @title conorm calculation on two variables
+# @param right.val a value of one attribute on right side
+# @param init.val a value of attribute
+# @param cotnorm a type of t-norm
 func.conorm <- function(right.val, init.val, t.conorm){
 	if (t.conorm == "lukasiewicz"){
 		return (min(right.val + init.val, 1))
@@ -666,7 +666,7 @@ X.nOfConflictsSqrt <- function(decisionDistrib)  {
   return(sqrt(as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * as.numeric(decisionDistrib)))))
 }
 
-#' This is an auxiliary function for computing decision reducts
+# This is an auxiliary function for computing decision reducts
 qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions, 
                         INDclasses, baseChaos, chaosFunction = X.gini)  {
 
@@ -680,8 +680,8 @@ qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions,
   return(as.numeric(baseChaos - remainingChaos))
 }
 
-#' It is used to randomize attributes
-#' @param attributes a matrix of attributes
+# It is used to randomize attributes
+# @param attributes a matrix of attributes
 randomize.attrs <- function(attributes){
 	## check whether randomize = TRUE means we select attributes randomly
 	rand.num <- sample(0:1, ncol(attributes), replace = TRUE)
@@ -693,8 +693,8 @@ randomize.attrs <- function(attributes){
 	return (attributes)
 }
 
-#' This function is used to calculate a discernibility function used to get all reducts
-#' @param discernibilityMatrix an object of a class "DiscernibilityMatrix
+# This function is used to calculate a discernibility function used to get all reducts
+# @param discernibilityMatrix an object of a class "DiscernibilityMatrix
 calc.all.reducts <- function(discernibilityMatrix) {
   
   disc.list = discernibilityMatrix$disc.list
@@ -790,8 +790,8 @@ calc.all.reducts <- function(discernibilityMatrix) {
   }
 }
 
-#' it is used to perform boolean function
-#' @param disc.list a list of attributes resulted by build.discMatrix.FRST
+# it is used to perform boolean function
+# @param disc.list a list of attributes resulted by build.discMatrix.FRST
 boolean.func <- function(disc.list){
 #	req.suc <- require("sets", quietly=TRUE)
 #	if(!req.suc) stop("In order to use this function, you need to install the package sets.")
@@ -833,7 +833,7 @@ boolean.func <- function(disc.list){
 	return(list(dec.red = dec.red, core = core))
 }
 
-#' a function for converting formulas in a CNF form to a DNF form
+# a function for converting formulas in a CNF form to a DNF form
 convertCNFtoDNF <- function(CNFclauses){
   
   if(length(CNFclauses) > 1) {
@@ -884,7 +884,7 @@ convertCNFtoDNF <- function(CNFclauses){
   return(DNFclauses)
 }
 
-#' a function for computing a core from a list of all reducts of a data set
+# a function for computing a core from a list of all reducts of a data set
 computeCore = function(reductList) {
   
   if(length(reductList) > 0) {
@@ -901,8 +901,8 @@ computeCore = function(reductList) {
   return(core)
 }
 
-#' An auxiliary function for computing attribute relevance using random probes.
-#' It is used by FS.DAAR.heuristic.RST function.
+# An auxiliary function for computing attribute relevance using random probes.
+# It is used by FS.DAAR.heuristic.RST function.
 computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues, 
                                 attrScore, decisionVec, uniqueDecisions, baseChaos,
                                 qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)

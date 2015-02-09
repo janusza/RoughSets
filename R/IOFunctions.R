@@ -274,9 +274,9 @@ summary.RuleSetRST <- function(object, ...){
 #'
 #' @title The print function of rules based on RST
 #' 
-#' @param object a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.
+#' @param x a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.
 #' @param ... the other parameters.
-#' @return print prints its argument and returns it invisibly
+#' @return prints its argument and returns it invisibly
 #' @examples
 #' ###########################################################
 #' ## Example : Classification problem
@@ -289,15 +289,15 @@ summary.RuleSetRST <- function(object, ...){
 #' print(rules)
 #' @export  
 #' @method print RuleSetRST
-print.RuleSetRST <- function(object, ...){
+print.RuleSetRST <- function(x, ...){
   
-  if(!inherits(object, "RuleSetRST")) stop("not a legitimate object in this package")
-  cat("A set of ", length(object), " rules:\n")
-  rules <- toStr.rules(rules = object, type.model = "RST")
+  if(!inherits(x, "RuleSetRST")) stop("not a legitimate object in this package")
+  cat("A set of ", length(x), " rules:\n")
+  rules <- toStr.rules(rules = x, type.model = "RST")
   rules <- mapply(function(x, n) paste(n, ". ", x, sep = ""), rules, 1:length(rules), SIMPLIFY = FALSE)
   lapply(rules, function(x) cat(x, "\n"))
   
-  invisible(object)	
+  invisible(x)	
 }
 
 
