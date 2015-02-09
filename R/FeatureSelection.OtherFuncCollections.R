@@ -793,18 +793,20 @@ calc.all.reducts <- function(discernibilityMatrix) {
 #' it is used to perform boolean function
 #' @param disc.list a list of attributes resulted by build.discMatrix.FRST
 boolean.func <- function(disc.list){
-	req.suc <- require("sets", quietly=TRUE)
-	if(!req.suc) stop("In order to use this function, you need to install the package sets.")
+#	req.suc <- require("sets", quietly=TRUE)
+#	if(!req.suc) stop("In order to use this function, you need to install the package sets.")
 		
 	## check subset among objects
 	if (length(disc.list) > 1){	
 		## create a function to be vectorize
 		func.ch.duplicate <- function(i, j, disc.list){
 			if (j > i){
-				if (set_is_subset(as.set(disc.list[[i]]), as.set(disc.list[[j]]))) {
+#				if (set_is_subset(as.set(disc.list[[i]]), as.set(disc.list[[j]]))) {
+			  if (all(disc.list[[i]] %in% disc.list[[j]])) {
 					disc.list[[j]] <<- NA
 				}
-				else if (set_is_subset(as.set(disc.list[[j]]), as.set(disc.list[[i]]))) {
+#				else if (set_is_subset(as.set(disc.list[[j]]), as.set(disc.list[[i]]))) {
+        else if (all(disc.list[[j]] %in% disc.list[[i]])) {
 					disc.list[[i]] <<- NA
 				}
 			}

@@ -181,7 +181,7 @@ IS.FRIS.FRST <- function(decision.table, control = list()){
 #'
 #' @export
 IS.FRPS.FRST <- function(decision.table, type.alpha = "FRPS.1"){
-	req.suc <- require("class", quietly=TRUE)
+	req.suc <- requireNamespaces("class", quietly=TRUE)
 	if(!req.suc) stop("In order to use this function, you need to install the package class.")
 
 	## get parameters
@@ -262,7 +262,7 @@ IS.FRPS.FRST <- function(decision.table, type.alpha = "FRPS.1"){
 	rate <- 0
 	for (i in 1 : nrow(objects)){
 		## perform 1knn
-		res <- knn1(train= objects[-i, -ncol(objects), drop = FALSE], 
+		res <- class::knn1(train= objects[-i, -ncol(objects), drop = FALSE], 
 		                 test = objects[i, -ncol(objects), drop = FALSE], 
 						 cl= factor(objects[-i, ncol(objects)]))
 		## check accuracy
@@ -289,7 +289,7 @@ IS.FRPS.FRST <- function(decision.table, type.alpha = "FRPS.1"){
 		## check if the number of objects over than 1
 		if (nrow(new.objects) > 1){
 			## perform 1knn
-			res.knn <- knn1(train = new.objects[, -ncol(new.objects), drop = FALSE], 
+			res.knn <- class::knn1(train = new.objects[, -ncol(new.objects), drop = FALSE], 
 			                test = objects[, -ncol(objects), drop = FALSE], 
 							cl= factor(new.objects[, ncol(new.objects)]))
 			## calculate accuracy
