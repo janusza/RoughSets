@@ -47,7 +47,8 @@ data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
 ## evaluate single reduct
-res.1 <- FS.greedy.heuristic.superreduct.RST(decision.table, qualityF = X.nOfConflictsSqrt)
+res.1 <- FS.greedy.heuristic.superreduct.RST(decision.table, qualityF = X.nOfConflicts)
+print(res.1)
 
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
