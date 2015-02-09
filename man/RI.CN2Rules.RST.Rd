@@ -9,7 +9,7 @@ RI.CN2Rules.RST(decision.table, K = 3)
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
 
-\item{K}{}
+\item{K}{a parameter that controls a complexity of the algorithm. In each iteration \code{K} best rule predicates will be extended by all possible descriptors.}
 }
 \value{
 A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.

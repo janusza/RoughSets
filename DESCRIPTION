@@ -26,7 +26,6 @@ Description: This package provides comprehensive implementations of algorithms
 Version: 1.2-0
 URL: http://sci2s.ugr.es/dicits/software/RoughSets
 Date: 2015-02-04
-Depends: Rcpp
-Suggests:
-    class
+Suggests: class
 LinkingTo: Rcpp
+Depends: Rcpp
