@@ -2,21 +2,23 @@
 % Please edit documentation in R/FeatureSelection.R
 \name{FS.all.reducts.computation}
 \alias{FS.all.reducts.computation}
-\title{The function for computing all reducts}
+\title{A function for computing all decision reducts of a decision system}
 \usage{
 FS.all.reducts.computation(discernibilityMatrix)
 }
 \arguments{
-\item{discernibilityMatrix}{a \code{"DiscernibilityMatrix"} class representing the discernibility matrix of RST and FRST.
-
-See \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}.}
+\item{discernibilityMatrix}{an \code{"DiscernibilityMatrix"} object representing
+a discernibility matrix of a decision system.}
 }
 \value{
-A class \code{"ReductSet"}.
+An object of a class \code{"ReductSet"}.
 }
 \description{
-It is a wrapper function used for generating all reducts. The reducts are obtained from functions based on a discernibility matrix based on RST and FRST. Therefore, it should be noted that
-before calling the function, we need to execute \code{BC.discernibility.mat.RST} and \code{BC.discernibility.mat.FRST}.
+A wrapper function used for generating all decision reducts of a decision system. The reducts
+are obtained from a discernibility matrix which can be computed using methods based on RST
+and FRST. Therefore, it should be noted that before calling the function, we need to
+compute a discernibility matrix using \code{\link{BC.discernibility.mat.RST}} or
+\code{\link{BC.discernibility.mat.FRST}}.
 }
 \examples{
 ########################################################
@@ -54,5 +56,11 @@ reduct <- FS.all.reducts.computation(res.1)
 
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))}
+}
+\author{
+Andrzej Janusz
+}
+\seealso{
+\code{\link{BC.discernibility.mat.RST}}, \code{\link{BC.discernibility.mat.FRST}}.
 }
 

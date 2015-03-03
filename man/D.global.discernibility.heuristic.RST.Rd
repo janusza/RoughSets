@@ -2,76 +2,78 @@
 % Please edit documentation in R/Discretization.R
 \name{D.global.discernibility.heuristic.RST}
 \alias{D.global.discernibility.heuristic.RST}
-\title{The global maximum discernibility heuristic}
+\title{Supervised discretization based on the maximum discernibility heuristic}
 \usage{
 D.global.discernibility.heuristic.RST(decision.table, maxNOfCuts = 2 *
   ncol(decision.table), attrSampleSize = ncol(decision.table) - 1,
   cutCandidatesList = NULL, discFunction = global.discernibility, ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.
 It should be noted that especially for this method, all conditional attributes
 must in real values. So, in the case we have mixed values, we should choose other methods.}
 
-\item{maxNOfCuts}{a numeric value representing the maximum number of cut values.}
+\item{maxNOfCuts}{a positive integer indicating the maximum number of allowed cuts.}
 
-\item{attrSampleSize}{a value representing the number of attributes.}
+\item{attrSampleSize}{an integer between 1 and the number of conditional attributes (the default). It indicates
+the attribute sample size for the Monte Carlo selection of candidating cuts.}
 
-\item{cutCandidatesList}{a list representing the candidates of cut values.}
+\item{cutCandidatesList}{an optional list containing candidates for optimal cut values.}
 
-\item{discFunction}{a function for computing cuts. The default value is the function \code{global.discernibility} which is
-a function for computing cuts using the maximum discernibility heuristic (or based on the global approach).}
+\item{discFunction}{a function used for computation of cuts. Currently only one implementation of maximu discernibility heuristic
+is available (the default). However, this parameter can be used to integrate custom implementations of
+discretization functions with the \code{RoughSets} package.}
 
-\item{...}{other parameters.}
+\item{...}{additional parameters to the \code{discFunction} (currently unsupported).}
 }
 \value{
-A class \code{"Discretization"} that contains the following components:
-\itemize{
-\item \code{cut.values}: a list representing cut values of each considered attributes.
-\item \code{type.method}: a type of method which is used to define cut values.
-
-      In this case, it is \code{"global.discernibility"}.
-\item \code{type.task}: a type of task which is \code{"discretization"}.
-\item \code{model}: a type of model which is \code{"RST"}.
-}
+An object of a class \code{"Discretization"} which stores cuts for each conditional attribute.
+        See \code{\link{D.discretization.RST}}.
 }
 \description{
 It is a function used for computing globally semi-optimal cuts using the maximum discernibility heuristic.
 }
 \details{
-Based on the "divide and conquer" strategy, the best cut could be determined.
-First, we determine the interval containing all possible cuts and then for every cut,
-the mean of quality and standard deviation are calculated. A measure of quality
-which considers the mean and standard deviation is used to determined the best cut.
-There are two different approaches which are "local search strategy" and "global search strategy".
-In this function, the latter one has been implemented. It is searching for the best cut over all continuous attributes
-and doing attribute selection at the same time. The complete description can be seen in (Nguyen, 2001).
+A complete description of the implemented algorithm can be found in (Nguyen, 2001).
 
-It should be noted that the output of this function is a class containing cut values.
-In order to generate the new decision table, \code{\link{SF.applyDecTable}} is executed.
+It should be noted that the output of this function is an object of a class \code{"Discretization"}
+which contains the cut values.
+The function \code{\link{SF.applyDecTable}} has to be used in order to generate the new (discretized) decision table.
 }
 \examples{
 #################################################################
 ## Example: Determine cut values and generate new decision table
 #################################################################
-dt.ex1 <- data.frame(c(1, 1.2, 1.3, 1.4, 1.4, 1.6, 1.3), c(2, 0.5, 3, 1, 2, 3, 1),
-                             c(1, 0, 0, 1, 0, 1, 1))
-colnames(dt.ex1) <- c("a", "b", "d")
-decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 3,
-                                     indx.nominal = c(3))
+data(RoughSetData)
+wine.data <- RoughSetData$wine.dt
+cut.values <- D.global.discernibility.heuristic.RST(wine.data)
 
-cut.values <- D.global.discernibility.heuristic.RST(decision.table)
+## generate a new decision table:
+wine.discretized <- SF.applyDecTable(wine.data, cut.values)
+dim(wine.discretized)
+lapply(wine.discretized, unique)
 
-## generate new decision table
-new.decTable <- SF.applyDecTable(decision.table, cut.values)
+## remove attributes with only one possible value:
+to.rm.idx <- which(sapply(lapply(wine.discretized, unique), function(x) length(x) == 1))
+to.rm.idx
+wine.discretized.reduced <- wine.discretized[-to.rm.idx]
+dim(wine.discretized.reduced)
+
+## check whether the attributes in the reduced data are a super-reduct of the original data:
+colnames(wine.discretized.reduced)
+class.idx <- which(colnames(wine.discretized.reduced) == "class")
+sum(duplicated(wine.discretized.reduced)) == sum(duplicated(wine.discretized.reduced[-class.idx])) # yes it is
+}
+\author{
+Andrzej Janusz
 }
 \references{
 S. H. Nguyen, "On Efficient Handling of Continuous Attributes in Large Data Bases",
 Fundamenta Informaticae, vol. 48, p. 61 - 81 (2001).
 }
 \seealso{
-\code{\link{D.local.discernibility.matrix.RST}}, \code{\link{D.max.discernibility.matrix.RST}},
-
-\code{\link{D.discretize.quantiles.RST}}, and \code{\link{D.discretize.equal.intervals.RST}}
+\code{\link{D.discretize.quantiles.RST}}, \code{\link{D.discretize.equal.intervals.RST}}
+         and \code{\link{SF.applyDecTable}}.
 }
 

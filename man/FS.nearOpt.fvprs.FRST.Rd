@@ -64,6 +64,9 @@ reduct.2 <- FS.nearOpt.fvprs.FRST(decision.table)
 ## get new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, reduct.2)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 S. Zhao, E. C. C. Tsang, and D. Chen, "The Model of Fuzzy Variable Precision Rough Sets",
 IEEE Trans. on Fuzzy Systems, vol. 17, no. 2, p. 451 - 467 (2009).

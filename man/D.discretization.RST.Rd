@@ -2,59 +2,81 @@
 % Please edit documentation in R/Discretization.R
 \name{D.discretization.RST}
 \alias{D.discretization.RST}
-\title{The wrapper function of discretization methods}
+\title{The wrapper function for discretization methods}
 \usage{
 D.discretization.RST(decision.table, type.method = "unsupervised.quantiles",
   ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
-It should be noted that all functions used for discretization need the nominal decision attribute.
-Furthermore, especially for the method type \code{"global.discernibility"}, all conditional attributes
-must in real values. So, in the case we have mixed values, we should choose other methods.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{type.method}{one of the following methods:
-\itemize{
-\item \code{"global.discernibility"}: See \code{\link{D.global.discernibility.heuristic.RST}}.
-\item \code{"local.disc.matrix"}: See \code{\link{D.local.discernibility.matrix.RST}}.
-\item \code{"max.disc.matrix"}: See \code{\link{D.max.discernibility.matrix.RST}}.
-\item \code{"unsupervised.intervals"}: See \code{\link{D.discretize.equal.intervals.RST}}.
-\item \code{"unsupervised.quantiles"}: See \code{\link{D.discretize.quantiles.RST}}.
+\item{type.method}{a character representing a discretization method to be used in the computations.
+Currently it can be one of the following methods:
+ \itemize{
+   \item \code{"global.discernibility"}: See \code{\link{D.global.discernibility.heuristic.RST}}.
+   \item \code{"unsupervised.intervals"}: See \code{\link{D.discretize.equal.intervals.RST}}.
+   \item \code{"unsupervised.quantiles"}: See \code{\link{D.discretize.quantiles.RST}}.
+   \item \code{"local.disc.matrix"}: See \code{\link{D.local.discernibility.matrix.RST}}.
+   \item \code{"max.disc.matrix"}: See \code{\link{D.max.discernibility.matrix.RST}}.
 }}
 
-\item{...}{other parameters related to the corresponding methods.}
+\item{...}{parameters that are passed to the discretization methods. See the manual for the corresponding function.}
 }
 \value{
-A class \code{"Discretization"}. See \code{\link{D.local.discernibility.matrix.RST}}.
+An object of a class \code{"Discretization"} which stores cuts for each conditional attribute. It contains the following components:
+\itemize{
+  \item \code{cut.values}: a list representing cut values for each of numeric attributes. NULL value means that
+        no cut was selected for a given attribute.
+  \item \code{type.method}: the type of method which is used to define cut values.
+  \item \code{type.task}: the type of task which is \code{"discretization"}.
+  \item \code{model}: the type of model which is \code{"RST"}.
+}
 }
 \description{
-It is a wrapper function collecting all discretization methods based on RST.
-It provides an additional interface that allows users to use the methods of the discretization easily.
+It is a wrapper function for all discretization methods based on RST.
+It provides an interface that allows users to use the discretization methods easily.
 }
 \details{
-Discretization is used to convert continuous attributes into nominal ones in an information system.
-It is very important to perform this process since any methods based on rough set theory need nominal attributes
-to compute the indiscernibility relation or perform other functions. Furthermore, in order to avoid loss of information,
-in rough set theory point of view, the discernibility relation among objects is maintained.
+The discretization is used to convert numeric attributes into nominal ones
+in an information system. It is usually a preliminary step for the most of methods based on the rough set theory, which
+need nominal attributes, for exemple, to compute the indiscernibility relation.
 
-It should be noted that the output of this function is a class containing cut values.
-In order to generate a new decision table, the function \code{\link{SF.applyDecTable}} is executed.
+Output of this function is an object of a class \code{Discretization} which
+contains cut values. The function \code{\link{SF.applyDecTable}} can be used
+to generate a new (discretized) decision table from the computed cuts.
+
+All implemented supervised discretization methods need a nominal decision attribute.
+Furthermore, especially for the method type \code{"global.discernibility"}, all conditional attributes
+must be numeric. A different method needs to be chosen in a case when
+a data set contains attributes of mixed types (numeric and nominal).
 }
 \examples{
 #################################################################
 ## Example: Determine cut values and generate new decision table
 #################################################################
-dt.ex1 <- data.frame(c(1, 2, 3, 3, 4, 5, 6, 7, 7, 8), c(2,5, 7, 6, 6, 6, 1, 8, 1, 1),
-                             c(3, 5, 1, 1, 3, 6, 8, 8, 1, 1), c(0, 1, 2, 1, 0, 1, 2, 2, 0, 0))
-colnames(dt.ex1) <- c("a1", "a2", "a3", "d")
-decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 4, indx.nominal = c(4))
+data(RoughSetData)
+wine.data <- RoughSetData$wine.dt
+cut.values1 <- D.discretization.RST(wine.data,
+                                   type.method = "unsupervised.quantiles",
+                                   nOfIntervals = 3)
 
-cut.values <- D.discretization.RST(decision.table, type.method = "global.discernibility")
+## generate a new decision table
+wine.discretized1 <- SF.applyDecTable(wine.data, cut.values1)
+dim(wine.discretized1)
+lapply(wine.discretized1, unique)
 
-## generate new decision table
-new.decTable <- SF.applyDecTable(decision.table, cut.values)
+cut.values2 <- D.discretization.RST(wine.data,
+                                    type.method = "global.discernibility")
+
+wine.discretized2 <- SF.applyDecTable(wine.data, cut.values2)
+dim(wine.discretized2)
+lapply(wine.discretized2, unique)
+}
+\author{
+Andrzej Janusz
 }
 \seealso{
-\code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.FRST}}
+\code{\link{BC.LU.approximation.RST}}, \code{\link{FS.reduct.computation}}, \code{\link{SF.applyDecTable}}.
 }
 

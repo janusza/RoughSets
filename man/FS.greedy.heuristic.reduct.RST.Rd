@@ -2,7 +2,7 @@
 % Please edit documentation in R/FeatureSelection.R
 \name{FS.greedy.heuristic.reduct.RST}
 \alias{FS.greedy.heuristic.reduct.RST}
-\title{The greedy heuristic algorithm for determining a reduct}
+\title{The greedy heuristic algorithm for computing decision reducts and approximate decision reducts}
 \usage{
 FS.greedy.heuristic.reduct.RST(decision.table,
   attrDescriptions = attr(decision.table, "desc.attrs"),
@@ -16,18 +16,25 @@ FS.greedy.heuristic.reduct.RST(decision.table,
 
 \item{decisionIdx}{an integer value representing an index of the decision attribute.}
 
-\item{qualityF}{a function representing the quality of subset of attributes. In this package, the following functions have been included:
+\item{qualityF}{a function used for computation of the quality of attribute subsets.
+Currently, the following functions are included:
 \itemize{
 \item \code{X.entropy}: See \code{\link{X.entropy}}.
 \item \code{X.gini}: See \code{\link{X.gini}}.
 \item \code{X.nOfConflicts}: See \code{\link{X.nOfConflicts}}.
 }}
 
-\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
+\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates
+the attribute sample size for the Monte Carlo selection of candidating attributes.
+If set to \code{NULL} (default) all attributes are used and the algorithm changes
+to a standard greedy method for computation of decision reducts.}
 
-\item{epsilon}{a numeric value between [0, 1) representing an approximate threshold. It indicates whether to compute approximate reducts or not. If it equals 0 (default) a standard decision reduct is computed.}
+\item{epsilon}{a numeric value between [0, 1) representing an approximate threshold. It
+indicates whether to compute approximate reducts or not. If it equals 0 (the default)
+a standard decision reduct is computed.}
 
-\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected to be inconsistent.}
+\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
+to be inconsistent.}
 
 \item{...}{other parameters passed to quality functions (unsupported).}
 }
@@ -42,25 +49,32 @@ A class \code{"FeatureSubset"} that contains the following components:
 }
 }
 \description{
-This function implements a greedy heuristic algorithm for computing decision reducts (or approximate decision reducts) based on RST.
+This function implements a greedy heuristic algorithm for computing decision reducts
+(or approximate decision reducts) based on RST.
 }
 \details{
-In this function, we have provided some quality measures of subsets of attributes. The measure are important to
-determine the quality of a subset to be a reduct. For example, \code{X.entropy} is a measure of information gain.
-We select one of the measures by assigning the \code{qualityF} parameter.
+In this implementation, we provided some attribute subset quality measures which can be
+passed to the algorithm by the parameter \code{qualityF}. Those measures
+guide the computations in the search for a decision/approximated reduct. They are used to
+assess amount of information gained after addition of an attribute. For example,
+\code{X.entropy} corresponds to the information gain measure.
 
-Additionally, this function has implemented \eqn{\epsilon}-approximate reducts. It means that
-the method attempts to approximate the original decision model by producing an approximate reduct which is
-subset of attributes. The \eqn{\epsilon}-approximate can be defined as
+Additionally, this function can use the value of \code{epsilon} parameter in order to compute
+\eqn{\epsilon}-approximate reducts. The \eqn{\epsilon}-approximate can be defined as an
+irreducable subset of attributes \code{B}, such that:
 
-\eqn{Disc_{\mathcal{A}}(B) \ge (1 - \epsilon)Disc_{\mathcal{A}}(A)}
+\eqn{Quality_{\mathcal{A}}(B) \ge (1 - \epsilon)Quality_{\mathcal{A}}(A)},
 
-where \eqn{Disc_{\mathcal{A}}(B)} is the discernibility measure of attributes \eqn{B} in decision table \eqn{\mathcal{A}}
-and \eqn{\epsilon} is numeric value between 0 and 1.
+where \eqn{Quality_{\mathcal{A}}(B)} is the value of a quality measure (see possible values
+of the parameter \code{qualityF}) for an attribute subset \eqn{B} in decision table \eqn{\mathcal{A}}
+and \eqn{\epsilon} is a numeric value between 0 and 1 expressing the approximation threshold.
 A lot of monographs provide comprehensive explanations about this topics, for example
 (Janusz and Stawicki, 2011; Slezak, 2002; Wroblewski, 2001) which are used as the references of this function.
 
-Additionally, \code{\link{SF.applyDecTable}} has been provided to generate new decision table.
+Finally, this implementation allows to restrain the computational complexity of greedy
+searching for decision reducts by setting the value of the parameter \code{nAttrs}. If this
+parameter is set to a positive integer, the Monte Carlo method of selecting candidating
+attributes will be used in each iteration of the algorithm.
 }
 \examples{
 ###################################################
@@ -76,6 +90,9 @@ res.1 <- FS.greedy.heuristic.reduct.RST(decision.table, qualityF = X.entropy,
 
 ## generate a new decision table corresponding to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
+}
+\author{
+Andrzej Janusz
 }
 \references{
 A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",

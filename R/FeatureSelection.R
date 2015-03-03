@@ -17,9 +17,10 @@
 #  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 #############################################################################
-#' It is a function aimed as a wrapper for computing different types of decision reducts and approximate decision reducts. 
+#' This function is a wrapper for computing different types of decision reducts 
+#' and approximate decision reducts. 
 #' 
-#' The implemented functions include the following approaches:
+#' The implemented methods include the following approaches:
 #' \itemize{
 #' \item \code{"greedy.heuristic"}: a greedy heuristic method for computation of decision reducts (or approximate decision reducts) based on RST. 
 #'                                  See \code{\link{FS.greedy.heuristic.reduct.RST}}.
@@ -37,6 +38,7 @@
 #' Additionally, \code{\link{SF.applyDecTable}} has been provided to generate a new decision table. 
 #' 
 #' @title The reduct computation methods based on RST and FRST
+#' @author Andrzej Janusz
 #'
 #' @param decision.table  an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param method  a character representing the type of computation method to use. See in Section \code{Details}.
@@ -56,16 +58,16 @@
 #' data(RoughSetData)
 #' decision.table <- RoughSetData$hiring.dt 
 #'
-#' ## generate single reduct using RST
-#' reduct.1 <- FS.reduct.computation(decision.table, method = "permutation.heuristic")
+#' ## generate a single reduct using RST
+#' reduct.1 <- FS.reduct.computation(decision.table, method = "greedy.heuristic")
 #' 
-#' ## generate single reduct using FRST
+#' ## generate a single reduct using FRST
 #' reduct.2 <- FS.reduct.computation(decision.table, method = "nearOpt.fvprs")
 #' 
-#' ## generate new decision table according to the reduct.1
+#' ## generate a new decision table using reduct.1
 #' new.decTable.1 <- SF.applyDecTable(decision.table, reduct.1) 
 #'
-#' ## generate new decision table according to the reduct.2
+#' ## generate new decision table using reduct.2
 #' new.decTable.2 <- SF.applyDecTable(decision.table, reduct.2)
 #'
 #' @export
@@ -106,18 +108,21 @@ FS.reduct.computation <- function(decision.table, method = "greedy.heuristic", .
 
 #' It is a function implementing the permutation heuristic approach based on RST.
 #'
-#' Basically there are two processes in this algorithm which are 
+#' Basically there are two steps in this algorithm which are 
 #' \itemize{
-#' \item generating feature subset as superreduct: In this step, we choose a subset of attributes by 
-#'       evaluating the discernibility relation of pairs of objects. 
-#' \item eliminating feature subset to obtain a reduct: we iterate over the superreduct resulting from the previous process.
-#'       Then, an attribute that is \emph{dispensable} in the subset is eliminated along iteration.
+#' \item generating feature subset as a superreduct: In this step, we choose a subset of attributes that
+#'       discern all object from different decision classes. It is done by adding consecutive attributes
+#'       in an order defined by a permutation of attribute indices. The permutation can be random
+#'       or it can be explicitly given (by the parameter \code{permutation}).
+#' \item iterative elimination of attributes from the set obtained in the previous step. 
+#'       It is done in the reverse order to that, defined by the permutation.
 #' }
-#' The detail of the algorithm can be seen in (Janusz and Slezak, 2012).
+#' More details regarding this algorithm can be found in (Janusz and Slezak, 2012).
 #' 
 #' Additionally, \code{\link{SF.applyDecTable}} has been provided to generate new decision table. 
 #' 
-#' @title The permutation heuristic algorithm for determining a reduct
+#' @title The permutation heuristic algorithm for computation of a decision reduct
+#' @author Andrzej Janusz
 #'
 #' @param decision.table  an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
 #' @param permutation  a logical value, an integer vector or\code{NULL} (the default). If an integer vector with a length
@@ -147,8 +152,9 @@ FS.reduct.computation <- function(decision.table, method = "greedy.heuristic", .
 #' decision.table <- RoughSetData$hiring.dt 
 #'
 #' ## generate single reduct
-#' res.1 <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NULL, 
-#'                         decisionIdx = 5)
+#' res.1 <- FS.permutation.heuristic.reduct.RST(decision.table,  
+#'                                              permutation = NULL, 
+#'                                              decisionIdx = 5)
 #' print(res.1)
 #' 
 #' res.2 <- FS.permutation.heuristic.reduct.RST(decision.table,  
@@ -219,39 +225,54 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table,
 	return(class.mod)  	
 }
 
-#' This function implements a greedy heuristic algorithm for computing decision reducts (or approximate decision reducts) based on RST. 
+#' This function implements a greedy heuristic algorithm for computing decision reducts 
+#' (or approximate decision reducts) based on RST. 
 #' 
-#' In this function, we have provided some quality measures of subsets of attributes. The measure are important to
-#' determine the quality of a subset to be a reduct. For example, \code{X.entropy} is a measure of information gain. 
-#' We select one of the measures by assigning the \code{qualityF} parameter.
+#' In this implementation, we provided some attribute subset quality measures which can be 
+#' passed to the algorithm by the parameter \code{qualityF}. Those measures 
+#' guide the computations in the search for a decision/approximated reduct. They are used to
+#' assess amount of information gained after addition of an attribute. For example, 
+#' \code{X.entropy} corresponds to the information gain measure. 
 #'
-#' Additionally, this function has implemented \eqn{\epsilon}-approximate reducts. It means that 
-#' the method attempts to approximate the original decision model by producing an approximate reduct which is
-#' subset of attributes. The \eqn{\epsilon}-approximate can be defined as
+#' Additionally, this function can use the value of \code{epsilon} parameter in order to compute
+#' \eqn{\epsilon}-approximate reducts. The \eqn{\epsilon}-approximate can be defined as an 
+#' irreducable subset of attributes \code{B}, such that:
 #'
-#' \eqn{Disc_{\mathcal{A}}(B) \ge (1 - \epsilon)Disc_{\mathcal{A}}(A)}
+#' \eqn{Quality_{\mathcal{A}}(B) \ge (1 - \epsilon)Quality_{\mathcal{A}}(A)},
 #'
-#' where \eqn{Disc_{\mathcal{A}}(B)} is the discernibility measure of attributes \eqn{B} in decision table \eqn{\mathcal{A}}
-#' and \eqn{\epsilon} is numeric value between 0 and 1.
+#' where \eqn{Quality_{\mathcal{A}}(B)} is the value of a quality measure (see possible values 
+#' of the parameter \code{qualityF}) for an attribute subset \eqn{B} in decision table \eqn{\mathcal{A}}
+#' and \eqn{\epsilon} is a numeric value between 0 and 1 expressing the approximation threshold.
 #' A lot of monographs provide comprehensive explanations about this topics, for example 
 #' (Janusz and Stawicki, 2011; Slezak, 2002; Wroblewski, 2001) which are used as the references of this function.
 #' 
-#' Additionally, \code{\link{SF.applyDecTable}} has been provided to generate new decision table. 
+#' Finally, this implementation allows to restrain the computational complexity of greedy
+#' searching for decision reducts by setting the value of the parameter \code{nAttrs}. If this
+#' parameter is set to a positive integer, the Monte Carlo method of selecting candidating 
+#' attributes will be used in each iteration of the algorithm.
 #'
-#' @title The greedy heuristic algorithm for determining a reduct
+#' @title The greedy heuristic algorithm for computing decision reducts and approximate decision reducts
+#' @author Andrzej Janusz
 #
 #' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
 #' @param attrDescriptions a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.
 #' @param decisionIdx an integer value representing an index of the decision attribute. 
-#' @param qualityF a function representing the quality of subset of attributes. In this package, the following functions have been included:
+#' @param qualityF a function used for computation of the quality of attribute subsets. 
+#'        Currently, the following functions are included:
 #'        \itemize{
 #'        \item \code{X.entropy}: See \code{\link{X.entropy}}.
 #'        \item \code{X.gini}: See \code{\link{X.gini}}.
 #'        \item \code{X.nOfConflicts}: See \code{\link{X.nOfConflicts}}.
 #'        }
-#' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.
-#' @param epsilon a numeric value between [0, 1) representing an approximate threshold. It indicates whether to compute approximate reducts or not. If it equals 0 (default) a standard decision reduct is computed.
-#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected to be inconsistent.
+#' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates 
+#'        the attribute sample size for the Monte Carlo selection of candidating attributes. 
+#'        If set to \code{NULL} (default) all attributes are used and the algorithm changes 
+#'        to a standard greedy method for computation of decision reducts.
+#' @param epsilon a numeric value between [0, 1) representing an approximate threshold. It 
+#'        indicates whether to compute approximate reducts or not. If it equals 0 (the default) 
+#'        a standard decision reduct is computed.
+#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected 
+#'        to be inconsistent.
 #' @param ... other parameters passed to quality functions (unsupported).
 #' @seealso \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
 #' @return A class \code{"FeatureSubset"} that contains the following components:
@@ -400,24 +421,42 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
   return(class.mod)  	
 }
 
-#' This function implements a Dynamically Adjusted Approximate Reducts heuristic (DAAR) for feature selection based on RST. 
+#' This function implements the Dynamically Adjusted Approximate Reducts heuristic (DAAR) 
+#' for feature selection based on RST. The algorithm modifies the greedy approach to selecting
+#' attributes by introducing an additional stop condition. The algorithm stops when a random 
+#' probe (permutation) test fails to reject a hypothesis that the selected attribute introduces 
+#' illusionary dependency in data (in a context of previously selected attributes).
+#' 
+#' As in the case of \code{\link{FS.greedy.heuristic.reduct.RST}} the implementation can use
+#' different attribute subset quality functions (parameter \code{qualityF}) and Monte Carlo 
+#' generation of candidating attributes (parameter \code{nAttrs}).
 #' 
 #' @title The DAAR heuristic for computation of decision reducts
+#' @author Andrzej Janusz
 #
 #' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
-#' @param attrDescriptions a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.
+#' @param attrDescriptions a list containing possible values of attributes (columns) in \
+#'        code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.
 #' @param decisionIdx an integer value representing an index of the decision attribute. 
-#' @param qualityF a function representing the quality of subset of attributes. In this package, the following functions have been included:
+#' @param qualityF a function used for computation of the quality of attribute subsets. 
+#'        Currently, the following functions are included:
 #'        \itemize{
 #'        \item \code{X.entropy}: See \code{\link{X.entropy}}.
 #'        \item \code{X.gini}: See \code{\link{X.gini}}.
 #'        \item \code{X.nOfConflicts}: See \code{\link{X.nOfConflicts}}.
 #'        }
-#' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.
-#' @param allowedRandomness a threshold for attribute relevance. Computations will be terminated when the relevance of a selected attribute fall below this threshold.
-#' @param nOfProbes a number of random probes used for estimating the attribute relevance (see the references).
-#' @param permsWithinINDclasses a logical value indicating whether the permutation test should be conducted within indescernibility classes.
-#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected to be inconsistent.
+#' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates 
+#'        the attribute sample size for the Monte Carlo selection of candidating attributes. 
+#'        If set to \code{NULL} (default) all attributes are used and the algorithm changes 
+#'        to a standard greedy method for computation of decision reducts.
+#' @param allowedRandomness a threshold for attribute relevance. Computations will be terminated 
+#'        when the relevance of a selected attribute fall below this threshold.
+#' @param nOfProbes a number of random probes used for estimating the attribute relevance 
+#'        (see the references).
+#' @param permsWithinINDclasses a logical value indicating whether the permutation test 
+#'        should be conducted within indescernibility classes.
+#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected 
+#'        to be inconsistent.
 #' @param ... other parameters passed to quality functions.
 #' @seealso \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
 #' @return A class \code{"FeatureSubset"} that contains the following components:
@@ -603,29 +642,31 @@ FS.DAAR.heuristic.RST = function(decision.table,
   return(class.mod)
 }
 
-#' It is a wrapper function aimed to calculate a superreduct (i.e., a subset of features). 
+#' This function is a wrapper for computing different types of decision superreducts 
+#' (i.e. attribute subsets which do not lose any information regarding the decisions
+#' but are not require to be irreducable).
 #' 
-#' There exist three methods considered in this function as follows: 
+#' Currently, there are implemented three methods that can be used with this function: 
 #' \itemize{
-#' \item \code{"greedy.heuristic.superreduct"}: it is a greedy heuristic method which employs several quality measurements based on RST. 
+#' \item \code{"greedy.heuristic.superreduct"}: it is a greedy heuristic method which employs several quality measures from RST. 
 #'            See \code{\link{FS.greedy.heuristic.superreduct.RST}}.
 #' \item \code{"quickreduct.frst"}: it is a feature selection function based on the fuzzy QuickReduct algorithm on FRST.
 #'            See \code{\link{FS.quickreduct.FRST}}.
 #' \item \code{"quickreduct.rst"}: it is a feature selection function based on the RST QuickReduct algorithm.
 #'            See \code{\link{FS.quickreduct.RST}}.
 #' }
-#' These methods can be selected by assigning the parameter \code{method}. 
-#' Additionally, \code{\link{SF.applyDecTable}} has been provided to generate the new decision table. 
+#' These methods can be selected by assigning an appropriate value of the parameter \code{method}. 
+#' Additionally, \code{\link{SF.applyDecTable}} is provided to generate the new decision table. 
 #'
 #' @title The superreduct computation based on RST and FRST
+#' @author Andrzej Janusz
 #'
 #' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
-#' @param method a string representing the type of methods. See in Section \code{Details}.
+#' @param method a character representing the type of a method to use for computations. See in Section \code{Details}.
 #' @param ... other parameters corresponding to the chosen \code{method}.
-#' @seealso \code{\link{FS.quickreduct.RST}}.
+#' @seealso \code{\link{FS.greedy.heuristic.superreduct.RST}}, \code{\link{FS.quickreduct.RST}}, \code{\link{FS.quickreduct.FRST}}.
 #' @return A class \code{"FeatureSubset"}. 
 #'
-#'       See \code{\link{FS.quickreduct.RST}} or \code{\link{FS.quickreduct.FRST}}.
 #' @examples
 #' ###############################################################
 #' ## Example 1: generate reduct and new decision table using RST
@@ -635,7 +676,7 @@ FS.DAAR.heuristic.RST = function(decision.table,
 #'
 #' ## generate single superreduct
 #' res.1 <- FS.feature.subset.computation(decision.table, 
-#'                   method = "quickreduct.rst")
+#'                                        method = "quickreduct.rst")
 #' 
 #' ## generate new decision table according to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.1) 
@@ -648,7 +689,7 @@ FS.DAAR.heuristic.RST = function(decision.table,
 #'
 #' ## generate single superreduct
 #' res.2 <- FS.feature.subset.computation(decision.table, 
-#'                   method = "quickreduct.frst")
+#'                                        method = "quickreduct.frst")
 #' 
 #' ## generate new decision table according to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, res.2) 
@@ -699,6 +740,7 @@ FS.feature.subset.computation <- function(decision.table, method = "greedy.heuri
 #' information about the reduct from this function.
 #'
 #' @title QuickReduct algorithm based on RST
+#' @author Lala Septem Riza
 #' 
 #' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param control other parameters. It contains the following component:
@@ -750,15 +792,25 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #' employing some quality measurements. Regarding the quality measurements, the detailed description can be seen in \code{\link{FS.greedy.heuristic.reduct.RST}}.
 #' 
 #' @title The greedy heuristic method for determining superreduct based on RST
-#' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
-#' @param attrDescriptions a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}. 
+#' @author Andrzej Janusz
+#' 
+#' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. 
+#'        See \code{\link{SF.asDecisionTable}}.
+#' @param attrDescriptions a list containing possible values of attributes (columns) 
+#'        in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}. 
 #' @param decisionIdx a integer value representing an index of decision attribute. 
-#' @param qualityF a function calculating quality on a set of attributes. 
+#' @param qualityF a function for calculating a quality of an attribute subset. 
 #'        See \code{\link{FS.greedy.heuristic.reduct.RST}}.
-#' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.
-#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected to be inconsistent.
-#' @param ... other parameters passed to quality function (unsupported).
+#' @param nAttrs an integer between 1 and the number of conditional attributes. It indicates 
+#'        the attribute sample size for the Monte Carlo selection of candidating attributes. 
+#'        If set to \code{NULL} (default) all attributes are used and the algorithm changes 
+#'        to a standard greedy method for computation of decision reducts.
+#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected 
+#'        to be inconsistent.
+#' @param ... other parameters passed to quality function (currently unsupported).
+#' 
 #' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
+#' 
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
 #' \item \code{reduct}: a list representing a single reduct. In this case, it could be a superreduct or just a subset of features.
@@ -770,7 +822,7 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem", 
 #' Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
 #'
-#' D. Slezak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 3 - 4, p. 365 - 390 (2002).
+#' D. Ślęzak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 3 - 4, p. 365 - 390 (2002).
 #'
 #' J. Wroblewski, "Ensembles of Classifiers Based on Approximate Reducts", Fundamenta Informaticae, vol. 47, no. 3 - 4, p. 351 - 360 (2001).
 #'
@@ -986,6 +1038,7 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
 #' information about the reduct from this function. See Section \code{Examples}.
 #'
 #' @title The fuzzy QuickReduct algorithm based on FRST
+#' @author Lala Septem Riza
 #' 
 #' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
 #' @param type.method a string representing the type of methods. 
@@ -1200,6 +1253,8 @@ FS.quickreduct.FRST <- function(decision.table, type.method = "fuzzy.dependency"
 #' information about the reduct from this function.
 #'
 #' @title The near-optimal reduction algorithm based on fuzzy rough set theory
+#' @author Lala Septem Riza
+#' 
 #' @param decision.table  an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
 #'                        In this case, the decision attribute must be nominal.
 #' @param alpha.precision a numeric value representing variable precision of FVPRS. 
@@ -1342,15 +1397,22 @@ FS.nearOpt.fvprs.FRST <- function(decision.table, alpha.precision = 0.05, ...) {
 	}
 }
 
-#' It is a wrapper function used for generating all reducts. The reducts are obtained from functions based on a discernibility matrix based on RST and FRST. Therefore, it should be noted that
-#' before calling the function, we need to execute \code{BC.discernibility.mat.RST} and \code{BC.discernibility.mat.FRST}.
+#' A wrapper function used for generating all decision reducts of a decision system. The reducts 
+#' are obtained from a discernibility matrix which can be computed using methods based on RST 
+#' and FRST. Therefore, it should be noted that before calling the function, we need to 
+#' compute a discernibility matrix using \code{\link{BC.discernibility.mat.RST}} or 
+#' \code{\link{BC.discernibility.mat.FRST}}.
 #' 
-#' @title The function for computing all reducts
+#' @title A function for computing all decision reducts of a decision system
+#' @author Andrzej Janusz
 #'
-#' @param discernibilityMatrix a \code{"DiscernibilityMatrix"} class representing the discernibility matrix of RST and FRST.
+#' @param discernibilityMatrix an \code{"DiscernibilityMatrix"} object representing 
+#' a discernibility matrix of a decision system.
 #'
-#' See \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}. 
-#' @return A class \code{"ReductSet"}. 
+#' @seealso \code{\link{BC.discernibility.mat.RST}}, \code{\link{BC.discernibility.mat.FRST}}. 
+#' 
+#' @return An object of a class \code{"ReductSet"}.
+#'  
 #' @examples
 #' ########################################################
 #' ## Example 1: Generate all reducts and 
@@ -1408,9 +1470,11 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
   return(reductSet)
 }
 
-#' It is a function for computing one reduct from a discernibility matrix - it can be the greedy heuristic or a randomized search. 
+#' It is a function for computing one reduct from a discernibility matrix - it can use
+#' the greedy heuristic or a randomized (Monte Carlo) search. 
 #' 
-#' @title The function for computing one reducts
+#' @title Computing one reduct from a discernibility matrix
+#' @author Andrzej Janusz
 #'
 #' @param discernibilityMatrix a \code{"DiscernibilityMatrix"} class representing the discernibility matrix of RST and FRST.
 #' @param greedy a boolean value indicating whether the greedy heuristic or a randomized search should be used in computations.

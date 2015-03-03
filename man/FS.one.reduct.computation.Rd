@@ -2,7 +2,7 @@
 % Please edit documentation in R/FeatureSelection.R
 \name{FS.one.reduct.computation}
 \alias{FS.one.reduct.computation}
-\title{The function for computing one reducts}
+\title{Computing one reduct from a discernibility matrix}
 \usage{
 FS.one.reduct.computation(discernibilityMatrix, greedy = TRUE, power = 1)
 }
@@ -19,7 +19,8 @@ See \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.ma
 A class \code{"ReductSet"}.
 }
 \description{
-It is a function for computing one reduct from a discernibility matrix - it can be the greedy heuristic or a randomized search.
+It is a function for computing one reduct from a discernibility matrix - it can use
+the greedy heuristic or a randomized (Monte Carlo) search.
 }
 \examples{
 ########################################################
@@ -57,5 +58,8 @@ reduct <- FS.one.reduct.computation(res.2)
 
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))
+}
+\author{
+Andrzej Janusz
 }
 

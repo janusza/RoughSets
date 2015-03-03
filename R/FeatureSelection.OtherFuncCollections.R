@@ -610,7 +610,10 @@ func.conorm <- function(right.val, init.val, t.conorm){
 #' It is based on the \emph{gini} index as a measure of information (Stoffel and Raileanu, 2000). 
 #'
 #' @title The gini-index measure
-#' @param decisionDistrib an integer vector corresponding to a distribution of attribute values
+#' @author Andrzej Janusz
+#' 
+#' @param decisionDistrib an integer vector corresponding to a distribution of attribute values.
+#' 
 #' @return a numeric value indicating the gini index of an attribute. 
 #' @references
 #' K. Stoffel and L. E. Raileanu, "Selecting Optimal Split-Functions with Linear Threshold Unit Trees and Madaline-Style Networks",
@@ -625,7 +628,10 @@ X.gini <- function(decisionDistrib)  {
 #' It is based on \emph{entropy} as a measure of information(Shannon, 1948).
 #'
 #' @title The entropy measure
+#' @author Andrzej Janusz
+#' 
 #' @param decisionDistrib an integer vector corresponding to a distribution of attribute values
+#' 
 #' @return a numeric value indicating entropy of an attribute.
 #' @references
 #' C. E. Shannon, "A Mathematical Theory of Communication", Bell System Technical Journal, vol. 27, p. 379 - 423, 623 - 656 (1948).
@@ -639,8 +645,11 @@ X.entropy <- function(decisionDistrib)  {
 #' It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 #'
 #' @title  The discernibility measure
+#' @author Andrzej Janusz
+#' 
 #' @param decisionDistrib an integer vector corresponding to a distribution of decision attribute values
 #' @return a numeric value indicating a number of conflicts in a decision attribute
+#' 
 #' @export
 X.nOfConflicts <- function(decisionDistrib)  {
   return(as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * as.numeric(decisionDistrib))))

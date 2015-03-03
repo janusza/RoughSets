@@ -2,7 +2,7 @@
 % Please edit documentation in R/FeatureSelection.R
 \name{FS.permutation.heuristic.reduct.RST}
 \alias{FS.permutation.heuristic.reduct.RST}
-\title{The permutation heuristic algorithm for determining a reduct}
+\title{The permutation heuristic algorithm for computation of a decision reduct}
 \usage{
 FS.permutation.heuristic.reduct.RST(decision.table, permutation = NULL,
   decisionIdx = ncol(decision.table), ...)
@@ -34,14 +34,16 @@ A class \code{"FeatureSubset"} that contains the following components:
 It is a function implementing the permutation heuristic approach based on RST.
 }
 \details{
-Basically there are two processes in this algorithm which are
+Basically there are two steps in this algorithm which are
 \itemize{
-\item generating feature subset as superreduct: In this step, we choose a subset of attributes by
-      evaluating the discernibility relation of pairs of objects.
-\item eliminating feature subset to obtain a reduct: we iterate over the superreduct resulting from the previous process.
-      Then, an attribute that is \emph{dispensable} in the subset is eliminated along iteration.
+\item generating feature subset as a superreduct: In this step, we choose a subset of attributes that
+      discern all object from different decision classes. It is done by adding consecutive attributes
+      in an order defined by a permutation of attribute indices. The permutation can be random
+      or it can be explicitly given (by the parameter \code{permutation}).
+\item iterative elimination of attributes from the set obtained in the previous step.
+      It is done in the reverse order to that, defined by the permutation.
 }
-The detail of the algorithm can be seen in (Janusz and Slezak, 2012).
+More details regarding this algorithm can be found in (Janusz and Slezak, 2012).
 
 Additionally, \code{\link{SF.applyDecTable}} has been provided to generate new decision table.
 }
@@ -53,8 +55,9 @@ data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
 ## generate single reduct
-res.1 <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NULL,
-                        decisionIdx = 5)
+res.1 <- FS.permutation.heuristic.reduct.RST(decision.table,
+                                             permutation = NULL,
+                                             decisionIdx = 5)
 print(res.1)
 
 res.2 <- FS.permutation.heuristic.reduct.RST(decision.table,
@@ -64,6 +67,9 @@ print(res.2)
 
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
+}
+\author{
+Andrzej Janusz
 }
 \references{
 A. Janusz and D. Ślęzak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data"

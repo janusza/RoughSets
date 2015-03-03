@@ -7,7 +7,7 @@
 X.gini(decisionDistrib)
 }
 \arguments{
-\item{decisionDistrib}{an integer vector corresponding to a distribution of attribute values}
+\item{decisionDistrib}{an integer vector corresponding to a distribution of attribute values.}
 }
 \value{
 a numeric value indicating the gini index of an attribute.
@@ -15,6 +15,9 @@ a numeric value indicating the gini index of an attribute.
 \description{
 An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 It is based on the \emph{gini} index as a measure of information (Stoffel and Raileanu, 2000).
+}
+\author{
+Andrzej Janusz
 }
 \references{
 K. Stoffel and L. E. Raileanu, "Selecting Optimal Split-Functions with Linear Threshold Unit Trees and Madaline-Style Networks",

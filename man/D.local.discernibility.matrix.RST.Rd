@@ -2,7 +2,7 @@
 % Please edit documentation in R/Discretization.R
 \name{D.local.discernibility.matrix.RST}
 \alias{D.local.discernibility.matrix.RST}
-\title{The local strategy algorithm}
+\title{The local discretization strategy algorithm}
 \usage{
 D.local.discernibility.matrix.RST(decision.table, ...)
 }
@@ -57,6 +57,9 @@ cut.values <- D.local.discernibility.matrix.RST(decision.table)
 
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, cut.values)
+}
+\author{
+Lala Septem Riza
 }
 \references{
 Jan G. Bazan, Hung Son Nguyen, Sinh Hoa Nguyen, Piotr Synak, and Jakub Wroblewski,

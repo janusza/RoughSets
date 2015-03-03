@@ -19,10 +19,11 @@ An object of a class \code{"FeatureSubset"}. See \code{\link{FS.greedy.heuristic
 \code{\link{FS.DAAR.heuristic.RST}}, \code{\link{FS.permutation.heuristic.reduct.RST}} or \code{\link{FS.nearOpt.fvprs.FRST}} for more details.
 }
 \description{
-It is a function aimed as a wrapper for computing different types of decision reducts and approximate decision reducts.
+This function is a wrapper for computing different types of decision reducts
+and approximate decision reducts.
 }
 \details{
-The implemented functions include the following approaches:
+The implemented methods include the following approaches:
 \itemize{
 \item \code{"greedy.heuristic"}: a greedy heuristic method for computation of decision reducts (or approximate decision reducts) based on RST.
                                  See \code{\link{FS.greedy.heuristic.reduct.RST}}.
@@ -47,17 +48,20 @@ Additionally, \code{\link{SF.applyDecTable}} has been provided to generate a new
 data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
-## generate single reduct using RST
-reduct.1 <- FS.reduct.computation(decision.table, method = "permutation.heuristic")
+## generate a single reduct using RST
+reduct.1 <- FS.reduct.computation(decision.table, method = "greedy.heuristic")
 
-## generate single reduct using FRST
+## generate a single reduct using FRST
 reduct.2 <- FS.reduct.computation(decision.table, method = "nearOpt.fvprs")
 
-## generate new decision table according to the reduct.1
+## generate a new decision table using reduct.1
 new.decTable.1 <- SF.applyDecTable(decision.table, reduct.1)
 
-## generate new decision table according to the reduct.2
+## generate new decision table using reduct.2
 new.decTable.2 <- SF.applyDecTable(decision.table, reduct.2)
+}
+\author{
+Andrzej Janusz
 }
 \seealso{
 \code{\link{D.discretization.RST}}, \code{\link{BC.LU.approximation.RST}}

@@ -2,63 +2,57 @@
 % Please edit documentation in R/Discretization.R
 \name{D.discretize.quantiles.RST}
 \alias{D.discretize.quantiles.RST}
-\title{The "quantile-based" discretization algorithm}
+\title{The quantile-based discretization}
 \usage{
 D.discretize.quantiles.RST(decision.table, nOfIntervals = 4, ...)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
-It should be noted that the function need the nominal decision attribute.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{nOfIntervals}{a numeric value representing the number of interval separating the data.}
+\item{nOfIntervals}{a positive integer giving the number of intervals.}
 
-\item{...}{other parameters.}
+\item{...}{additional parameters (currently unsupported).}
 }
 \value{
-A class \code{"Discretization"} that contains the following components:
-\itemize{
-\item \code{cut.values}: a list representing cut values of each considered attributes.
-\item \code{type.method}: the type of method which is used to define cut values.
-
-      In this case, it is \code{"unsupervised.quantiles"}.
-\item \code{type.task}: the type of task which is \code{"discretization"}.
-\item \code{model}: the type of model which is \code{"RST"}.
-}
+An object of a class \code{"Discretization"} which stores cuts for each conditional attribute.
+        See \code{\link{D.discretization.RST}}.
 }
 \description{
-It is a function used for computing cuts of the "quantile-based" discretization into \eqn{k} intervals
+This function implements unsupervised discretization into intervals containing similar number of instances ("quantile-based").
 }
 \details{
-This method can be considered an unsupervised discretization method for continuous features
-since it does not consider the class label. The basic idea of this algorithm is that
-we divide the data using the \code{\link{quantile}} function which produces distribution quantiles
-corresponding to the given vector. The detailed information can be seen in (Dougherty et al, 1995).
+This approach belongs to a class of unsupervised discretization methods
+since it does not consider the class labels. Each numeric attribute is divided in \code{k} intervals which contain approximately
+the same number of data instances (objects).
+Detailed information regarding this method can be found in (Dougherty et al, 1995).
 
-It should be noted that the output of this function is a class containing cut values.
-In order to generate the new decision table, \code{\link{SF.applyDecTable}} is executed.
+It should be noted that the output of this function is an object of a class \code{"Discretization"}
+which contains the cut values.
+The function \code{\link{SF.applyDecTable}} has to be used in order to generate the new (discretized) decision table.
 }
 \examples{
 #################################################################
 ## Example: Determine cut values and generate new decision table
 #################################################################
-dt.ex1 <- data.frame(c(1, 1.2, 1.3, 1.4, 1.4, 1.6, 1.3), c(2, 0.5, 3, 1, 2, 3, 1),
-                             c(1, 0, 0, 1, 0, 1, 1))
-colnames(dt.ex1) <- c("a", "b", "d")
-decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 3,
-                                     indx.nominal = c(3))
+data(RoughSetData)
+wine.data <- RoughSetData$wine.dt
+cut.values <- D.discretize.quantiles.RST(wine.data, nOfIntervals = 5)
 
-cut.values <- D.discretize.quantiles.RST(decision.table, nOfIntervals = 4)
-
-## generate new decision table
-new.decTable <- SF.applyDecTable(decision.table, cut.values)
+## generate a new decision table
+wine.discretized <- SF.applyDecTable(wine.data, cut.values)
+dim(wine.discretized)
+lapply(wine.discretized, unique)
+}
+\author{
+Andrzej Janusz
 }
 \references{
 J. Dougherty, R. Kohavi, and M. Sahami, "Supervised and Unsupervised Discretization of Continuous Features",
 In A. Prieditis & S. J. Russell, eds. Work. Morgan Kaufmann, p. 194-202 (1995).
 }
 \seealso{
-\code{\link{D.local.discernibility.matrix.RST}}, \code{\link{D.max.discernibility.matrix.RST}},
-
-\code{\link{D.discretize.equal.intervals.RST}}, and \code{\link{D.global.discernibility.heuristic.RST}}
+\code{\link{D.discretize.equal.intervals.RST}}, \code{\link{D.global.discernibility.heuristic.RST}},
+         \code{\link{SF.applyDecTable}}.
 }
 

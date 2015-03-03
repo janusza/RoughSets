@@ -47,7 +47,7 @@ res.1 <- BC.discernibility.mat.RST(decision.table, range.object = NULL)
 \references{
 A. Skowron and C. Rauszer,
 "The Discernibility Matrices and Functions in Information Systems",
-in: R. Slowinski (Ed.), Intelligent Decision Support: Handbook of Applications and
+in: R. Słowinski (Ed.), Intelligent Decision Support: Handbook of Applications and
 Advances of Rough Sets Theory, Kluwer Academic Publishers, Dordrecht, Netherland,
 p. 331 - 362 (1992).
 }

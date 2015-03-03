@@ -10,30 +10,30 @@ FS.feature.subset.computation(decision.table,
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
-\item{method}{a string representing the type of methods. See in Section \code{Details}.}
+\item{method}{a character representing the type of a method to use for computations. See in Section \code{Details}.}
 
 \item{...}{other parameters corresponding to the chosen \code{method}.}
 }
 \value{
 A class \code{"FeatureSubset"}.
-
-      See \code{\link{FS.quickreduct.RST}} or \code{\link{FS.quickreduct.FRST}}.
 }
 \description{
-It is a wrapper function aimed to calculate a superreduct (i.e., a subset of features).
+This function is a wrapper for computing different types of decision superreducts
+(i.e. attribute subsets which do not lose any information regarding the decisions
+but are not require to be irreducable).
 }
 \details{
-There exist three methods considered in this function as follows:
+Currently, there are implemented three methods that can be used with this function:
 \itemize{
-\item \code{"greedy.heuristic.superreduct"}: it is a greedy heuristic method which employs several quality measurements based on RST.
+\item \code{"greedy.heuristic.superreduct"}: it is a greedy heuristic method which employs several quality measures from RST.
            See \code{\link{FS.greedy.heuristic.superreduct.RST}}.
 \item \code{"quickreduct.frst"}: it is a feature selection function based on the fuzzy QuickReduct algorithm on FRST.
            See \code{\link{FS.quickreduct.FRST}}.
 \item \code{"quickreduct.rst"}: it is a feature selection function based on the RST QuickReduct algorithm.
            See \code{\link{FS.quickreduct.RST}}.
 }
-These methods can be selected by assigning the parameter \code{method}.
-Additionally, \code{\link{SF.applyDecTable}} has been provided to generate the new decision table.
+These methods can be selected by assigning an appropriate value of the parameter \code{method}.
+Additionally, \code{\link{SF.applyDecTable}} is provided to generate the new decision table.
 }
 \examples{
 ###############################################################
@@ -44,7 +44,7 @@ decision.table <- RoughSetData$hiring.dt
 
 ## generate single superreduct
 res.1 <- FS.feature.subset.computation(decision.table,
-                  method = "quickreduct.rst")
+                                       method = "quickreduct.rst")
 
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
@@ -57,12 +57,15 @@ decision.table <- RoughSetData$housing7.dt
 
 ## generate single superreduct
 res.2 <- FS.feature.subset.computation(decision.table,
-                  method = "quickreduct.frst")
+                                       method = "quickreduct.frst")
 
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.2)
 }
+\author{
+Andrzej Janusz
+}
 \seealso{
-\code{\link{FS.quickreduct.RST}}.
+\code{\link{FS.greedy.heuristic.superreduct.RST}}, \code{\link{FS.quickreduct.RST}}, \code{\link{FS.quickreduct.FRST}}.
 }
 

@@ -296,7 +296,7 @@ BC.positive.reg.RST <- function(decision.table, roughset){
 #' @references
 #' A. Skowron and C. Rauszer,  
 #' "The Discernibility Matrices and Functions in Information Systems", 
-#' in: R. Slowinski (Ed.), Intelligent Decision Support: Handbook of Applications and
+#' in: R. Słowinski (Ed.), Intelligent Decision Support: Handbook of Applications and
 #' Advances of Rough Sets Theory, Kluwer Academic Publishers, Dordrecht, Netherland,  
 #' p. 331 - 362 (1992).
 #' @export
@@ -330,7 +330,7 @@ BC.discernibility.mat.RST <- function(decision.table, range.object = NULL, show.
 	}
 	
 	## initialize the discernibility matrix
-    disc.mat <- array(list(NA), dim = c(num.object, num.object, 1))
+  disc.mat <- array(list(NA), dim = c(num.object, num.object, 1))
 	
 	decVector = as.character(objects[, ncol(objects)])
 	dataMatrix = as.matrix(objects[, -ncol(objects)])

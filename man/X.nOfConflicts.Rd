@@ -15,4 +15,7 @@ a numeric value indicating a number of conflicts in a decision attribute
 \description{
 It is an auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 }
+\author{
+Andrzej Janusz
+}
 

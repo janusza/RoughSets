@@ -60,6 +60,9 @@ cut.values <- D.max.discernibility.matrix.RST(decision.table)
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, cut.values)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 Jan G. Bazan, Hung Son Nguyen, Sinh Hoa Nguyen, Piotr Synak, and Jakub Wroblewski,
 "Rough Set Algorithms in Classification Problem", Chapter 2

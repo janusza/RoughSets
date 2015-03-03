@@ -13,26 +13,35 @@ FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
-\item{attrDescriptions}{a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
+\item{attrDescriptions}{a list containing possible values of attributes (columns) in \
+code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
 
 \item{decisionIdx}{an integer value representing an index of the decision attribute.}
 
-\item{qualityF}{a function representing the quality of subset of attributes. In this package, the following functions have been included:
+\item{qualityF}{a function used for computation of the quality of attribute subsets.
+Currently, the following functions are included:
 \itemize{
 \item \code{X.entropy}: See \code{\link{X.entropy}}.
 \item \code{X.gini}: See \code{\link{X.gini}}.
 \item \code{X.nOfConflicts}: See \code{\link{X.nOfConflicts}}.
 }}
 
-\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
+\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates
+the attribute sample size for the Monte Carlo selection of candidating attributes.
+If set to \code{NULL} (default) all attributes are used and the algorithm changes
+to a standard greedy method for computation of decision reducts.}
 
-\item{allowedRandomness}{a threshold for attribute relevance. Computations will be terminated when the relevance of a selected attribute fall below this threshold.}
+\item{allowedRandomness}{a threshold for attribute relevance. Computations will be terminated
+when the relevance of a selected attribute fall below this threshold.}
 
-\item{nOfProbes}{a number of random probes used for estimating the attribute relevance (see the references).}
+\item{nOfProbes}{a number of random probes used for estimating the attribute relevance
+(see the references).}
 
-\item{permsWithinINDclasses}{a logical value indicating whether the permutation test should be conducted within indescernibility classes.}
+\item{permsWithinINDclasses}{a logical value indicating whether the permutation test
+should be conducted within indescernibility classes.}
 
-\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected to be inconsistent.}
+\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
+to be inconsistent.}
 
 \item{...}{other parameters passed to quality functions.}
 }
@@ -48,7 +57,16 @@ A class \code{"FeatureSubset"} that contains the following components:
 }
 }
 \description{
-This function implements a Dynamically Adjusted Approximate Reducts heuristic (DAAR) for feature selection based on RST.
+This function implements the Dynamically Adjusted Approximate Reducts heuristic (DAAR)
+for feature selection based on RST. The algorithm modifies the greedy approach to selecting
+attributes by introducing an additional stop condition. The algorithm stops when a random
+probe (permutation) test fails to reject a hypothesis that the selected attribute introduces
+illusionary dependency in data (in a context of previously selected attributes).
+}
+\details{
+As in the case of \code{\link{FS.greedy.heuristic.reduct.RST}} the implementation can use
+different attribute subset quality functions (parameter \code{qualityF}) and Monte Carlo
+generation of candidating attributes (parameter \code{nAttrs}).
 }
 \examples{
 ###################################################
@@ -63,6 +81,9 @@ res.1 <- FS.DAAR.heuristic.RST(decision.table)
 
 ## generate a new decision table corresponding to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
+}
+\author{
+Andrzej Janusz
 }
 \references{
 A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",

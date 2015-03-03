@@ -10,20 +10,26 @@ FS.greedy.heuristic.superreduct.RST(decision.table,
   inconsistentDecisionTable = FALSE, ...)
 }
 \arguments{
-\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{attrDescriptions}{a list containing possible values of attributes (columns) in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
+\item{attrDescriptions}{a list containing possible values of attributes (columns)
+in \code{decision.table}. It usually corresponds to \code{attr(decision.table, "desc.attrs")}.}
 
 \item{decisionIdx}{a integer value representing an index of decision attribute.}
 
-\item{qualityF}{a function calculating quality on a set of attributes.
+\item{qualityF}{a function for calculating a quality of an attribute subset.
 See \code{\link{FS.greedy.heuristic.reduct.RST}}.}
 
-\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates the attribute sample size for the Monte Carlo selection of candidating attributes. If set to \code{NULL} (default) all attributes are used and the algorithm changes to a standard greedy method for computation of decision reducts.}
+\item{nAttrs}{an integer between 1 and the number of conditional attributes. It indicates
+the attribute sample size for the Monte Carlo selection of candidating attributes.
+If set to \code{NULL} (default) all attributes are used and the algorithm changes
+to a standard greedy method for computation of decision reducts.}
 
-\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected to be inconsistent.}
+\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
+to be inconsistent.}
 
-\item{...}{other parameters passed to quality function (unsupported).}
+\item{...}{other parameters passed to quality function (currently unsupported).}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:
@@ -53,11 +59,14 @@ print(res.1)
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 }
+\author{
+Andrzej Janusz
+}
 \references{
 A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
 Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
 
-D. Slezak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 3 - 4, p. 365 - 390 (2002).
+D. Ślęzak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 3 - 4, p. 365 - 390 (2002).
 
 J. Wroblewski, "Ensembles of Classifiers Based on Approximate Reducts", Fundamenta Informaticae, vol. 47, no. 3 - 4, p. 351 - 360 (2001).
 }
