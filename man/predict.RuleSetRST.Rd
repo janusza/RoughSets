@@ -3,44 +3,87 @@
 \name{predict.RuleSetRST}
 \alias{predict.RST}
 \alias{predict.RuleSetRST}
-\title{The predicting function for rule induction methods based on RST}
+\title{Prediction of decision classes using rule-based classifiers.}
 \usage{
 \method{predict}{RuleSetRST}(object, newdata, ...)
 }
 \arguments{
-\item{object}{a \code{"RuleSetRST"} class resulted by \code{\link{RI.indiscernibilityBasedRules.RST}}.}
+\item{object}{an object inheriting from the \code{"RuleSetRST"} class. Such objects are typically produced
+by implementations of rule induction methods, which derives from the rough set theory (RST), such as
+\code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
+\code{\link{RI.LEM2Rules.RST}} or \code{\link{RI.AQRules.RST}}.}
 
-\item{newdata}{a \code{"DecisionTable"} class containing a data frame or matrix (m x n) of data for the prediction process, where m is the number of instances and
-n is the number of input attributes. It should be noted that this data must have \code{colnames} on each attribute.}
+\item{newdata}{an object inheriting from the \code{"DecisionTable"} class, which represents the data
+for which predictions are to be made. See \code{\link{SF.asDecisionTable}}. Columns in \code{newdata}
+should correspond to columns of a data set used for the rule induction.}
 
-\item{...}{other parameters of a voting strategy (can be applied only to methods which classify objects by voting).}
+\item{...}{additional parameters for a rule voting strategy. It can be applied only to the methods which classify
+       new objects by voting. Currently, those methods include \code{\link{RI.LEM2Rules.RST}} and
+       \code{\link{RI.AQRules.RST}} which accept a named parameter \code{votingMethod}. This parameter can be used
+       to pass a custom function for computing a weight of a voting rule. There are three such functions already
+       available in the package:
+       \itemize{
+         \item \code{X.ruleStrength} is the default voting method. It is defined as a product of a cardinality
+               of a support of a rule and the length of this rule. See \code{\link{X.ruleStrength}}.
+         \item \code{X.laplace} corresponds to a voting weighted by the Laplace estimates of rules' confidence.
+               See \code{\link{X.laplace}}.
+         \item \code{X.rulesCounting} corresponds to voting by counting the matching rules for different decision
+               classes. See \code{\link{X.rulesCounting}}.
+       }
+       A custom function passed using the \code{votingMethod} can get additional parameters using the \code{...}
+       interface.}
 }
 \value{
-The predicted values.
+A data.frame with a single column containing predictions for objects from \code{newdata}.
 }
 \description{
-It is a function used to obtain predicted values after obtaining rules by using rule induction methods.
-We have provided the functions \code{\link{RI.indiscernibilityBasedRules.RST}} to generate rules based on RST.
+The prediction method for objects inheriting from the \code{RuleSetRST} class.
 }
 \examples{
 ##############################################
 ## Example: Classification Task
 ##############################################
 data(RoughSetData)
-decision.table <- RoughSetData$hiring.dt
+wine.data <- RoughSetData$wine.dt
+set.seed(13)
+wine.data <- wine.data[sample(nrow(wine.data)),]
 
-#### Rule induction based on RST ####
-## determine feature subset/reduct
-reduct <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NULL)
+## Split the data into a training set and a test set,
+## 60\% for training and 40\% for testing:
+idx <- round(0.6 * nrow(wine.data))
+wine.tra <-SF.asDecisionTable(wine.data[1:idx,],
+                              decision.attr = 14,
+                              indx.nominal = 14)
+wine.tst <- SF.asDecisionTable(wine.data[(idx+1):nrow(wine.data), -ncol(wine.data)])
 
-## generate rules
-rules.rst <- RI.indiscernibilityBasedRules.RST(decision.table, reduct)
+true.classes <- wine.data[(idx+1):nrow(wine.data), ncol(wine.data)]
 
-## predicting newdata
-## in this case, we are using the same data set as the training data
-res.1 <- predict(rules.rst, decision.table[, -ncol(decision.table)])
+## discretization:
+cut.values <- D.discretization.RST(wine.tra,
+                                   type.method = "unsupervised.quantiles",
+                                   nOfIntervals = 3)
+data.tra <- SF.applyDecTable(wine.tra, cut.values)
+data.tst <- SF.applyDecTable(wine.tst, cut.values)
+
+## rule induction from the training set:
+rules <- RI.LEM2Rules.RST(data.tra)
+
+## predicitons for the test set:
+pred.vals1 <- predict(rules, data.tst)
+pred.vals2 <- predict(rules, data.tst, votingMethod = X.laplace)
+pred.vals3 <- predict(rules, data.tst, votingMethod = X.rulesCounting)
+
+## checking the accuracy of predictions:
+mean(pred.vals1 == true.classes)
+mean(pred.vals2 == true.classes)
+mean(pred.vals3 == true.classes)
+}
+\author{
+Andrzej Janusz
 }
 \seealso{
-\code{\link{RI.GFRS.FRST}} and \code{\link{RI.hybridFS.FRST}}.
+Rule induction methods implemented within RST include: \code{\link{RI.indiscernibilityBasedRules.RST}},
+         \code{\link{RI.CN2Rules.RST}}, \code{\link{RI.LEM2Rules.RST}} and \code{\link{RI.AQRules.RST}}.
+         For details on rule induction methods based on FRST see \code{\link{RI.GFRS.FRST}} and \code{\link{RI.hybridFS.FRST}}.
 }
 

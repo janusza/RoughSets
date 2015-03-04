@@ -2,17 +2,23 @@
 % Please edit documentation in R/RuleInduction.OtherFuncCollections.R
 \name{X.laplace}
 \alias{X.laplace}
-\title{Rule voting by laplace estimate}
+\title{Rule voting by the Laplace estimate}
 \usage{
-X.laplace(rule)
+X.laplace(rule, ...)
 }
 \arguments{
 \item{rule}{a decision rule, i.e. element of an "RuleSetRST" object}
 }
 \value{
-weight of the vote
+a numerical weight of the vote
 }
 \description{
-A function returning a weight of rule's vote understood as the laplace estimate of its confidence.
+A function returning a weight of rule's vote understood as the Laplace estimate of its confidence.
+}
+\author{
+Andrzej Janusz
+}
+\seealso{
+Other currently available voting methods are: \code{\link{X.ruleStrength}}, \code{\link{X.rulesCounting}}.
 }
 

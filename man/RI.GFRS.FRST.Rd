@@ -73,6 +73,9 @@ control <- list(alpha.precision = 0.01, type.aggregation = c("t.tnorm", "lukasie
                 type.relation = c("tolerance", "eq.3"), t.implicator = "lukasiewicz")
 rules <- RI.GFRS.FRST(decision.table, control)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 S. Y. Zhao, E. C. C. Tsang, D. G. Chen, and X. Z. Wang, "Building a Rule-based
 Classifier -- A Fuzzy-rough Set Approach",

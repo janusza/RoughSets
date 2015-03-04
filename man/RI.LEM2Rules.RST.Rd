@@ -7,28 +7,61 @@
 RI.LEM2Rules.RST(decision.table)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+       See \code{\link{SF.asDecisionTable}}.}
 }
 \value{
-A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
+An object of a class \code{"RuleSetRST"}. For details see \code{\link{RI.indiscernibilityBasedRules.RST}}.
 }
 \description{
-It is
+An implementation of LEM2 (Learning from Examples Module, version 2) for induction of decision rules,
+originally proposed by J.W. Grzymala-Busse.
 }
 \examples{
 ###########################################################
 ## Example
 ##############################################################
 data(RoughSetData)
-decision.table <- RoughSetData$hiring.dt
+wine.data <- RoughSetData$wine.dt
+set.seed(13)
+wine.data <- wine.data[sample(nrow(wine.data)),]
 
-rules <- RI.LEM2Rules.RST(decision.table)
+## Split the data into a training set and a test set,
+## 60\% for training and 40\% for testing:
+idx <- round(0.6 * nrow(wine.data))
+wine.tra <-SF.asDecisionTable(wine.data[1:idx,],
+                              decision.attr = 14,
+                              indx.nominal = 14)
+wine.tst <- SF.asDecisionTable(wine.data[(idx+1):nrow(wine.data), -ncol(wine.data)])
+
+true.classes <- wine.data[(idx+1):nrow(wine.data), ncol(wine.data)]
+
+## discretization:
+cut.values <- D.discretization.RST(wine.tra,
+                                   type.method = "unsupervised.quantiles",
+                                   nOfIntervals = 3)
+data.tra <- SF.applyDecTable(wine.tra, cut.values)
+data.tst <- SF.applyDecTable(wine.tst, cut.values)
+
+## rule induction from the training set:
+rules <- RI.LEM2Rules.RST(data.tra)
+rules
+
+## predicitons for the test set:
+pred.vals <- predict(rules, data.tst)
+
+## checking the accuracy of predictions:
+mean(pred.vals == true.classes)
+}
+\author{
+Andrzej Janusz
 }
 \references{
 J.W. Grzymala-Busse, "A New Version of the Rule Induction System LERS",
 Fundamenta Informaticae, 31, p. 27 - 39 (1997).
 }
 \seealso{
-\code{\link{predict.RuleSetFRST}}.
+\code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
+         \code{\link{RI.AQRules.RST}}.
 }
 

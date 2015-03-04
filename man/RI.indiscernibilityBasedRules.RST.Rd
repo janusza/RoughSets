@@ -2,62 +2,68 @@
 % Please edit documentation in R/RuleInduction.R
 \name{RI.indiscernibilityBasedRules.RST}
 \alias{RI.indiscernibilityBasedRules.RST}
-\title{Rule induction based on RST}
+\title{Rule induction from indiscernibility classes.}
 \usage{
 RI.indiscernibilityBasedRules.RST(decision.table, feature.set)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{feature.set}{a \code{"FeatureSubset"} class which is produced by feature selection functions based on RST
-                 e.g. \code{\link{FS.permutation.heuristic.reduct.RST}}, etc.
-
-                 See \code{\link{FS.reduct.computation}}, \code{\link{FS.feature.subset.computation}}, and
-
-                 \code{\link{FS.all.reducts.computation}} based on RST.}
+\item{feature.set}{an object inheriting from the \code{"FeatureSubset"} class which is a typical output of feature
+       selection methods based on RST  e.g. \code{\link{FS.greedy.heuristic.reduct.RST}}.
+       See also \code{\link{FS.reduct.computation}}, \code{\link{FS.feature.subset.computation}} and
+       \code{\link{FS.all.reducts.computation}} based on RST.}
 }
 \value{
-A class \code{"RuleSetRST"} containing the following components/attributes:
+An object of a class \code{"RuleSetRST"}, which is a list with additional attributes:
 \itemize{
-	\item \code{rules}: every rule which is a list consisting of five parts as follows:
-            \itemize{
-            \item \code{idx}: it is a vector of indexes of attributes involved in each rule.
-            \item \code{values}: it is a vector of values of each attributes used as the antecedent part.
-            \item \code{consequent}: it is a vector of a value of decision attribute as the consequent part.
-            \item \code{support}: it is a numeric value representing the support value of each rule.
-            \item \code{laplace}: it is a numeric value representing the laplace value of the consequent part.
-            }
- \item \code{uniqueCls}: it is a vector containing the decision classes.
- \item \code{clsProbs}: it is vector showing the probability of the decision classes.
- \item \code{majorityCls}: it is a value representing the majority value in the rules.
- \item \code{method}: it is the type of used method. In this case, it is \code{"indiscernibilityBasedRules"}.
+ \item \code{uniqueCls}: a vector of possible decision classes,
+ \item \code{clsProbs}: a vector giving the a priori probability of the decision classes,
+ \item \code{majorityCls}: a class label representing the majority class in the data,
+ \item \code{method}: the type a rule induction method used for computations,
+ \item \code{dec.attr}: a name of the decision attribute in data,
+ \item \code{colnames}: a vector of conditional attribute names.
+}
+Each rule is a list with the following elements:
+\itemize{
+  \item \code{idx}: a vector of indexes of attribute that are used in antecedent of a rule,
+  \item \code{values}: a vector of values of attributes indicated by \code{idx},
+  \item \code{consequent}: a value of the consequent of a rule,
+  \item \code{support}: a vactor of integers indicating objects from the data, which support a given rule,
+  \item \code{laplace}: ia numeric value representing the Laplace estimate of the rule's confidence.
 }
 }
 \description{
-It is a function generating rule induction based on indiscernibility classes.
+Rule induction from indiscernibility classes.
 }
 \details{
-Basically, this function uses the output of feature selection step as input data.
-So, before calling this function, we execute a particular function implementing feature selection,
+This function generates "if-then" decision rules from indiscernibility classes defined by a given
+subset of conditional attributes.
 
-e.g. \code{\link{FS.permutation.heuristic.reduct.RST}}.
-
-It should be noted that this function only allows classification problems. After obtaining the rules,
-predicting can be done by calling \code{predict} or \code{\link{predict.RuleSetRST}}.
+After obtaining the rules, decision classes of new objects can be predicted using the \code{predict} method or
+by a direct call to \code{\link{predict.RuleSetRST}}.
 }
 \examples{
 ###########################################################
 ## Example
 ##############################################################
 data(RoughSetData)
-decision.table <- RoughSetData$hiring.dt
+hiring.data <- RoughSetData$hiring.dt
 
 ## determine feature subset/reduct
-reduct <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NULL)
+reduct <- FS.reduct.computation(hiring.data,
+                                method = "permutation.heuristic",
+                                permutation = FALSE)
 
-rules <- RI.indiscernibilityBasedRules.RST(decision.table, reduct)
+rules <- RI.indiscernibilityBasedRules.RST(hiring.data, reduct)
+rules
+}
+\author{
+Andrzej Janusz
 }
 \seealso{
-\code{\link{predict.RuleSetFRST}}, \code{\link{RI.GFRS.FRST}}, and \code{\link{RI.hybridFS.FRST}}.
+\code{\link{predict.RuleSetRST}}, \code{\link{RI.CN2Rules.RST}}, \code{\link{RI.LEM2Rules.RST}},
+         \code{\link{RI.AQRules.RST}}.
 }
 

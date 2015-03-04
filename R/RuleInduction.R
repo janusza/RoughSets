@@ -30,6 +30,7 @@
 #' Additionally, to get better representation we can execute \code{\link{summary}}.
 #'
 #' @title Hybrid fuzzy-rough rule and induction and feature selection
+#' @author Lala Septem Riza
 #' 
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param control a list of other parameters which consist of 
@@ -92,6 +93,7 @@ RI.hybridFS.FRST <- function(decision.table, control = list()){
 #' Additionally, to get better representation we can execute \code{\link{summary}}.
 #' 
 #' @title Generalized fuzzy rough set rule induction based on FRST
+#' @author Lala Septem Riza
 #' 
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param control a list of other parameters which consist of 
@@ -348,41 +350,45 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 	return(std.rules(rules, type.method = "RI.GFRS.FRST", decision.table, t.similarity, t.tnorm))
 }
 
-#' It is a function generating rule induction based on indiscernibility classes.  
+#' Rule induction from indiscernibility classes.
 #' 
-#' Basically, this function uses the output of feature selection step as input data. 
-#' So, before calling this function, we execute a particular function implementing feature selection, 
+#' This function generates "if-then" decision rules from indiscernibility classes defined by a given 
+#' subset of conditional attributes.
 #'
-#' e.g. \code{\link{FS.permutation.heuristic.reduct.RST}}. 
+#' After obtaining the rules, decision classes of new objects can be predicted using the \code{predict} method or 
+#' by a direct call to \code{\link{predict.RuleSetRST}}.
 #'
-#' It should be noted that this function only allows classification problems. After obtaining the rules,
-#' predicting can be done by calling \code{predict} or \code{\link{predict.RuleSetRST}}.
-#'
-#' @title Rule induction based on RST
+#' @title Rule induction from indiscernibility classes.
+#' @author Andrzej Janusz
 #' 
-#' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
-#' @param feature.set a \code{"FeatureSubset"} class which is produced by feature selection functions based on RST 
-#'                  e.g. \code{\link{FS.permutation.heuristic.reduct.RST}}, etc. 
-#'
-#'                  See \code{\link{FS.reduct.computation}}, \code{\link{FS.feature.subset.computation}}, and 
-#'
-#'                  \code{\link{FS.all.reducts.computation}} based on RST.
-#' @seealso \code{\link{predict.RuleSetFRST}}, \code{\link{RI.GFRS.FRST}}, and \code{\link{RI.hybridFS.FRST}}.
-#' @return A class \code{"RuleSetRST"} containing the following components/attributes:
+#' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
+#'        See \code{\link{SF.asDecisionTable}}.
+#' @param feature.set an object inheriting from the \code{"FeatureSubset"} class which is a typical output of feature 
+#'        selection methods based on RST  e.g. \code{\link{FS.greedy.heuristic.reduct.RST}}. 
+#'        See also \code{\link{FS.reduct.computation}}, \code{\link{FS.feature.subset.computation}} and
+#'        \code{\link{FS.all.reducts.computation}} based on RST.
+#'        
+#' @seealso \code{\link{predict.RuleSetRST}}, \code{\link{RI.CN2Rules.RST}}, \code{\link{RI.LEM2Rules.RST}},
+#'          \code{\link{RI.AQRules.RST}}.
+#' 
+#' @return An object of a class \code{"RuleSetRST"}, which is a list with additional attributes:
 #' \itemize{
-#'	\item \code{rules}: every rule which is a list consisting of five parts as follows:
-#'             \itemize{
-#'             \item \code{idx}: it is a vector of indexes of attributes involved in each rule.
-#'             \item \code{values}: it is a vector of values of each attributes used as the antecedent part.
-#'             \item \code{consequent}: it is a vector of a value of decision attribute as the consequent part.
-#'             \item \code{support}: it is a numeric value representing the support value of each rule.
-#'             \item \code{laplace}: it is a numeric value representing the laplace value of the consequent part.
-#'             }
-#'  \item \code{uniqueCls}: it is a vector containing the decision classes.
-#'  \item \code{clsProbs}: it is vector showing the probability of the decision classes.
-#'  \item \code{majorityCls}: it is a value representing the majority value in the rules.
-#'  \item \code{method}: it is the type of used method. In this case, it is \code{"indiscernibilityBasedRules"}.
+#'  \item \code{uniqueCls}: a vector of possible decision classes,
+#'  \item \code{clsProbs}: a vector giving the a priori probability of the decision classes,
+#'  \item \code{majorityCls}: a class label representing the majority class in the data,
+#'  \item \code{method}: the type a rule induction method used for computations,
+#'  \item \code{dec.attr}: a name of the decision attribute in data,
+#'  \item \code{colnames}: a vector of conditional attribute names.
 #' }
+#' Each rule is a list with the following elements:
+#' \itemize{
+#'   \item \code{idx}: a vector of indexes of attribute that are used in antecedent of a rule,
+#'   \item \code{values}: a vector of values of attributes indicated by \code{idx},
+#'   \item \code{consequent}: a value of the consequent of a rule,
+#'   \item \code{support}: a vactor of integers indicating objects from the data, which support a given rule,
+#'   \item \code{laplace}: ia numeric value representing the Laplace estimate of the rule's confidence.
+#' }
+#' 
 # @references
 # J. Stefanowski and S. Wilk, "Rough Sets for Handling Imbalanced Data: Combining Filtering and Rule-based Classifiers",
 # Fundamenta Informaticae, vol. 72, no. 1 - 3, p. 379 - 391 (2006).
@@ -392,12 +398,16 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 #' ## Example 
 #' ##############################################################
 #' data(RoughSetData)
-#' decision.table <- RoughSetData$hiring.dt 							 
+#' hiring.data <- RoughSetData$hiring.dt 							 
 #'
 #' ## determine feature subset/reduct 	
-#' reduct <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NULL)
+#' reduct <- FS.reduct.computation(hiring.data,  
+#'                                 method = "permutation.heuristic",
+#'                                 permutation = FALSE)
 #'						 
-#' rules <- RI.indiscernibilityBasedRules.RST(decision.table, reduct)
+#' rules <- RI.indiscernibilityBasedRules.RST(hiring.data, reduct)
+#' rules
+#' 
 #' @export
 RI.indiscernibilityBasedRules.RST <- function(decision.table, feature.set) {
   
@@ -411,8 +421,9 @@ RI.indiscernibilityBasedRules.RST <- function(decision.table, feature.set) {
   
 	if(is.null(attr(decision.table, "decision.attr"))) {
     stop("A decision attribute is not indicated.")
-	} 
-	else decisionIdx <- attr(decision.table, "decision.attr")
+	} else {
+    decisionIdx <- attr(decision.table, "decision.attr")
+	}
   
 	if(!all(attr(decision.table, "nominal.attrs"))) {
 	  stop("Some of the attributes are numerical. 
@@ -444,14 +455,21 @@ RI.indiscernibilityBasedRules.RST <- function(decision.table, feature.set) {
 	return(ruleSet)  
 }
 
-#' It is
+#' An implementation of verions of the famous CN2 algorithm for induction of decision rules, proposed by P.E. Clark and T. Niblett.
 #' 
-#' @title Rule induction using the CN2 algorithm
+#' @title Rule induction using a version of CN2 algorithm
+#' @author Andrzej Janusz
 #' 
-#' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
-#' @param K a parameter that controls a complexity of the algorithm. In each iteration \code{K} best rule predicates will be extended by all possible descriptors.
-#' @seealso \code{\link{predict.RuleSetFRST}}.
-#' @return A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
+#' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
+#'        See \code{\link{SF.asDecisionTable}}.
+#' @param K a positive integer that controls a complexity of the algorithm. In each iteration \code{K} best rule predicates are 
+#'        extended by all possible descriptors.
+#'        
+#' @return An object of a class \code{"RuleSetRST"}. For details see \code{\link{RI.indiscernibilityBasedRules.RST}}.
+#' 
+#' @seealso \code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.LEM2Rules.RST}},
+#'          \code{\link{RI.AQRules.RST}}.
+#'
 #' @references
 #' P.E. Clark and T. Niblett, "The CN2 Induction algorithm",
 #' Machine Learning, 3, p. 261 - 284 (1986).
@@ -461,9 +479,36 @@ RI.indiscernibilityBasedRules.RST <- function(decision.table, feature.set) {
 #' ## Example 
 #' ##############################################################
 #' data(RoughSetData)
-#' decision.table <- RoughSetData$hiring.dt 
+#' wine.data <- RoughSetData$wine.dt
+#' set.seed(13) 
+#' wine.data <- wine.data[sample(nrow(wine.data)),]
 #' 
-#' rules <- RI.CN2Rules.RST(decision.table, K = 3)
+#' ## Split the data into a training set and a test set,
+#' ## 60% for training and 40% for testing:
+#' idx <- round(0.6 * nrow(wine.data))
+#' wine.tra <-SF.asDecisionTable(wine.data[1:idx,],
+#'                               decision.attr = 14, 
+#'                               indx.nominal = 14)
+#' wine.tst <- SF.asDecisionTable(wine.data[(idx+1):nrow(wine.data), -ncol(wine.data)])
+#' 
+#' true.classes <- wine.data[(idx+1):nrow(wine.data), ncol(wine.data)]
+#' 
+#' ## discretization:
+#' cut.values <- D.discretization.RST(wine.tra,
+#'                                    type.method = "unsupervised.quantiles",
+#'                                    nOfIntervals = 3)
+#' data.tra <- SF.applyDecTable(wine.tra, cut.values)
+#' data.tst <- SF.applyDecTable(wine.tst, cut.values)
+#' 
+#' ## rule induction from the training set:
+#' rules <- RI.CN2Rules.RST(data.tra, K = 5)
+#' rules
+#' 
+#' ## predicitons for the test set:
+#' pred.vals <- predict(rules, data.tst)
+#' 
+#' ## checking the accuracy of predictions:
+#' mean(pred.vals == true.classes)
 #' 
 #' @export
 RI.CN2Rules.RST <- function(decision.table, K = 3)  {
@@ -474,8 +519,9 @@ RI.CN2Rules.RST <- function(decision.table, K = 3)  {
   
   if(is.null(attr(decision.table, "decision.attr"))) {
     stop("A decision attribute is not indicated.")
-	} 
-	else decIdx = attr(decision.table, "decision.attr")
+	} else {
+    decIdx = attr(decision.table, "decision.attr")
+	}
   
   if(!all(attr(decision.table, "nominal.attrs"))) {
     stop("Some of the attributes are numerical.
@@ -508,12 +554,20 @@ RI.CN2Rules.RST <- function(decision.table, K = 3)  {
   return(rules);
 }
 
-#' It is
+#' An implementation of LEM2 (Learning from Examples Module, version 2) for induction of decision rules,
+#' originally proposed by J.W. Grzymala-Busse.
 #' 
 #' @title Rule induction using the LEM2 algorithm
-#' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
-#' @seealso \code{\link{predict.RuleSetFRST}}.
-#' @return A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
+#' @author Andrzej Janusz
+#' 
+#' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
+#'        See \code{\link{SF.asDecisionTable}}.
+#'        
+#' @return An object of a class \code{"RuleSetRST"}. For details see \code{\link{RI.indiscernibilityBasedRules.RST}}.
+#' 
+#' @seealso \code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
+#'          \code{\link{RI.AQRules.RST}}.
+#' 
 #' @references
 #' J.W. Grzymala-Busse, "A New Version of the Rule Induction System LERS",
 #' Fundamenta Informaticae, 31, p. 27 - 39 (1997).
@@ -523,9 +577,36 @@ RI.CN2Rules.RST <- function(decision.table, K = 3)  {
 #' ## Example 
 #' ##############################################################
 #' data(RoughSetData)
-#' decision.table <- RoughSetData$hiring.dt 
+#' wine.data <- RoughSetData$wine.dt
+#' set.seed(13) 
+#' wine.data <- wine.data[sample(nrow(wine.data)),]
 #' 
-#' rules <- RI.LEM2Rules.RST(decision.table)
+#' ## Split the data into a training set and a test set,
+#' ## 60% for training and 40% for testing:
+#' idx <- round(0.6 * nrow(wine.data))
+#' wine.tra <-SF.asDecisionTable(wine.data[1:idx,],
+#'                               decision.attr = 14, 
+#'                               indx.nominal = 14)
+#' wine.tst <- SF.asDecisionTable(wine.data[(idx+1):nrow(wine.data), -ncol(wine.data)])
+#' 
+#' true.classes <- wine.data[(idx+1):nrow(wine.data), ncol(wine.data)]
+#' 
+#' ## discretization:
+#' cut.values <- D.discretization.RST(wine.tra,
+#'                                    type.method = "unsupervised.quantiles",
+#'                                    nOfIntervals = 3)
+#' data.tra <- SF.applyDecTable(wine.tra, cut.values)
+#' data.tst <- SF.applyDecTable(wine.tst, cut.values)
+#' 
+#' ## rule induction from the training set:
+#' rules <- RI.LEM2Rules.RST(data.tra)
+#' rules
+#' 
+#' ## predicitons for the test set:
+#' pred.vals <- predict(rules, data.tst)
+#' 
+#' ## checking the accuracy of predictions:
+#' mean(pred.vals == true.classes)
 #' 
 #' @export
 RI.LEM2Rules.RST <- function(decision.table)  {
@@ -587,30 +668,67 @@ RI.LEM2Rules.RST <- function(decision.table)  {
   return(rules);
 }
 
-
-#' It is
+#' A version of the AQ algorithm which was originally proposed by R.S. Michalski.
+#' This implamentation is based on a concept of a local (object-relative) decision reduct from RST.
 #' 
-#' @title Rule induction using the AQ-style algorithm
-#' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
-#' @param epsilon a numeric value representing small margin. 
-#' @param timesCovered an integer value representing the number of coverage. 
-#' @seealso \code{\link{predict.RuleSetFRST}}.
-#' @return A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
-# @references
-# J.W. Grzymala-Busse, "A New Version of the Rule Induction System LERS",
-# Fundamenta Informaticae, 31, p. 27 - 39 (1997).
-# 
+#' @title Rule induction using the AQ algorithm
+#' @author Andrzej Janusz
+#' 
+#' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
+#'        See \code{\link{SF.asDecisionTable}}.
+#' @param confidence a numeric value giving the minimal confidence of computed rules. 
+#' @param timesCovered a positive integer. The algorithm will try to find a coverage of training examples with rules,
+#'        such that each example is covered by at least \code{timesCovered} rules and no rule can be removed from 
+#'        the coverage without breaking this property. This is not always possible - there is a chance that some rules
+#'        are duplicated if the value of \code{timesCovered} is larger than 1.
+#' 
+#' @return An object of a class \code{"RuleSetRST"}. For details see \code{\link{RI.indiscernibilityBasedRules.RST}}.
+#' 
+#' @seealso \code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
+#'          \code{\link{RI.LEM2Rules.RST}}.
+#' 
+#' @references
+#' R.S. Michalski, K. Kaufman, J. Wnek: "The AQ Family of Learning Programs: A Review of Recent Developments 
+#' and an Exemplary Application", Reports of Machine Learning and Inference Laboratory, George Mason University (1991)
+#' 
 #' @examples
 #' ###########################################################
 #' ## Example 
 #' ##############################################################
 #' data(RoughSetData)
-#' decision.table <- RoughSetData$hiring.dt 
-#'
-#' rules <- RI.AQRules.RST(decision.table)
+#' wine.data <- RoughSetData$wine.dt
+#' set.seed(13) 
+#' wine.data <- wine.data[sample(nrow(wine.data)),]
+#' 
+#' ## Split the data into a training set and a test set,
+#' ## 60% for training and 40% for testing:
+#' idx <- round(0.6 * nrow(wine.data))
+#' wine.tra <-SF.asDecisionTable(wine.data[1:idx,],
+#'                               decision.attr = 14, 
+#'                               indx.nominal = 14)
+#' wine.tst <- SF.asDecisionTable(wine.data[(idx+1):nrow(wine.data), -ncol(wine.data)])
+#' 
+#' true.classes <- wine.data[(idx+1):nrow(wine.data), ncol(wine.data)]
+#' 
+#' ## discretization:
+#' cut.values <- D.discretization.RST(wine.tra,
+#'                                    type.method = "unsupervised.quantiles",
+#'                                    nOfIntervals = 3)
+#' data.tra <- SF.applyDecTable(wine.tra, cut.values)
+#' data.tst <- SF.applyDecTable(wine.tst, cut.values)
+#' 
+#' ## rule induction from the training set:
+#' rules <- RI.AQRules.RST(data.tra, confidence = 0.9, timesCovered = 3)
+#' rules
+#' 
+#' ## predicitons for the test set:
+#' pred.vals <- predict(rules, data.tst)
+#' 
+#' ## checking the accuracy of predictions:
+#' mean(pred.vals == true.classes)
 #' 
 #' @export
-RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
+RI.AQRules.RST <- function(decision.table, confidence = 1.0, timesCovered = 1)  {
 	
   if (!inherits(decision.table, "DecisionTable")) {
 		stop("Provided data should inherit from the \'DecisionTable\' class.")
@@ -653,7 +771,7 @@ RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
 		rules[[i]] = computeAQcovering(as.integer(lowerApproximations[[i]]),
                                    descriptorCandidates, 
 		                               decision.table[,-decIdx], 
-                                   epsilon = epsilon, K = timesCovered)
+                                   epsilon = 1 - confidence, K = timesCovered)
 	}
   
 	rules = unlist(rules, recursive = FALSE)
@@ -677,6 +795,7 @@ RI.AQRules.RST <- function(decision.table, epsilon = 0.0, timesCovered = 1)  {
 #' We have provided the functions \code{\link{RI.GFRS.FRST}} and \code{\link{RI.hybridFS.FRST}} to generate rules based on FRST.
 #' 
 #' @title The predicting function for rule induction methods based on FRST
+#' @author Lala Septem Riza
 #'
 #' @param object a \code{"RuleSetFRST"} class resulted by \code{\link{RI.GFRS.FRST}} and \code{\link{RI.hybridFS.FRST}}.
 #' @param newdata a \code{"DecisionTable"} class containing a data frame or matrix (m x n) of data for the prediction process, where m is the number of instances and 
@@ -815,41 +934,85 @@ predict.RuleSetFRST <- function(object, newdata, ...) {
 }
 
 
-#' It is a function used to obtain predicted values after obtaining rules by using rule induction methods. 
-#' We have provided the functions \code{\link{RI.indiscernibilityBasedRules.RST}} to generate rules based on RST.
+#' The prediction method for objects inheriting from the \code{RuleSetRST} class.
 #' 
-#' @title The predicting function for rule induction methods based on RST
+#' @title Prediction of decision classes using rule-based classifiers.
+#' @author Andrzej Janusz
 #'
-#' @param object a \code{"RuleSetRST"} class resulted by \code{\link{RI.indiscernibilityBasedRules.RST}}.
-#' @param newdata a \code{"DecisionTable"} class containing a data frame or matrix (m x n) of data for the prediction process, where m is the number of instances and 
-#' n is the number of input attributes. It should be noted that this data must have \code{colnames} on each attribute.
-#' @param ... other parameters of a voting strategy (can be applied only to methods which classify objects by voting).
-#' @seealso \code{\link{RI.GFRS.FRST}} and \code{\link{RI.hybridFS.FRST}}.
-#' @return The predicted values. 
+#' @param object an object inheriting from the \code{"RuleSetRST"} class. Such objects are typically produced
+#'        by implementations of rule induction methods, which derives from the rough set theory (RST), such as 
+#'        \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
+#'        \code{\link{RI.LEM2Rules.RST}} or \code{\link{RI.AQRules.RST}}.
+#' @param newdata an object inheriting from the \code{"DecisionTable"} class, which represents the data
+#'        for which predictions are to be made. See \code{\link{SF.asDecisionTable}}. Columns in \code{newdata} 
+#'        should correspond to columns of a data set used for the rule induction.
+#' @param ... additional parameters for a rule voting strategy. It can be applied only to the methods which classify 
+#'        new objects by voting. Currently, those methods include \code{\link{RI.LEM2Rules.RST}} and 
+#'        \code{\link{RI.AQRules.RST}} which accept a named parameter \code{votingMethod}. This parameter can be used
+#'        to pass a custom function for computing a weight of a voting rule. There are three such functions already
+#'        available in the package:
+#'        \itemize{
+#'          \item \code{X.ruleStrength} is the default voting method. It is defined as a product of a cardinality 
+#'                of a support of a rule and the length of this rule. See \code{\link{X.ruleStrength}}.
+#'          \item \code{X.laplace} corresponds to a voting weighted by the Laplace estimates of rules' confidence.
+#'                See \code{\link{X.laplace}}.
+#'          \item \code{X.rulesCounting} corresponds to voting by counting the matching rules for different decision
+#'                classes. See \code{\link{X.rulesCounting}}.
+#'        }
+#'        A custom function passed using the \code{votingMethod} can get additional parameters using the \code{...}
+#'        interface.
+#' 
+#' @return A data.frame with a single column containing predictions for objects from \code{newdata}. 
+#' 
+#' @seealso Rule induction methods implemented within RST include: \code{\link{RI.indiscernibilityBasedRules.RST}},
+#'          \code{\link{RI.CN2Rules.RST}}, \code{\link{RI.LEM2Rules.RST}} and \code{\link{RI.AQRules.RST}}.
+#'          For details on rule induction methods based on FRST see \code{\link{RI.GFRS.FRST}} and \code{\link{RI.hybridFS.FRST}}.
+#' 
 #' @examples
 #' ##############################################
 #' ## Example: Classification Task
 #' ##############################################
 #' data(RoughSetData)
-#' decision.table <- RoughSetData$hiring.dt 							 
-#'		
-#' #### Rule induction based on RST ####
-#' ## determine feature subset/reduct 	
-#' reduct <- FS.permutation.heuristic.reduct.RST(decision.table,  permutation = NULL)
-#'
-#' ## generate rules						 
-#' rules.rst <- RI.indiscernibilityBasedRules.RST(decision.table, reduct)
-#'					
-#' ## predicting newdata
-#' ## in this case, we are using the same data set as the training data
-#' res.1 <- predict(rules.rst, decision.table[, -ncol(decision.table)])
-#'
+#' wine.data <- RoughSetData$wine.dt
+#' set.seed(13) 
+#' wine.data <- wine.data[sample(nrow(wine.data)),]
+#' 
+#' ## Split the data into a training set and a test set,
+#' ## 60% for training and 40% for testing:
+#' idx <- round(0.6 * nrow(wine.data))
+#' wine.tra <-SF.asDecisionTable(wine.data[1:idx,],
+#'                               decision.attr = 14, 
+#'                               indx.nominal = 14)
+#' wine.tst <- SF.asDecisionTable(wine.data[(idx+1):nrow(wine.data), -ncol(wine.data)])
+#' 
+#' true.classes <- wine.data[(idx+1):nrow(wine.data), ncol(wine.data)]
+#' 
+#' ## discretization:
+#' cut.values <- D.discretization.RST(wine.tra,
+#'                                    type.method = "unsupervised.quantiles",
+#'                                    nOfIntervals = 3)
+#' data.tra <- SF.applyDecTable(wine.tra, cut.values)
+#' data.tst <- SF.applyDecTable(wine.tst, cut.values)
+#' 
+#' ## rule induction from the training set:
+#' rules <- RI.LEM2Rules.RST(data.tra)
+#' 
+#' ## predicitons for the test set:
+#' pred.vals1 <- predict(rules, data.tst)
+#' pred.vals2 <- predict(rules, data.tst, votingMethod = X.laplace)
+#' pred.vals3 <- predict(rules, data.tst, votingMethod = X.rulesCounting)
+#' 
+#' ## checking the accuracy of predictions:
+#' mean(pred.vals1 == true.classes)
+#' mean(pred.vals2 == true.classes)
+#' mean(pred.vals3 == true.classes)
+#' 
 #' @aliases predict.RST
 #' @export  
 #' @method predict RuleSetRST
 predict.RuleSetRST <- function(object, newdata, ...) {
   
-  if(!inherits(object, "RuleSetRST")) stop("Not a legitimate rules based on RST model.")
+  if(!inherits(object, "RuleSetRST")) stop("The rule set does not an object from the \'RuleSetRST\' class")
   
   if(!inherits(newdata, "DecisionTable")) stop("Provided data should inherit from the \'DecisionTable\' class.")
   
@@ -867,9 +1030,9 @@ predict.RuleSetRST <- function(object, newdata, ...) {
                      ruleSet = object[order(sapply(object, function(X) X$laplace), decreasing = TRUE)]
                      INDclasses = sapply(ruleSet, function(x) paste(unlist(x$values), collapse = " "))
                      consequents = sapply(ruleSet, function(x) x$consequent)
-                     
                      newdata = do.call(paste, newdata[,ruleSet[[1]]$idx, drop = FALSE])
-						sapply(newdata, bestFirst, INDclasses, consequents, majorityCls, uniqueCls, clsProbs) },
+						         sapply(newdata, bestFirst, INDclasses, consequents, majorityCls, uniqueCls, clsProbs)
+                   },
                    
                    CN2Rules = apply(as.matrix(newdata), 1, firstWin, ruleSet = object, ...), 
                    
@@ -879,7 +1042,7 @@ predict.RuleSetRST <- function(object, newdata, ...) {
   
   predVec <- as.data.frame(predVec)
   rownames(predVec) <- NULL
-  colnames(predVec) <- "class"
+  colnames(predVec) <- "predictions"
   
   return(predVec)
 }

@@ -59,6 +59,9 @@ rules <- RI.hybridFS.FRST(decision.table, control)
 ## in this case, we are using the same data set as the training data
 res.1 <- predict(rules, decision.table[, -ncol(decision.table)])
 }
+\author{
+Lala Septem Riza
+}
 \seealso{
 \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.GFRS.FRST}} and \code{\link{RI.hybridFS.FRST}}
 }

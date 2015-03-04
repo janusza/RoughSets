@@ -4,16 +4,22 @@
 \alias{X.ruleStrength}
 \title{Rule voting by strength of the rule}
 \usage{
-X.ruleStrength(rule)
+X.ruleStrength(rule, ...)
 }
 \arguments{
-\item{rule}{a decision rule, i.e. element of an "RuleSetRST" object}
+\item{rule}{a decision rule, i.e. element of a "RuleSetRST" object}
 }
 \value{
-weight of the vote
+a numerical weight of the vote
 }
 \description{
 A function returning a weight of rule's vote understood as strength of the rule.
-It is defined as a product of cardinality of matching training object set and rule length.
+It is defined as a product of a cardinality of a support of a rule and the length of this rule.
+}
+\author{
+Andrzej Janusz
+}
+\seealso{
+Other currently available voting methods are: \code{\link{X.laplace}}, \code{\link{X.rulesCounting}}.
 }
 

@@ -4,15 +4,22 @@
 \alias{X.rulesCounting}
 \title{Rule voting by counting matching rules}
 \usage{
-X.rulesCounting(rule)
+X.rulesCounting(rule, ...)
 }
 \arguments{
 \item{rule}{a decision rule, i.e. element of an "RuleSetRST" object}
 }
 \value{
-weight of the vote
+a numerical weight of the vote
 }
 \description{
-A function returning an equal vote's weight for every rule.
+A function returning an equal vote's weight for every rule. It corresponds to voting by counting the
+matching rules.
+}
+\author{
+Andrzej Janusz
+}
+\seealso{
+Other currently available voting methods are: \code{\link{X.ruleStrength}}, \code{\link{X.laplace}}.
 }
 

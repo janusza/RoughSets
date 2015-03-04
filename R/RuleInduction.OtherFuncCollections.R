@@ -219,7 +219,7 @@ firstWin <- function(object, ruleSet, ...) {
 }
 
 # An auxiliary function that classifies a data object using custom voting strategy.
-rulesVoting <- function(object, ruleSet, votingMethod = X.ruleStrength) {
+rulesVoting <- function(object, ruleSet, votingMethod = X.ruleStrength, ...) {
   
   rulesIdx = which(sapply(ruleSet,
                           function(rule, obj) all(obj[rule$idx] == rule$values),
@@ -231,7 +231,7 @@ rulesVoting <- function(object, ruleSet, votingMethod = X.ruleStrength) {
   
   if(length(rulesIdx) > 0) {
     for(i in rulesIdx) {
-      voteCounter[ruleSet[[i]]$consequent] = voteCounter[ruleSet[[i]]$consequent] + votingMethod(ruleSet[[i]])
+      voteCounter[ruleSet[[i]]$consequent] = voteCounter[ruleSet[[i]]$consequent] + votingMethod(ruleSet[[i]], ...)
     }
     tmpPreds = names(voteCounter)[which(voteCounter == max(voteCounter))]
     if(length(tmpPreds) == 1) {
@@ -248,33 +248,52 @@ rulesVoting <- function(object, ruleSet, votingMethod = X.ruleStrength) {
 }
 
 #' A function returning a weight of rule's vote understood as strength of the rule. 
-#' It is defined as a product of cardinality of matching training object set and rule length.
+#' It is defined as a product of a cardinality of a support of a rule and the length of this rule.
 #'
 #' @title Rule voting by strength of the rule
-#' @param rule a decision rule, i.e. element of an "RuleSetRST" object 
-#' @return weight of the vote
+#' @author Andrzej Janusz
+#' 
+#' @param rule a decision rule, i.e. element of a "RuleSetRST" object 
+#' 
+#' @return a numerical weight of the vote
+#' 
+#' @seealso Other currently available voting methods are: \code{\link{X.laplace}}, \code{\link{X.rulesCounting}}.
+#' 
 #' @export
-X.ruleStrength <- function(rule) {
+X.ruleStrength <- function(rule, ...) {
 	return(length(rule$support) * length(rule$idx))
 }
 
-#' A function returning a weight of rule's vote understood as the laplace estimate of its confidence. 
+#' A function returning a weight of rule's vote understood as the Laplace estimate of its confidence. 
 #'
-#' @title Rule voting by laplace estimate
+#' @title Rule voting by the Laplace estimate
+#' @author Andrzej Janusz
+#' 
 #' @param rule a decision rule, i.e. element of an "RuleSetRST" object 
-#' @return weight of the vote
+#' 
+#' @return a numerical weight of the vote
+#' 
+#' @seealso Other currently available voting methods are: \code{\link{X.ruleStrength}}, \code{\link{X.rulesCounting}}.
+#' 
 #' @export
-X.laplace <- function(rule) {
+X.laplace <- function(rule, ...) {
 	return(rule$laplace)
 }
 
-#' A function returning an equal vote's weight for every rule. 
+#' A function returning an equal vote's weight for every rule. It corresponds to voting by counting the
+#' matching rules.
 #'
 #' @title Rule voting by counting matching rules
+#' @author Andrzej Janusz
+#' 
 #' @param rule a decision rule, i.e. element of an "RuleSetRST" object 
-#' @return weight of the vote
+#' 
+#' @return a numerical weight of the vote
+#' 
+#' @seealso Other currently available voting methods are: \code{\link{X.ruleStrength}}, \code{\link{X.laplace}}.
+#' 
 #' @export
-X.rulesCounting = function(rule) {
+X.rulesCounting = function(rule, ...) {
 	return(1)
 }
 

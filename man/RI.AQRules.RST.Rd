@@ -2,33 +2,73 @@
 % Please edit documentation in R/RuleInduction.R
 \name{RI.AQRules.RST}
 \alias{RI.AQRules.RST}
-\title{Rule induction using the AQ-style algorithm}
+\title{Rule induction using the AQ algorithm}
 \usage{
-RI.AQRules.RST(decision.table, epsilon = 0, timesCovered = 1)
+RI.AQRules.RST(decision.table, confidence = 1, timesCovered = 1)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{epsilon}{a numeric value representing small margin.}
+\item{confidence}{a numeric value giving the minimal confidence of computed rules.}
 
-\item{timesCovered}{an integer value representing the number of coverage.}
+\item{timesCovered}{a positive integer. The algorithm will try to find a coverage of training examples with rules,
+       such that each example is covered by at least \code{timesCovered} rules and no rule can be removed from
+       the coverage without breaking this property. This is not always possible - there is a chance that some rules
+       are duplicated if the value of \code{timesCovered} is larger than 1.}
 }
 \value{
-A class \code{"RuleSetRST"}. See \code{\link{RI.indiscernibilityBasedRules.RST}}.
+An object of a class \code{"RuleSetRST"}. For details see \code{\link{RI.indiscernibilityBasedRules.RST}}.
 }
 \description{
-It is
+A version of the AQ algorithm which was originally proposed by R.S. Michalski.
+This implamentation is based on a concept of a local (object-relative) decision reduct from RST.
 }
 \examples{
 ###########################################################
 ## Example
 ##############################################################
 data(RoughSetData)
-decision.table <- RoughSetData$hiring.dt
+wine.data <- RoughSetData$wine.dt
+set.seed(13)
+wine.data <- wine.data[sample(nrow(wine.data)),]
 
-rules <- RI.AQRules.RST(decision.table)
+## Split the data into a training set and a test set,
+## 60\% for training and 40\% for testing:
+idx <- round(0.6 * nrow(wine.data))
+wine.tra <-SF.asDecisionTable(wine.data[1:idx,],
+                              decision.attr = 14,
+                              indx.nominal = 14)
+wine.tst <- SF.asDecisionTable(wine.data[(idx+1):nrow(wine.data), -ncol(wine.data)])
+
+true.classes <- wine.data[(idx+1):nrow(wine.data), ncol(wine.data)]
+
+## discretization:
+cut.values <- D.discretization.RST(wine.tra,
+                                   type.method = "unsupervised.quantiles",
+                                   nOfIntervals = 3)
+data.tra <- SF.applyDecTable(wine.tra, cut.values)
+data.tst <- SF.applyDecTable(wine.tst, cut.values)
+
+## rule induction from the training set:
+rules <- RI.AQRules.RST(data.tra, confidence = 0.9, timesCovered = 3)
+rules
+
+## predicitons for the test set:
+pred.vals <- predict(rules, data.tst)
+
+## checking the accuracy of predictions:
+mean(pred.vals == true.classes)
+}
+\author{
+Andrzej Janusz
+}
+\references{
+R.S. Michalski, K. Kaufman, J. Wnek: "The AQ Family of Learning Programs: A Review of Recent Developments
+and an Exemplary Application", Reports of Machine Learning and Inference Laboratory, George Mason University (1991)
 }
 \seealso{
-\code{\link{predict.RuleSetFRST}}.
+\code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
+         \code{\link{RI.LEM2Rules.RST}}.
 }
 
