@@ -999,8 +999,10 @@ predict.RuleSetFRST <- function(object, newdata, ...) {
 #' 
 #' ## predicitons for the test set:
 #' pred.vals1 <- predict(rules, data.tst)
-#' pred.vals2 <- predict(rules, data.tst, votingMethod = X.laplace)
-#' pred.vals3 <- predict(rules, data.tst, votingMethod = X.rulesCounting)
+#' pred.vals2 <- predict(rules, data.tst, 
+#'                       votingMethod = X.laplace)
+#' pred.vals3 <- predict(rules, data.tst, 
+#'                       votingMethod = X.rulesCounting)
 #' 
 #' ## checking the accuracy of predictions:
 #' mean(pred.vals1 == true.classes)

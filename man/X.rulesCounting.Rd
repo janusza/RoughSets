@@ -4,7 +4,7 @@
 \alias{X.rulesCounting}
 \title{Rule voting by counting matching rules}
 \usage{
-X.rulesCounting(rule, ...)
+X.rulesCounting(rule)
 }
 \arguments{
 \item{rule}{a decision rule, i.e. element of an "RuleSetRST" object}

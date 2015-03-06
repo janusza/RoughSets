@@ -63,7 +63,8 @@ dim(wine.discretized.reduced)
 ## check whether the attributes in the reduced data are a super-reduct of the original data:
 colnames(wine.discretized.reduced)
 class.idx <- which(colnames(wine.discretized.reduced) == "class")
-sum(duplicated(wine.discretized.reduced)) == sum(duplicated(wine.discretized.reduced[-class.idx])) # yes it is
+sum(duplicated(wine.discretized.reduced)) == sum(duplicated(wine.discretized.reduced[-class.idx]))
+## yes it is
 }
 \author{
 Andrzej Janusz

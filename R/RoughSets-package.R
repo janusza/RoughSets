@@ -380,7 +380,7 @@
 #' attr.P <- c(1,2,3)
 #' 
 #' ## compute indiscernibility relation 
-#' IND <- BC.IND.relation.RST(decision.table, attribute = attr.P)
+#' IND <- BC.IND.relation.RST(decision.table, feature.set = attr.P)
 #'
 #' ## compute lower and upper approximations 
 #' ## Let us define fourth index as the decision attribute

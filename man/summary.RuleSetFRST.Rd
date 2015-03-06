@@ -54,4 +54,7 @@ res.2 <- RI.hybridFS.FRST(decision.table, control)
 
 summary(res.2)
 }
+\author{
+Lala Septem Riza
+}
 

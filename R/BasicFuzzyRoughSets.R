@@ -164,6 +164,7 @@
 #' \code{\link{BC.positive.reg.FRST}} for calculating lower and upper approximation and determining positive regions.
 #'
 #' @title The indiscernibility relation based on fuzzy rough set theory
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param attributes a numerical vector expressing indexes of subset of attributes to be considered. 
@@ -220,7 +221,7 @@
 #' ## calculate fuzzy indiscernibility relation ##
 #' ## in this case, we are using "crisp" as a type of relation and type of aggregation
 #' control.ind <- list(type.relation = c("crisp"), type.aggregation = c("crisp"))
-#' IND <- BC.IND.relation.FRST(decision.table, attribute = attributes, control = control.ind)
+#' IND <- BC.IND.relation.FRST(decision.table, attributes = attributes, control = control.ind)
 #' 
 #' ###########################################################
 #' ## Example 2: Dataset containing real-valued attributes
@@ -622,6 +623,7 @@ BC.IND.relation.FRST <- function(decision.table, attributes = NULL, control = li
 #' So, it is obvious that before performing this function, users must execute \code{\link{BC.IND.relation.FRST}} first. 
 #'
 #' @title The fuzzy lower and upper approximations based on fuzzy rough set theory
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param IND.condAttr a \code{"IndiscernibilityRelation"} class of the conditional attributes which is produced by \code{\link{BC.IND.relation.FRST}}.
@@ -1295,6 +1297,7 @@ BC.LU.approximation.FRST <- function(decision.table, IND.condAttr, IND.decAttr, 
 #' and the lower and upper approximations by calling \code{\link{BC.LU.approximation.FRST}}.
 #'
 #' @title Positive region based on fuzzy rough set
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param fuzzyroughset a \code{"LowerUpperApproximation"} class representing a fuzzy rough set that is produced by \code{\link{BC.LU.approximation.FRST}}.
@@ -1501,6 +1504,7 @@ BC.positive.reg.FRST <- function(decision.table, fuzzyroughset){
 #' }
 #'
 #' @title The decision-relative discernibility matrix based on fuzzy rough set theory
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        It should be noted that this case only supports the nominal/symbolic decision attribute.

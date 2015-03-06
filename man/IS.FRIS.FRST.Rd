@@ -70,6 +70,9 @@ res.1 <- IS.FRIS.FRST(decision.table = decision.table, control =
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 R. Jensen and C. Cornelis, "Fuzzy-rough Instance Selection",
 Proceedings of the 19th International Conference on Fuzzy Systems (FUZZ-IEEE 2010),

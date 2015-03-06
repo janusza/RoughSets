@@ -2,33 +2,39 @@
 % Please edit documentation in R/BasicRoughSets.R
 \name{BC.IND.relation.RST}
 \alias{BC.IND.relation.RST}
-\title{Indiscernibility relation based on rough set theory}
+\title{Computation of indiscernibility classes based on the rough set theory}
 \usage{
-BC.IND.relation.RST(decision.table, attribute = NULL)
+BC.IND.relation.RST(decision.table, feature.set = NULL)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{attribute}{a numerical vector expressing indexes of subsets of attributes to be considered. The default value is \code{NULL} which means that
-all condition attributes will be considered. It should be noted that in this case, all attributes considered should be nominal attributes,
-otherwise discretization must be performed first.}
+\item{feature.set}{an integer vector indicating indexes of attributes which should be used or an object inheriting from
+                 the \code{FeatureSubset} class.
+                 The computed indiscernibility classes will be relative to this attribute set.
+                 The default value is \code{NULL} which means that
+                 all conditional attributes should be considered. It should be noted that it is usually reasonable
+                 to discretize numeric attributes before the computation of indiscernibility classes.}
 }
 \value{
-A class \code{"IndiscernibilityRelation"} which contains
+An object of a class \code{"IndiscernibilityRelation"} which is a list with the following components:
          \itemize{
-         \item \code{IND.relation}: a list representing indiscernibility relation over all objects.
-         \item \code{type.relation}: it is \code{"equivalence"}.
-         \item \code{type.model}: a string showing the type of model which is used. In this case, it is \code{"RST"} which means rough set theory.
+         \item \code{IND.relation}: a list of indiscernibility classes in the data. Each class is represented by indices
+               of data instances which belong to that class
+         \item \code{type.relation}: a character vector representing a type of relation used in computations. Currently,
+               only \code{"equivalence"} is provided.
+         \item \code{type.model}: a character vector identifying the type of model which is used.
+               In this case, it is \code{"RST"} which means the rough set theory.
          }
 }
 \description{
-This is a function implementing a fundamental part of RST: the indiscernibility relation.
-The indiscernibility relation is a binary relation showing whether two objects can be discerned. The detailed description based on theoritical point of view
-can be seen in \code{\link{A.Introduction-RoughSets}}.
+This function implements a fundamental part of RST: the indiscernibility relation.
+This binary relation indicates whether it is possible to discriminate any given pair of objects from an information system.
 }
 \details{
-This function is used as a basic function and is needed by other functions such as \code{\link{BC.LU.approximation.RST}}, \code{\link{BC.positive.reg.RST}} for calculating
-lower and upper approximations and determining the positive region. The formula of the indiscernibility relation has been explained in \code{\link{A.Introduction-RoughSets}}.
+This function can be used as a basic building block for development of other RST-based methods.
+A more detailed explanation of the notion of indiscernibility relation can be found in \code{\link{A.Introduction-RoughSets}}.
 }
 \examples{
 #############################################
@@ -36,24 +42,29 @@ lower and upper approximations and determining the positive region. The formula 
 ## Objects must be nominal/symbolic values
 ## Otherwise, we must use discretization first
 #############################################
-## Construct decision table as data frame
-dt.ex1 <- data.frame(c(1,0,2,1,1,2,2,0), c(0, 1,0, 1,0,2,1,1),
-                        c(2,1,0,0,2,0,1,1), c(2,1,1,2,0,1,1,0), c(0,2,1,2,1,1,2,1))
-colnames(dt.ex1) <- c("aa", "bb", "cc", "dd", "ee")
-decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 5,
-                                     indx.nominal = c(1:5))
+data(RoughSetData)
+hiring.data <- RoughSetData$hiring.dt
 
-## In this case, we only consider the second and third attributes.
-P <- c(2,3)
+## In this case, we only consider the second and third attribute:
+A <- c(2,3)
+## We can also compute a decision reduct:
+B <- FS.reduct.computation(hiring.data)
 
-####### Perform indiscernibility relation #######
-IND <- BC.IND.relation.RST(decision.table, attribute = P)
+## Compute the indiscernibility classes:
+IND.A <- BC.IND.relation.RST(hiring.data, feature.set = A)
+IND.A
+
+IND.B <- BC.IND.relation.RST(hiring.data, feature.set = B)
+IND.B
+}
+\author{
+Andrzej Janusz
 }
 \references{
 Z. Pawlak, "Rough Sets", International Journal of Computer and Information Sciences,
 vol. 11, no. 5, p. 341 - 356 (1982).
 }
 \seealso{
-\code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.RST}}
+\code{\link{BC.LU.approximation.RST}}, \code{\link{FS.reduct.computation}}, \code{\link{FS.feature.subset.computation}}
 }
 

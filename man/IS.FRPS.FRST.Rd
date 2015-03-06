@@ -63,6 +63,9 @@ res.1 <- IS.FRPS.FRST(decision.table, type.alpha = "FRPS.3")
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 N. Verbiest, C. Cornelis, and F. Herrera, "A Fuzzy Rough Prototype Selection Method",
 Pattern Recognition, Vol. 46, no. 10, p. 2770 - 2782 (2013).

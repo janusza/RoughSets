@@ -46,6 +46,9 @@ indx = MV.missingValueCompletion(decision.table, type.method = "deletionCases")
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, indx)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 J. Grzymala-Busse and W. Grzymala-Busse, "Handling Missing Attribute Values," in Data Mining and Knowledge Discovery Handbook,
 O. Maimon and L. Rokach, Eds. New York : Springer, 2010, pp. 33-51

@@ -148,8 +148,6 @@ calc.membershipClass <- function(nearest.dt, num.class, type = "gradual"){
 # @references
 # Richard Jensen and Chris Cornelis, "Fuzzy-rough Nearest Neighbour Classificition and Prediction",
 # Theoretical Computer Science, vol. 412, p. 5871 - 5884 (2011). 
-#
-# @export
 FRNN.alg <- function(decision.table, newdata, type.method = "C.FRNN.FRST", control = list()){
 	## get the data
 	objects <- as.matrix(decision.table)

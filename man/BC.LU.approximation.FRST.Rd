@@ -353,6 +353,9 @@ control <- list(t.implicator = "lukasiewicz", t.tnorm = "lukasiewicz")
 FRST.LU <- BC.LU.approximation.FRST(decision.table, IND.condAttr, IND.decAttr,
               type.LU = "implicator.tnorm", control = control)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 A. M. Radzikowska and E. E. Kerre, "A Comparative Study of Fuzzy Rough Sets",
 Fuzzy Sets and Systems, vol. 126, p. 137 - 156 (2002).

@@ -196,7 +196,7 @@ attributes <- c(2, 3)
 ## calculate fuzzy indiscernibility relation ##
 ## in this case, we are using "crisp" as a type of relation and type of aggregation
 control.ind <- list(type.relation = c("crisp"), type.aggregation = c("crisp"))
-IND <- BC.IND.relation.FRST(decision.table, attribute = attributes, control = control.ind)
+IND <- BC.IND.relation.FRST(decision.table, attributes = attributes, control = control.ind)
 
 ###########################################################
 ## Example 2: Dataset containing real-valued attributes
@@ -289,6 +289,9 @@ attributes <- c(1,2,3,4)
 control.9 <- list(type.aggregation = c("t.tnorm", "lukasiewicz"),
                     type.relation = c("tolerance", "eq.1"))
 IND.9 <- BC.IND.relation.FRST(decision.table, attributes = attributes, control = control.9)
+}
+\author{
+Lala Septem Riza
 }
 \references{
 M. Genton, "Classes of Kernels for Machine Learning: a Statistics Perspective",

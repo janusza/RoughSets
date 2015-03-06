@@ -2,7 +2,7 @@
 % Please edit documentation in R/IOFunctions.R
 \name{print.FeatureSubset}
 \alias{print.FeatureSubset}
-\title{The print function of FeatureSubset objects}
+\title{The print method of FeatureSubset objects}
 \usage{
 \method{print}{FeatureSubset}(x, ...)
 }
@@ -26,5 +26,8 @@ decision.table <- RoughSetData$hiring.dt
 
 res.1 <- FS.reduct.computation(decision.table)
 print(res.1)
+}
+\author{
+Andrzej Janusz
 }
 

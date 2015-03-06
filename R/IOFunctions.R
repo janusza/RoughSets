@@ -154,6 +154,7 @@ SF.asDecisionTable <- function(dataset, decision.attr = NULL, indx.nominal = NUL
 #' This function enables the output of a summary of the rule induction methods. 
 #'
 #' @title The summary function of rules based on FRST
+#' @author Lala Septem Riza
 #' 
 #' @param object a \code{"RuleSetFRST"} object. See \code{\link{RI.hybridFS.FRST}} and \code{\link{RI.GFRS.FRST}}.
 #' @param ... the other parameters.
@@ -270,9 +271,10 @@ summary.RuleSetRST <- function(object, ...){
 }
 
 
-#' This is a print method for RuleSetRST objects. 
+#' A print method for RuleSetRST objects. 
 #'
-#' @title The print function of rules based on RST
+#' @title The print function for RST rule sets
+#' @author Andrzej Janusz
 #' 
 #' @param x a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.
 #' @param ... the other parameters.
@@ -282,9 +284,9 @@ summary.RuleSetRST <- function(object, ...){
 #' ## Example : Classification problem
 #' ###########################################################
 #' data(RoughSetData)
-#' decision.table <- RoughSetData$hiring.dt   						 
+#' hiring.data <- RoughSetData$hiring.dt   						 
 #'						 
-#' rules <- RI.LEM2Rules.RST(decision.table)
+#' rules <- RI.LEM2Rules.RST(hiring.data)
 #'
 #' print(rules)
 #' @export  
@@ -302,7 +304,8 @@ print.RuleSetRST <- function(x, ...){
 
 #' This is a print method for FeatureSubset objects. 
 #'
-#' @title The print function of FeatureSubset objects
+#' @title The print method of FeatureSubset objects
+#' @author Andrzej Janusz
 #' 
 #' @param x an object inheriting from \code{"FeatureSubset"} class. See \code{\link{FS.reduct.computation}}.
 #' @param ...  parameters passes to other functions (currently omitted).
@@ -354,7 +357,7 @@ print.FeatureSubset <- function(x, ...){
 #' #### calculate fuzzy indiscernibility relation ####
 #' ## in this case, we are using "crisp" as a type of relation and type of aggregation
 #' control.ind <- list(type.relation = c("crisp"), type.aggregation = c("crisp"))
-#' IND <- BC.IND.relation.FRST(decision.table, attribute = attributes, control = control.ind)
+#' IND <- BC.IND.relation.FRST(decision.table, attributes = attributes, control = control.ind)
 #'
 #' summary(IND)
 #' @export  
@@ -395,7 +398,7 @@ summary.IndiscernibilityRelation <- function(object, ...){
 #' P <- c(2,3)
 #' 
 #' ####### Compute indiscernibility relation #######
-#' IND <- BC.IND.relation.RST(decision.table, attribute = P)
+#' IND <- BC.IND.relation.RST(decision.table, feature.set = P)
 #'
 #' ####### Compute lower and upper approximation #####
 #' decision.attr <- c(5)
@@ -450,7 +453,7 @@ summary.LowerUpperApproximation <- function(object, ...){
 #' P <- c(2,3)
 #' 
 #' ####### Perform indiscernibility relation #######
-#' IND <- BC.IND.relation.RST(decision.table, attribute = P)
+#' IND <- BC.IND.relation.RST(decision.table, feature.set = P)
 #'
 #' ####### Perform lower and upper approximations #####
 #' decision.attr <- c(5)
@@ -754,10 +757,11 @@ toStr.rules <- function(rules, type.task = "classification", nominal.att = NULL,
 }
 
 #' The function can be used to change a custom set of attribute names from 
-#' a decision table into an object of FeatureSubset class. It can be useful 
+#' a decision table into an object of the FeatureSubset class. It can be useful 
 #' for converting results of discernibility matrix-based attribute selection 
 #' methods (i.e. functions FS.all.reducts.computation and FS.one.reduct.computation).
 #' @title Converting custom attribute name sets into a FeatureSubset object
+#' @author Andrzej Janusz
 #' 
 #' @param colNames a character vector containing names of attributes from a decision table
 #' @param decisionTable a decision table which contains attributes from colNames
@@ -768,14 +772,14 @@ toStr.rules <- function(rules, type.task = "classification", nominal.att = NULL,
 #' ## Example 1: 
 #' #############################################################
 #' data(RoughSetData)
-#' decision.table <- RoughSetData$wine.dt
+#' wine.data <- RoughSetData$wine.dt
 #' 
 #' ## discretization and generation of a reduct
-#' cut.values <- D.discretization.RST(decision.table,
+#' cut.values <- D.discretization.RST(wine.data,
 #'                                    type.method = "unsupervised.quantiles",
 #'                                    nOfIntervals = 3)
-#' decision.table <- SF.applyDecTable(decision.table, cut.values)
-#' disc.matrix <- BC.discernibility.mat.RST(decision.table)
+#' decision.table <- SF.applyDecTable(wine.data, cut.values)
+#' disc.matrix <- BC.discernibility.mat.RST(wine.data)
 #' reduct <- FS.one.reduct.computation(disc.matrix, greedy=TRUE) 
 #' class(reduct)
 #' is(reduct$decision.reduct[[1]])

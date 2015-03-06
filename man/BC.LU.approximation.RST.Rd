@@ -2,57 +2,53 @@
 % Please edit documentation in R/BasicRoughSets.R
 \name{BC.LU.approximation.RST}
 \alias{BC.LU.approximation.RST}
-\title{The lower and upper approximations based on rough set}
+\title{Computation of lower and upper approximations of decision classes}
 \usage{
-BC.LU.approximation.RST(decision.table, IND, ...)
+BC.LU.approximation.RST(decision.table, IND)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
-It should be noted that in this case, attributes considered must be nominal,
-otherwise the discretization task must be performed first.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{IND}{an \code{"IndiscernibilityRelation"} class representing the partitions of the indiscernibility relation.}
-
-\item{...}{other parameters}
+\item{IND}{an object inheriting from the \code{"IndiscernibilityRelation"} class, which represents indiscernibility clasees in the data.}
 }
 \value{
-A class \code{"LowerUpperApproximation"} representing rough set (the lower and upper approximations). It contains the following components:
+An object of a class \code{"LowerUpperApproximation"} which is a list with the following components:
         \itemize{
-         \item \code{lower.approximation}: a list containing object indexes included in the lower approximation based on decision concepts.
-         \item \code{upper.approximation}: a list containing object indexes included in the upper approximation based on decision concepts.
-         \item \code{type.model}: a string showing type of the used model. In this case, it is \code{"RST"} means rough set theory.
+         \item \code{lower.approximation}: a list with indices of data instances included in lower approximations of decision classes.
+         \item \code{upper.approximation}: a list with indices of data instances included in upper approximations of decision classes.
+         \item \code{type.model}: a character vector identifying the type of model which is used.
+               In this case, it is \code{"RST"} which means the rough set theory.
          }
 }
 \description{
-This is a function implementing a fundamental part of rough set theory:
-lower and upper approximations. The lower and upper approximations determine whether the objects can be certainty or possibly classified in a particular class based on the basis of available knowledge.
-The detailed theoretical description
-can be seen in \code{\link{A.Introduction-RoughSets}}.
+This function implements a fundamental part of RST: lower and upper approximations.
+The lower and upper approximations determine whether the objects can be certainty or possibly classified
+to a particular decision class on the basis of available knowledge.
 }
 \details{
-This function depends on \code{\link{BC.IND.relation.RST}} which calculates the equivalence classes of the indiscernibility relation. So, it is obvious that
-before performing this function, users must execute \code{\link{BC.IND.relation.RST}} first. Furthermore, we provide parameter \code{decision.attr} representing
-a column index of the decision attribute, so actually, users may choose any index to be considered as the decision attribute.
+This function can be used as a basic building block for development of other RST-based methods.
+A more detailed explanation of this notion can be found in \code{\link{A.Introduction-RoughSets}}.
 }
 \examples{
 #######################################
 ## Example: Using simple data set
 #######################################
-dt.ex1 <- data.frame(c(1,0,2,1,1,2,2,0), c(0, 1,0, 1,0,2,1,1),
-                        c(2,1,0,0,2,0,1,1), c(2,1,1,2,0,1,1,0), c(0,2,1,2,1,1,2,1))
-colnames(dt.ex1) <- c("aa", "bb", "cc", "dd", "ee")
-decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 5,
-                                     indx.nominal = c(1:5))
+data(RoughSetData)
+hiring.data <- RoughSetData$hiring.dt
 
-## Define considered attributes
-P <- c(2,3)
+## We select a single attribute for computation of indiscernibility classes:
+A <- c(2)
 
-####### Compute indiscernibility relation #######
-IND <- BC.IND.relation.RST(decision.table, attribute = P)
+## Compute the indiscernibility classes:
+IND.A <- BC.IND.relation.RST(hiring.data, feature.set = A)
 
 ####### Compute lower and upper approximation #####
-decision.attr <- c(5)
-roughset <- BC.LU.approximation.RST(decision.table, IND)
+roughset <- BC.LU.approximation.RST(hiring.data, IND.A)
+roughset
+}
+\author{
+Andrzej Janusz
 }
 \references{
 Z. Pawlak, "Rough Sets", International Journal of Computer and Information Sciences,

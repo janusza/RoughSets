@@ -27,7 +27,6 @@
 # @param max.scale the maximum value within normalization.
 # @seealso \code{\link{norm.data}}
 # @return the real-valued data
-# @export
 denorm.data <- function(dt.norm, range.data, min.scale = 0, max.scale = 1){
 	
 	func <- function(i, j, dt.norm, range.data, min.scale, max.scale){
@@ -51,7 +50,6 @@ denorm.data <- function(dt.norm, range.data, min.scale = 0, max.scale = 1){
 # @param max.scale the maximum value within normalization.
 # @seealso \code{\link{denorm.data}}
 # @return the normalized data
-# @export
 norm.data <- function(dt.ori, range.data, min.scale = 0, max.scale = 1){
 
 	func <- function(i, j, dt.ori, range.data, min.scale, max.scale){

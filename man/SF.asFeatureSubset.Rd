@@ -22,14 +22,14 @@ an object of a class FeatureSubset
 ## Example 1:
 #############################################################
 data(RoughSetData)
-decision.table <- RoughSetData$wine.dt
+wine.data <- RoughSetData$wine.dt
 
 ## discretization and generation of a reduct
-cut.values <- D.discretization.RST(decision.table,
+cut.values <- D.discretization.RST(wine.data,
                                    type.method = "unsupervised.quantiles",
                                    nOfIntervals = 3)
-decision.table <- SF.applyDecTable(decision.table, cut.values)
-disc.matrix <- BC.discernibility.mat.RST(decision.table)
+decision.table <- SF.applyDecTable(wine.data, cut.values)
+disc.matrix <- BC.discernibility.mat.RST(wine.data)
 reduct <- FS.one.reduct.computation(disc.matrix, greedy=TRUE)
 class(reduct)
 is(reduct$decision.reduct[[1]])
@@ -42,8 +42,11 @@ class(reduct)
 }
 \description{
 The function can be used to change a custom set of attribute names from
-a decision table into an object of FeatureSubset class. It can be useful
+a decision table into an object of the FeatureSubset class. It can be useful
 for converting results of discernibility matrix-based attribute selection
 methods (i.e. functions FS.all.reducts.computation and FS.one.reduct.computation).
+}
+\author{
+Andrzej Janusz
 }
 

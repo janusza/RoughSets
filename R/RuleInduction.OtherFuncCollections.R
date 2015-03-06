@@ -260,7 +260,7 @@ rulesVoting <- function(object, ruleSet, votingMethod = X.ruleStrength, ...) {
 #' @seealso Other currently available voting methods are: \code{\link{X.laplace}}, \code{\link{X.rulesCounting}}.
 #' 
 #' @export
-X.ruleStrength <- function(rule, ...) {
+X.ruleStrength <- function(rule) {
 	return(length(rule$support) * length(rule$idx))
 }
 
@@ -276,7 +276,7 @@ X.ruleStrength <- function(rule, ...) {
 #' @seealso Other currently available voting methods are: \code{\link{X.ruleStrength}}, \code{\link{X.rulesCounting}}.
 #' 
 #' @export
-X.laplace <- function(rule, ...) {
+X.laplace <- function(rule) {
 	return(rule$laplace)
 }
 
@@ -293,7 +293,7 @@ X.laplace <- function(rule, ...) {
 #' @seealso Other currently available voting methods are: \code{\link{X.ruleStrength}}, \code{\link{X.laplace}}.
 #' 
 #' @export
-X.rulesCounting = function(rule, ...) {
+X.rulesCounting = function(rule) {
 	return(1)
 }
 

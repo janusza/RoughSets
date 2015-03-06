@@ -27,7 +27,7 @@ decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 5,
 P <- c(2,3)
 
 ####### Compute indiscernibility relation #######
-IND <- BC.IND.relation.RST(decision.table, attribute = P)
+IND <- BC.IND.relation.RST(decision.table, feature.set = P)
 
 ####### Compute lower and upper approximation #####
 decision.attr <- c(5)

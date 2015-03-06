@@ -121,6 +121,9 @@ control <- list(type.LU = "vqrs", k = 20, q.some = c(0.1, 0.6), q.most = c(0.2, 
 \dontrun{res.2 <- C.FRNN.FRST(decision.table = decision.table, newdata = tst.iris,
                              control = control)}
 }
+\author{
+Lala Septem Riza
+}
 \references{
 R. Jensen and C. Cornelis, "Fuzzy-rough Nearest Neighbour Classification and Prediction",
 Theoretical Computer Science, vol. 412, p. 5871 - 5884 (2011).

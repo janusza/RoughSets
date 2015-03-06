@@ -69,6 +69,9 @@ control <- list(m = 2)
 \dontrun{res.test.FRNN.O <- C.FRNN.O.FRST(decision.table = decision.table, newdata = tst.iris,
                                  control = control)}
 }
+\author{
+Lala Septem Riza
+}
 \references{
 M. Sarkar, "Fuzzy-Rough Nearest-Neighbor Algorithm in Classification"
 Fuzzy Sets and Systems, vol. 158, no. 19, p. 2123 - 2152 (2007).

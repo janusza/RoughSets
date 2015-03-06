@@ -2,7 +2,7 @@
 % Please edit documentation in R/IOFunctions.R
 \name{print.RuleSetRST}
 \alias{print.RuleSetRST}
-\title{The print function of rules based on RST}
+\title{The print function for RST rule sets}
 \usage{
 \method{print}{RuleSetRST}(x, ...)
 }
@@ -15,17 +15,20 @@
 prints its argument and returns it invisibly
 }
 \description{
-This is a print method for RuleSetRST objects.
+A print method for RuleSetRST objects.
 }
 \examples{
 ###########################################################
 ## Example : Classification problem
 ###########################################################
 data(RoughSetData)
-decision.table <- RoughSetData$hiring.dt
+hiring.data <- RoughSetData$hiring.dt
 
-rules <- RI.LEM2Rules.RST(decision.table)
+rules <- RI.LEM2Rules.RST(hiring.data)
 
 print(rules)
+}
+\author{
+Andrzej Janusz
 }
 

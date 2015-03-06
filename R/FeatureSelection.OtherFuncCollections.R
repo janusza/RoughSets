@@ -99,7 +99,7 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 	## get indiscernibility relation for ALL attribute for stopping criteria
 	if (type.method == "quickreduct.RST"){
 		## make equivalence class
-		IND <- BC.IND.relation.RST(decision.table, attribute = c(P))
+		IND <- BC.IND.relation.RST(decision.table, feature.set = c(P))
 			
 		## get rough set
 		roughset <- BC.LU.approximation.RST(decision.table, IND)
@@ -169,7 +169,7 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 		for (i in 1 : ncol(P)){		
 			if (type.method == "quickreduct.RST"){
 				## make equivalence class
-				IND <- BC.IND.relation.RST(decision.table, attribute = c(P[, i]))
+				IND <- BC.IND.relation.RST(decision.table, feature.set = c(P[, i]))
 
 				## get rough set
 				roughset <- BC.LU.approximation.RST(decision.table, IND)

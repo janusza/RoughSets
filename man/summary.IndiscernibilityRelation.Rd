@@ -36,7 +36,7 @@ attributes <- c(2, 3)
 #### calculate fuzzy indiscernibility relation ####
 ## in this case, we are using "crisp" as a type of relation and type of aggregation
 control.ind <- list(type.relation = c("crisp"), type.aggregation = c("crisp"))
-IND <- BC.IND.relation.FRST(decision.table, attribute = attributes, control = control.ind)
+IND <- BC.IND.relation.FRST(decision.table, attributes = attributes, control = control.ind)
 
 summary(IND)
 }

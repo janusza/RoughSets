@@ -38,7 +38,7 @@ decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 5,
 P <- c(2,3)
 
 ####### Perform indiscernibility relation #######
-IND <- BC.IND.relation.RST(decision.table, attribute = P)
+IND <- BC.IND.relation.RST(decision.table, feature.set = P)
 
 ####### Perform lower and upper approximations #####
 roughset <- BC.LU.approximation.RST(decision.table, IND)

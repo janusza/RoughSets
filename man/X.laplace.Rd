@@ -4,7 +4,7 @@
 \alias{X.laplace}
 \title{Rule voting by the Laplace estimate}
 \usage{
-X.laplace(rule, ...)
+X.laplace(rule)
 }
 \arguments{
 \item{rule}{a decision rule, i.e. element of an "RuleSetRST" object}

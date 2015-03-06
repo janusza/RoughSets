@@ -4,7 +4,7 @@
 \alias{X.ruleStrength}
 \title{Rule voting by strength of the rule}
 \usage{
-X.ruleStrength(rule, ...)
+X.ruleStrength(rule)
 }
 \arguments{
 \item{rule}{a decision rule, i.e. element of a "RuleSetRST" object}

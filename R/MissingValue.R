@@ -22,6 +22,7 @@
 #' the user need to execute \code{\link{SF.applyDecTable}}. 
 #'
 #' @title Missing value completion by deleting instances
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        Note: missing values are recognized as NA. 
@@ -65,6 +66,7 @@ MV.deletionCases <- function(decision.table){
 #' In order to generate a new decision table, we need to execute \code{\link{SF.applyDecTable}}. 
 #'
 #' @title The most common value or mean of an attribute restricted to a concept
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        Note: missing values are recognized as NA. 
@@ -121,6 +123,7 @@ MV.mostCommonValResConcept <- function(decision.table){
 #' In order to generate a new decision table, we need to execute \code{\link{SF.applyDecTable}}. 
 #'
 #' @title Replacing missing attribute values by the attribute mean or common values
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        Note: missing values are recognized as NA. 
@@ -187,6 +190,7 @@ MV.mostCommonVal <- function(decision.table){
 #' missing attribute value.
 #'
 #' @title Global Closest Fit
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        Note: missing values are recognized as NA. 
@@ -268,6 +272,7 @@ MV.globalClosestFit <- function(decision.table){
 #' the original concepts, by restricting cases to the concept.
 #'
 #' @title Concept Closest Fit
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        Note: missing values are recognized as NA. 
@@ -345,6 +350,7 @@ MV.conceptClosestFit <- function(decision.table){
 #' It is a wrapper function for missing value completion. 
 #'
 #' @title Wrapper function of missing value completion
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        Note: missing values are recognized as NA. 

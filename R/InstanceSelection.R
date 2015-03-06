@@ -38,7 +38,8 @@
 #' The other additional function called \code{\link{SF.applyDecTable}} is used to produce the new decision table based on 
 #' the output of this function.
 #'
-#' @title The fuzzy rough instance selection algorithm 
+#' @title The fuzzy rough instance selection algorithm
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param control a list of other parameters which are 
@@ -148,6 +149,7 @@ IS.FRIS.FRST <- function(decision.table, control = list()){
 #' the output of this function.
 #'
 #' @title The fuzzy rough prototype selection method
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #' @param type.alpha type of FRPS expressing the equations of \eqn{\alpha}. The default value is \code{"FRPS.1"}.

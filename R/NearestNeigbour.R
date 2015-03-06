@@ -32,6 +32,7 @@
 #' The predicted value of \eqn{y} is obtained by selecting class \eqn{c} where \eqn{o_c(y)} is maximum.
 #'  
 #' @title The fuzzy-rough ownership nearest neighbor algorithm
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
 #'        It should be noted that the data must be numeric values instead of strings/characters.  
@@ -184,6 +185,7 @@ C.FRNN.O.FRST <- function(decision.table, newdata, control = list()){
 #' } 
 #'
 #' @title The fuzzy-rough nearest neighbor algorithm
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        It should be noted that the data must be numeric values instead of string/char. 
@@ -280,6 +282,7 @@ C.FRNN.FRST <- function(decision.table, newdata, control = list()){
 #' }
 #' 
 #' @title The positive region based fuzzy-rough nearest neighbor algorithm 
+#' @author Lala Septem Riza
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        It should be noted that the data must be numeric values instead of string/char. 

@@ -95,6 +95,9 @@ FRST.LU <- BC.LU.approximation.FRST(decision.table, IND.condAttr, IND.decAttr,
 #### Determine fuzzy regions ####
 res.2 <- BC.positive.reg.FRST(decision.table, FRST.LU)
 }
+\author{
+Lala Septem Riza
+}
 \references{
 R. Jensen and Q. Shen,
 "New Approaches to Fuzzy-Rough Feature Selection",
