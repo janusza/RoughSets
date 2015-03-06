@@ -35,4 +35,7 @@ region <- BC.positive.reg.RST(decision.table, roughset)
 
 summary(region)
 }
+\author{
+Lala Septem Riza
+}
 

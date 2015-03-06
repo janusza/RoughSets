@@ -10,9 +10,8 @@ SF.applyDecTable(decision.table, object, control = list())
 \item{decision.table}{a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{object}{a class resulting from feature selection (e.g., \code{\link{FS.reduct.computation}}), discretization (e.g., \code{\link{D.discretization.RST}}),
-              instance selection functions
-
-             (e.g., \code{\link{IS.FRIS.FRST}}), and missing value completion (e.g., \code{\link{MV.missingValueCompletion}}).}
+ instance selection functions
+(e.g., \code{\link{IS.FRIS.FRST}}), and missing value completion (e.g., \code{\link{MV.missingValueCompletion}}).}
 
 \item{control}{a list of other parameters which are \code{indx.reduct} representing an index of the chosen decision reduct. It is only considered when
 we calculate all reducts using \code{\link{FS.all.reducts.computation}}. The default value is that the first reduct will be chosen.}
@@ -105,5 +104,8 @@ val.NA = MV.missingValueCompletion(decision.table, type.method = "globalClosetFi
 
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, val.NA)
+}
+\author{
+Lala Septem Riza and Andrzej Janusz
 }
 

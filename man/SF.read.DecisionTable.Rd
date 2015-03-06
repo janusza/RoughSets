@@ -8,28 +8,25 @@ SF.read.DecisionTable(filename, decision.attr = NULL, indx.nominal = NULL,
   ...)
 }
 \arguments{
-\item{filename}{a file name that contains objects/data. See also \code{\link{read.table}}.}
+\item{filename}{a path with a file name.}
 
-\item{decision.attr}{a index position of decision attribute. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.attr}{an integer indicating an index of the decision attribute. See \code{\link{SF.asDecisionTable}}.}
 
-\item{indx.nominal}{a indexes of nominal values. See \code{\link{SF.asDecisionTable}}.}
+\item{indx.nominal}{an integer vector with indices of attributes which should be considered as nominal.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{...}{other parameters which are involved in \code{read.table} function. See \code{\link{read.table}}.
-An important parameter in \code{\link{read.table}} that should be taken into account is \code{col.names}.}
+\item{...}{additional parameters which are passed to the \code{read.table} function. See \code{\link{read.table}}.}
 }
 \value{
-A \code{"DecisionTable"} class which is the standard decision table. See \code{\link{SF.asDecisionTable}}.
+An object of the \code{"DecisionTable"} class. See \code{\link{SF.asDecisionTable}}.
 }
 \description{
-It is a additional function used to import dataset from files and then construct them into the standard decision table.
+This function can be used to import data sets from files and then construct a \code{DecisionTable} object. It uses
+\code{\link{read.table}} function from \code{base} R.
 }
 \details{
-It is used to read a data set from files with formats such as: ".csv", ".txt" or ".dat" into the decision table format.
-The data should be in a tabular format containing rows and columns without a header, where every row represents
+The data should be in a tabular format containing rows and columns, where every row represents
 an object/instance, while columns represent attributes of the objects.
-
-The output of this function is a decision table which fulfills the standard format of the RoughSets package
-(See \code{\link{SF.asDecisionTable}}).
 }
 \examples{
 #############################################################
@@ -45,5 +42,8 @@ data <- data.frame(c(0.12, 0.23, 0.24), c(1,3,2), c(10, 12, 18), c("a", "a", "b"
 ## respectively.
 \dontrun{decision.table <- SF.read.DecisionTable(filename = "tes.dat", decision.attr = 5,
                   indx.nominal = c(2, 5), sep= " ", col.names = c("v1", "v2", "v3", "v4", "o1"))}
+}
+\author{
+Andrzej Janusz
 }
 

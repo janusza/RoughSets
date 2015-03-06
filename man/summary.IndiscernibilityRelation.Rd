@@ -40,4 +40,7 @@ IND <- BC.IND.relation.FRST(decision.table, attributes = attributes, control = c
 
 summary(IND)
 }
+\author{
+Lala Septem Riza
+}
 

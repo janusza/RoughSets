@@ -34,4 +34,7 @@ roughset <- BC.LU.approximation.RST(decision.table, IND)
 
 summary(roughset)
 }
+\author{
+Lala Septem Riza
+}
 

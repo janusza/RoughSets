@@ -2,60 +2,55 @@
 % Please edit documentation in R/IOFunctions.R
 \name{SF.asDecisionTable}
 \alias{SF.asDecisionTable}
-\title{The construction function}
+\title{Converting a data.frame into a \code{DecisionTable} object}
 \usage{
 SF.asDecisionTable(dataset, decision.attr = NULL, indx.nominal = NULL)
 }
 \arguments{
-\item{dataset}{a data frame representing the dataset that contains objects/instances and attributes/features in its rows and columns, respectively.
+\item{dataset}{data.frame that contains objects/instances and attributes/features in its rows and columns, respectively.
 See in Section \code{Details}.}
 
-\item{decision.attr}{a numeric value representing the index position of the decision attribute. If we ignore this parameter, then
-the function will treat the data as an information system or newdata/testing data. In other words,
-we must define the index of decision attribute if we want to construct a decision table (i.e., a training dataset).}
+\item{decision.attr}{an integer value representing the index position of the decision attribute. If this parameter is ignored, then
+the function will treat the data as an information system or newdata/test data. In other words,
+it is necessary to define the index of the decision attribute in order to construct a decision table (e.g. a training data set).}
 
-\item{indx.nominal}{a vector representing indexes of nominal values. It is used to define specific indexes as nominal attributes.
-In a case, we do not define a value of this parameter, then the function will be using heuristic techniques to define the nominal attributes.
-The following is a technique that will be used:
-    \itemize{
-    \item string values: they will be recognized as nominal/symbolic values.
-    \item integer values: they will be recognized as continuous/real values.
-    \item decimal/real values: they will be recognized as continuous/real values.
-    \item indx.nominal: the attributes that are set in this parameter will be assigned as nominal values.
-    }}
+\item{indx.nominal}{a logical vector indicating nominal attributes in the data.
+        If this parameter is not given, then the function will use a heuristic to guess which of the attributes are nominal.
+        The following rules will be applied used:
+            \itemize{
+            \item an attribute contains character values or factors: it will be recognized as a nominal attribute.
+            \item an attribute contains integer or numeric values: it will be recognized as a numeric attribute.
+            \item indx.nominal: the indicated attributes will be considered as nominal.
+            }}
 }
 \value{
-A \code{"DecisionTable"} class which is the standard decision table.
+An object of the \code{"DecisionTable"} class.
 }
 \description{
-It is a function used to construct a standard decision table in the \code{RoughSets} package. So, users are strongly recommended to
-call this function first before any other functions in this package.
+This function converts \code{data.frames} into \code{DecisionTable} objects. This is a standard data representation
+in the \code{RoughSets} package.
 }
 \details{
-The \code{RoughSets} package requires a standard decision table to calculate a particular task.
-The standard decision table is a \code{"DecisionTable"} class which constitutes the set of all objects/instances (universe of discourse) and other
-attributes. The objects are built by a table or data frame where the number of rows and columns represent the number of objects/instances and attributes, respectively.
-Three important attributes that describe the decision table are as follows.
+An object of the \code{"DecisionTable"} class adds a few attributes to a standard data.frame:
 \itemize{
-  \item \code{desc.attrs}: a list containing the names of attributes and range of the data. There are two kinds of representation
-                           in this parameters which depend on whether the attributes are
-                           in symbolic/nominal or real values, for example:
+  \item \code{desc.attrs}: a list containing the names of attributes and their range/possible symbolic values.
+                           There are two kinds of representation in this parameters which depend on whether the attributes are
+                           nominal or numeric, for example:
                            \itemize{
-                             \item symbolic/nominal attribute: \code{a = c(1,2,3)} means the attribute \code{a} has values 1, 2, and 3.
-                             \item real/continuous attribute: \code{a = c(10, 20)} means the attribute \code{a} has values between 10 and 20.
+                             \item nominal attribute: \code{a = c(1,2,3)} means that the attribute \code{a} has values 1, 2, and 3.
+                             \item numeric attribute: \code{a = c(10, 20)} means that the attribute \code{a} has values between 10 and 20.
                            }
-  \item \code{nominal.attrs}: a vector containing boolean values that show whether
-                           the related attributes is a nominal value or not.
-                           For example:
-
-\code{nominal.attrs = c(FALSE, TRUE, FALSE)} means that the first and third attributes
-                           are continuous attributes and otherwise for the second one.
- \item \code{decision.attr}: a numeric value representing an index of the decision attribute. Users must define the index of the decision attribute
-                           when they want to construct a decision table or training dataset. But, it is a null value when constructing a testing dataset/newdata.
-                           It is strongly recommended that the index of decision attribute is
-        					  put on the last column of the dataset.
+  \item \code{nominal.attrs}: a logical vector whose length equals the number of columns in the data. In this vector \code{TRUE} values
+                           indicate that the corresponding attribute is a nominal. For example:
+                           \code{nominal.attrs = c(FALSE, TRUE, FALSE)} means that the first and third attributes
+                           are numeric and the second one is nominal.
+ \item \code{decision.attr}: a numeric value representing the index of the decision attribute. It is necessary to define
+                           the index of the decision attribute in order to construct a proper decision system. If the value
+                           of \code{decision.attr} is NULL, the constructed object will correspond to an information system.
+                           It is strongly recommended to place the decision attribute as the last data column.
 }
-It also has been provided the function \code{\link{SF.read.DecisionTable}} which is used to import from a file and then construct into the decision table.
+\code{"DecisionTable"} objects allow to use all methods of standard data.frame objects.
+The function \code{\link{SF.read.DecisionTable}} can be used to import data from a file and then construct \code{DecisionTable} object.
 }
 \examples{
 ################################################################
@@ -65,5 +60,11 @@ It also has been provided the function \code{\link{SF.read.DecisionTable}} which
 ## Let use iris which is available in R be dataset
 decision.table <- SF.asDecisionTable(dataset = iris, decision.attr = 5,
                   indx.nominal = 5)
+}
+\author{
+Andrzej Janusz
+}
+\seealso{
+\code{\link{SF.read.DecisionTable}}, \code{\link{SF.applyDecTable}}.
 }
 
