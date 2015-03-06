@@ -866,7 +866,8 @@ convertCNFtoDNF <- function(CNFclauses){
     tmpDNF = CNFclauses[[1]]
     for(i in 2:length(CNFclauses))  {
       ## expand two clauses into possible DNFs
-      tmpDNF = expand.grid(tmpDNF, CNFclauses[[i]], KEEP.OUT.ATTRS = F, stringsAsFactors = F)
+      tmpDNF = expand.grid(tmpDNF, CNFclauses[[i]], 
+                           KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
       tmpDNF = split(tmpDNF, 1:nrow(tmpDNF))
       ## take only those which are unique
       tmpDNF = lapply(tmpDNF, function(x) unique(unlist(x)))

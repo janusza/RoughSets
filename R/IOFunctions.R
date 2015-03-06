@@ -401,8 +401,7 @@ summary.IndiscernibilityRelation <- function(object, ...){
 #' IND <- BC.IND.relation.RST(decision.table, feature.set = P)
 #'
 #' ####### Compute lower and upper approximation #####
-#' decision.attr <- c(5)
-#' roughset <- BC.LU.approximation.RST(decision.table, IND, decision.attr)
+#' roughset <- BC.LU.approximation.RST(decision.table, IND)
 #'
 #' summary(roughset)
 #' @export  
@@ -456,8 +455,7 @@ summary.LowerUpperApproximation <- function(object, ...){
 #' IND <- BC.IND.relation.RST(decision.table, feature.set = P)
 #'
 #' ####### Perform lower and upper approximations #####
-#' decision.attr <- c(5)
-#' roughset <- BC.LU.approximation.RST(decision.table, IND, decision.attr)
+#' roughset <- BC.LU.approximation.RST(decision.table, IND)
 #' 
 #' ####### Determine the positive region ######
 #' region <- BC.positive.reg.RST(decision.table, roughset)

@@ -14,7 +14,7 @@ See \code{\link{SF.asDecisionTable}}.}
                  the \code{FeatureSubset} class.
                  The computed indiscernibility classes will be relative to this attribute set.
                  The default value is \code{NULL} which means that
-                 all conditional attributes should be considered. It should be noted that it is usually reasonable
+                 all conditional attributes should be considered. It is usually reasonable
                  to discretize numeric attributes before the computation of indiscernibility classes.}
 }
 \value{
@@ -37,10 +37,6 @@ This function can be used as a basic building block for development of other RST
 A more detailed explanation of the notion of indiscernibility relation can be found in \code{\link{A.Introduction-RoughSets}}.
 }
 \examples{
-#############################################
-## Example 1: Using simple data set
-## Objects must be nominal/symbolic values
-## Otherwise, we must use discretization first
 #############################################
 data(RoughSetData)
 hiring.data <- RoughSetData$hiring.dt

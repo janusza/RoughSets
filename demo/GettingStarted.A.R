@@ -13,9 +13,7 @@ attr.P <- c(1,2,3)
 IND <- BC.IND.relation.RST(decision.table, feature.set = attr.P)
 
 ## compute lower and upper approximations
-## Let us define fourth index as the decision attribute
-decision.attr <- c(4)
-roughset <- BC.LU.approximation.RST(decision.table, IND, decision.attr)
+roughset <- BC.LU.approximation.RST(decision.table, IND)
 
 ## Determine regions
 region.RST <- BC.positive.reg.RST(decision.table, roughset)

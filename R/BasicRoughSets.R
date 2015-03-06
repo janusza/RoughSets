@@ -32,7 +32,7 @@
 #'                  the \code{FeatureSubset} class.
 #'                  The computed indiscernibility classes will be relative to this attribute set. 
 #'                  The default value is \code{NULL} which means that 
-#'                  all conditional attributes should be considered. It should be noted that it is usually reasonable 
+#'                  all conditional attributes should be considered. It is usually reasonable 
 #'                  to discretize numeric attributes before the computation of indiscernibility classes.
 #'
 #' @return An object of a class \code{"IndiscernibilityRelation"} which is a list with the following components:
@@ -52,10 +52,6 @@
 #' vol. 11, no. 5, p. 341 - 356 (1982).
 #'
 #' @examples
-#' #############################################
-#' ## Example 1: Using simple data set
-#' ## Objects must be nominal/symbolic values
-#' ## Otherwise, we must use discretization first 
 #' #############################################
 #' data(RoughSetData)
 #' hiring.data <- RoughSetData$hiring.dt
@@ -111,7 +107,7 @@ BC.IND.relation.RST <- function(decision.table, feature.set = NULL){
 	return(class.mod)
 }
 
-#' This function implements a fundamental part of RST: lower and upper approximations. 
+#' This function implements a fundamental part of RST: computation of lower and upper approximations. 
 #' The lower and upper approximations determine whether the objects can be certainty or possibly classified 
 #' to a particular decision class on the basis of available knowledge.
 #' 
@@ -129,7 +125,7 @@ BC.IND.relation.RST <- function(decision.table, feature.set = NULL){
 #'         \itemize{
 #'          \item \code{lower.approximation}: a list with indices of data instances included in lower approximations of decision classes.
 #'          \item \code{upper.approximation}: a list with indices of data instances included in upper approximations of decision classes.
-#'          \item \code{type.model}: a character vector identifying the type of model which is used. 
+#'          \item \code{type.model}: a character vector identifying the type of model which was used. 
 #'                In this case, it is \code{"RST"} which means the rough set theory.
 #'          } 
 #'          
@@ -141,8 +137,6 @@ BC.IND.relation.RST <- function(decision.table, feature.set = NULL){
 #'
 #' @examples
 #' #######################################
-#' ## Example: Using simple data set
-#' #######################################
 #' data(RoughSetData)
 #' hiring.data <- RoughSetData$hiring.dt
 #'
@@ -152,7 +146,7 @@ BC.IND.relation.RST <- function(decision.table, feature.set = NULL){
 #' ## Compute the indiscernibility classes:
 #' IND.A <- BC.IND.relation.RST(hiring.data, feature.set = A)
 #'
-#' ####### Compute lower and upper approximation #####
+#' ## Compute the lower and upper approximations:
 #' roughset <- BC.LU.approximation.RST(hiring.data, IND.A)
 #' roughset
 #' 
@@ -225,50 +219,55 @@ BC.LU.approximation.RST <- function(decision.table, IND){
 }
 
 
-#' It is a function used to implement a fundamental concept of rough set theory: positive region and
-#' degree of dependency. The explanation about this concept can be seen in \code{\link{A.Introduction-RoughSets}}.
+#' This function implements a fundamental part of RST: computation of a positive region and the
+#' degree of dependency. This function can be used as a basic building block for development 
+#' of other RST-based methods. A more detailed explanation of this notion can be found 
+#' in \code{\link{A.Introduction-RoughSets}}.
 #' 
-#' In order to compute the function, we need to calculate the indiscernibility relation by executing \code{\link{BC.IND.relation.RST}} 
-#' and the lower and upper approximations by calling \code{\link{BC.LU.approximation.RST}}.
+#' @title Computation of a positive region
+#' @author Andrzej Janusz
 #'
-#' @title Regions based on rough set theory
-#'
-#' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
-#' @param roughset a \code{"LowerUpperApproximation"} class representing rough sets that are produced by \code{\link{BC.LU.approximation.RST}}.
-#' @seealso \code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.FRST}}, 
-#'
-#'          and \code{\link{BC.positive.reg.FRST}}
-#' @return A class \code{"PositiveRegion"} containing the following components:
+#' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
+#'        See \code{\link{SF.asDecisionTable}}.
+#' @param roughset an object inheriting from the \code{"LowerUpperApproximation"} class, which represents
+#'        lower and upper approximations of decision classes in the data. Such objects are typically produced by calling 
+#'        the \code{\link{BC.LU.approximation.RST}} function.
+
+#' @return An object of a class \code{"PositiveRegion"} which is a list with the following components:
 #'         \itemize{
-#'         \item \code{positive.reg}: a vector containing indexes of objects belonging to the positive region.
-#'         \item \code{degree.dependency}: a value of degree of dependency. 
-#'          \item \code{type.model}: a string showing type of the used model. In this case, it is \code{"RST"} means rough set theory.       
+#'           \item \code{positive.reg}: an integer vector containing indices of data instances belonging 
+#'                 to the positive region,
+#'           \item \code{degree.dependency}: a numeric value giving the degree of dependency,
+#'           \item \code{type.model}: a varacter vector identifying the utilized model. In this case, 
+#'                 it is \code{"RST"} which means the rough set theory.       
 #'         } 
+#'         
+#' @seealso \code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.FRST}}
+#' 
 #' @references
 #' Z. Pawlak, "Rough Sets", International Journal of Computer and Information Sciences, 
 #' vol. 11, no. 5, p. 341 - 356 (1982).
 #'
 #' @examples
-#' dt.ex1 <- data.frame(c(1,0,2,1,1,2,2,0), c(0, 1,0, 1,0,2,1,1), 
-#'                         c(2,1,0,0,2,0,1,1), c(2,1,1,2,0,1,1,0), c(0,2,1,2,1,1,2,1))
-#' colnames(dt.ex1) <- c("aa", "bb", "cc", "dd", "ee")
-#' decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 5, 
-#'                                     indx.nominal = c(1:5))
+#' ########################################################
+#' data(RoughSetData)
+#' hiring.data <- RoughSetData$hiring.dt
 #'
-#' ## in this case, we consider second and third attributes only
-#' P <- c(2,3)
+#' ## We select a single attribute for computation of indiscernibility classes:
+#' A <- c(2)
 #' 
-#' ####### Perform indiscernibility relation #######
-#' IND <- BC.IND.relation.RST(decision.table, feature.set = P)
+#' ## compute the indiscernibility classes:
+#' IND.A <- BC.IND.relation.RST(hiring.data, feature.set = A)
 #'
-#' ####### Perform lower and upper approximations #####
-#' roughset <- BC.LU.approximation.RST(decision.table, IND)
-#' 
-#' ####### Determine the positive region ######
-#' region <- BC.positive.reg.RST(decision.table, roughset) 
+#' ## compute the lower and upper approximation:
+#' roughset <- BC.LU.approximation.RST(hiring.data, IND.A)
+#'
+#' ## get the positive region:
+#' pos.region = BC.positive.reg.RST(hiring.data, roughset)
+#' pos.region
 #' 
 #' @export
-BC.positive.reg.RST <- function(decision.table, roughset){
+BC.positive.reg.RST <- function(decision.table, roughset) {
 	
 	## get all objects from the lower approximations of decision classes
 	positive.reg <- unlist(roughset$lower.approximation)
@@ -286,38 +285,49 @@ BC.positive.reg.RST <- function(decision.table, roughset){
 	return(class.mod)
 }
 
-#' This is a function that builds the decision-relative discernibility matrix based on rough set theory.
+#' This function implements a fundamental part of RST: a decision-relative discernibility matrix. This notion
+#' was proposed by (Skowron and Rauszer, 1992) as a middle-step in many RST algorithms for computaion of reducts, 
+#' discretization and rule induction. A more detailed explanation of this notion can be found 
+#' in \code{\link{A.Introduction-RoughSets}}.
+#'
+#' @title Computation of a decision-relative discernibility matrix based on the rough set theory
+#' @author Lala Septem Riza and Andrzej Janusz
+#'
+#' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
+#'        See \code{\link{SF.asDecisionTable}}.
+#' @param range.object an integer vector indicating objects for construction of the \eqn{k}-relative discernibility matrix. 
+#'                The default value is \code{NULL} which means that all objects in the decision table are used.
+#' @param return.matrix a logical value determining whether the discernibility matrix should be retunred in the output. 
+#'        If it is set to FALSE (the default) only a list containing unique clauses from the CNF representation 
+#'        of the discernibility function is returned. 
 #' 
-#' It was proposed by (Skowron and Rauszer, 1992), and is used to find all reducts. The detailed explanation can be seen in \code{\link{A.Introduction-RoughSets}}.
-#'
-#' @title The decision-relative discernibility matrix based on rough set theory
-#'
-#' @param decision.table a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}. 
-#' @param range.object a vector representing considered objects to construct the \eqn{k}-relative discernibility matrix. 
-#'                The default value is \code{NULL} which means that we are using all objects in the decision table.
-#' @param show.discernibilityMatrix a boolean value determining whether the discernibility matrix will be shown or not. The default value is \code{FALSE}. 
-#' @return A class \code{"DiscernibilityMatrix"} containing the following components: 
+#' @return An object of a class \code{"DiscernibilityMatrix"} which has the following components: 
 #' \itemize{
-#' \item \code{disc.mat}: a matrix showing the decision-relative discernibility matrix \eqn{M(\mathcal{A})} 
-#'        which contains \eqn{n \times n} where \eqn{n} is the number of objects.
-#' \item \code{disc.list}: it refers to the decision-relation discernibility matrix in a list format.
-#' \item \code{discernibility.type}: it is \code{"RST"}.
-#' \item \code{type.model}: in this case, it is \code{"RST"}.
+#' \item \code{disc.mat}: the decision-relative discernibility matrix which for pairs of objects from different 
+#'       decision classes stores names of attributes which can be used to discern between them. Only pairs of 
+#'       objects from different decision classes are considered. For other pairs the \code{disc.mat} contains
+#'       \code{NA} values. Moreover, since the classical discernibility matrix is symmetric only the pairs 
+#'       from the lower triangular part are considered.
+#' \item \code{disc.list}: a list containing unique clauses from the CNF representation of the discernibility function,
+#' \item \code{discernibility.type}: a type of discernibility relation used in the computations,
+#' \item \code{type.model}: a character vector identifying the type of model which was used. 
+#'                In this case, it is \code{"RST"} which means the rough set theory.
 #' }
+#' 
+#' @seealso \code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.FRST}}
+#'          and \code{\link{BC.discernibility.mat.FRST}}
+#' 
 #' @examples
 #' #######################################################################
 #' ## Example 1: Constructing the decision-relative discernibility matrix
 #' #######################################################################
-#' dt.ex1 <- data.frame(c(1,0,2,1,1,2,2,0), c(0, 1,0, 1,0,2,1,1), 
-#'                         c(2,1,0,0,2,0,1,1), c(2,1,1,2,0,1,1,0), c(0,2,1,2,1,1,2,1))
-#' colnames(dt.ex1) <- c("aa", "bb", "cc", "dd", "ee")
-#' decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 5, 
-#'                                      indx.nominal = c(1:5))
+#' data(RoughSetData)
+#' hiring.data <- RoughSetData$hiring.dt
 #'
-#' ## build the decision-relation discernibility matrix
-#' res.1 <- BC.discernibility.mat.RST(decision.table, range.object = NULL)
+#' ## building the decision-relation discernibility matrix
+#' disc.matrix <- BC.discernibility.mat.RST(hiring.data, return.matrix = TRUE)
+#' disc.matrix
 #'
-#' @seealso \code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, and \code{\link{BC.LU.approximation.FRST}}
 #' @references
 #' A. Skowron and C. Rauszer,  
 #' "The Discernibility Matrices and Functions in Information Systems", 
@@ -325,7 +335,7 @@ BC.positive.reg.RST <- function(decision.table, roughset){
 #' Advances of Rough Sets Theory, Kluwer Academic Publishers, Dordrecht, Netherland,  
 #' p. 331 - 362 (1992).
 #' @export
-BC.discernibility.mat.RST <- function(decision.table, range.object = NULL, show.discernibilityMatrix = FALSE){
+BC.discernibility.mat.RST <- function(decision.table, range.object = NULL, return.matrix = FALSE){
 
   if(!inherits(decision.table, "DecisionTable")) {
     stop("Provided data should inherit from the \'DecisionTable\' class.")
@@ -378,7 +388,7 @@ BC.discernibility.mat.RST <- function(decision.table, range.object = NULL, show.
 	disc.list = unique(do.call(c, disc.mat))[-1]
 	
 	## build class
-	if (show.discernibilityMatrix){
+	if (return.matrix){
 		discernibilityMatrix = list(disc.mat = disc.mat, disc.list = disc.list, 
                               names.attr = colnames(decision.table), type.discernibility = "RST", type.model = "RST")
 	}

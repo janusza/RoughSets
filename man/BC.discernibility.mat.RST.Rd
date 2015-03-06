@@ -2,47 +2,55 @@
 % Please edit documentation in R/BasicRoughSets.R
 \name{BC.discernibility.mat.RST}
 \alias{BC.discernibility.mat.RST}
-\title{The decision-relative discernibility matrix based on rough set theory}
+\title{Computation of a decision-relative discernibility matrix based on the rough set theory}
 \usage{
 BC.discernibility.mat.RST(decision.table, range.object = NULL,
-  show.discernibilityMatrix = FALSE)
+  return.matrix = FALSE)
 }
 \arguments{
-\item{decision.table}{a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
+\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+See \code{\link{SF.asDecisionTable}}.}
 
-\item{range.object}{a vector representing considered objects to construct the \eqn{k}-relative discernibility matrix.
-The default value is \code{NULL} which means that we are using all objects in the decision table.}
+\item{range.object}{an integer vector indicating objects for construction of the \eqn{k}-relative discernibility matrix.
+The default value is \code{NULL} which means that all objects in the decision table are used.}
 
-\item{show.discernibilityMatrix}{a boolean value determining whether the discernibility matrix will be shown or not. The default value is \code{FALSE}.}
+\item{return.matrix}{a logical value determining whether the discernibility matrix should be retunred in the output.
+       If it is set to FALSE (the default) only a list containing unique clauses from the CNF representation
+       of the discernibility function is returned.}
 }
 \value{
-A class \code{"DiscernibilityMatrix"} containing the following components:
+An object of a class \code{"DiscernibilityMatrix"} which has the following components:
 \itemize{
-\item \code{disc.mat}: a matrix showing the decision-relative discernibility matrix \eqn{M(\mathcal{A})}
-       which contains \eqn{n \times n} where \eqn{n} is the number of objects.
-\item \code{disc.list}: it refers to the decision-relation discernibility matrix in a list format.
-\item \code{discernibility.type}: it is \code{"RST"}.
-\item \code{type.model}: in this case, it is \code{"RST"}.
+\item \code{disc.mat}: the decision-relative discernibility matrix which for pairs of objects from different
+      decision classes stores names of attributes which can be used to discern between them. Only pairs of
+      objects from different decision classes are considered. For other pairs the \code{disc.mat} contains
+      \code{NA} values. Moreover, since the classical discernibility matrix is symmetric only the pairs
+      from the lower triangular part are considered.
+\item \code{disc.list}: a list containing unique clauses from the CNF representation of the discernibility function,
+\item \code{discernibility.type}: a type of discernibility relation used in the computations,
+\item \code{type.model}: a character vector identifying the type of model which was used.
+               In this case, it is \code{"RST"} which means the rough set theory.
 }
 }
 \description{
-This is a function that builds the decision-relative discernibility matrix based on rough set theory.
-}
-\details{
-It was proposed by (Skowron and Rauszer, 1992), and is used to find all reducts. The detailed explanation can be seen in \code{\link{A.Introduction-RoughSets}}.
+This function implements a fundamental part of RST: a decision-relative discernibility matrix. This notion
+was proposed by (Skowron and Rauszer, 1992) as a middle-step in many RST algorithms for computaion of reducts,
+discretization and rule induction. A more detailed explanation of this notion can be found
+in \code{\link{A.Introduction-RoughSets}}.
 }
 \examples{
 #######################################################################
 ## Example 1: Constructing the decision-relative discernibility matrix
 #######################################################################
-dt.ex1 <- data.frame(c(1,0,2,1,1,2,2,0), c(0, 1,0, 1,0,2,1,1),
-                        c(2,1,0,0,2,0,1,1), c(2,1,1,2,0,1,1,0), c(0,2,1,2,1,1,2,1))
-colnames(dt.ex1) <- c("aa", "bb", "cc", "dd", "ee")
-decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 5,
-                                     indx.nominal = c(1:5))
+data(RoughSetData)
+hiring.data <- RoughSetData$hiring.dt
 
-## build the decision-relation discernibility matrix
-res.1 <- BC.discernibility.mat.RST(decision.table, range.object = NULL)
+## building the decision-relation discernibility matrix
+disc.matrix <- BC.discernibility.mat.RST(hiring.data, return.matrix = TRUE)
+disc.matrix
+}
+\author{
+Lala Septem Riza and Andrzej Janusz
 }
 \references{
 A. Skowron and C. Rauszer,
@@ -52,6 +60,7 @@ Advances of Rough Sets Theory, Kluwer Academic Publishers, Dordrecht, Netherland
 p. 331 - 362 (1992).
 }
 \seealso{
-\code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, and \code{\link{BC.LU.approximation.FRST}}
+\code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.FRST}}
+         and \code{\link{BC.discernibility.mat.FRST}}
 }
 

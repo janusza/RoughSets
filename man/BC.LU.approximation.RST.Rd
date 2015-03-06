@@ -17,12 +17,12 @@ An object of a class \code{"LowerUpperApproximation"} which is a list with the f
         \itemize{
          \item \code{lower.approximation}: a list with indices of data instances included in lower approximations of decision classes.
          \item \code{upper.approximation}: a list with indices of data instances included in upper approximations of decision classes.
-         \item \code{type.model}: a character vector identifying the type of model which is used.
+         \item \code{type.model}: a character vector identifying the type of model which was used.
                In this case, it is \code{"RST"} which means the rough set theory.
          }
 }
 \description{
-This function implements a fundamental part of RST: lower and upper approximations.
+This function implements a fundamental part of RST: computation of lower and upper approximations.
 The lower and upper approximations determine whether the objects can be certainty or possibly classified
 to a particular decision class on the basis of available knowledge.
 }
@@ -31,8 +31,6 @@ This function can be used as a basic building block for development of other RST
 A more detailed explanation of this notion can be found in \code{\link{A.Introduction-RoughSets}}.
 }
 \examples{
-#######################################
-## Example: Using simple data set
 #######################################
 data(RoughSetData)
 hiring.data <- RoughSetData$hiring.dt
@@ -43,7 +41,7 @@ A <- c(2)
 ## Compute the indiscernibility classes:
 IND.A <- BC.IND.relation.RST(hiring.data, feature.set = A)
 
-####### Compute lower and upper approximation #####
+## Compute the lower and upper approximations:
 roughset <- BC.LU.approximation.RST(hiring.data, IND.A)
 roughset
 }
