@@ -21,7 +21,7 @@ Currently it can be one of the following methods:
    \item \code{"max.disc.matrix"}: See \code{\link{D.max.discernibility.matrix.RST}}.
 }}
 
-\item{...}{parameters that are passed to the discretization methods. See the manual for the corresponding function.}
+\item{...}{parameters that are passed to the discretization methods. See the manual of particular functions.}
 }
 \value{
 An object of a class \code{"Discretization"} which stores cuts for each conditional attribute. It contains the following components:

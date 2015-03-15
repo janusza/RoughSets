@@ -47,9 +47,7 @@
 #'           \item \code{"local.disc.matrix"}: See \code{\link{D.local.discernibility.matrix.RST}}.
 #'           \item \code{"max.disc.matrix"}: See \code{\link{D.max.discernibility.matrix.RST}}.
 #'        }
-#' @param  ... parameters that are passed to the discretization methods. See the manual for the corresponding function.
-#' 
-#' @seealso \code{\link{BC.LU.approximation.RST}}, \code{\link{FS.reduct.computation}}, \code{\link{SF.applyDecTable}}.
+#' @param  ... parameters that are passed to the discretization methods. See the manual of particular functions.
 #' 
 #' @return An object of a class \code{"Discretization"} which stores cuts for each conditional attribute. It contains the following components:
 #' \itemize{
@@ -59,6 +57,8 @@
 #'   \item \code{type.task}: the type of task which is \code{"discretization"}.
 #'   \item \code{model}: the type of model which is \code{"RST"}.
 #' }
+#' 
+#' @seealso \code{\link{BC.LU.approximation.RST}}, \code{\link{FS.reduct.computation}}, \code{\link{SF.applyDecTable}}.
 #' 
 #' @examples
 #' #################################################################
@@ -108,9 +108,9 @@ D.discretization.RST <- function(decision.table, type.method = "unsupervised.qua
 	cut.values = switch(type.method,  
     	                unsupervised.quantiles = D.discretize.quantiles.RST(decision.table, ...),
     	                unsupervised.intervals = D.discretize.equal.intervals.RST(decision.table, ...),
-                        global.discernibility = D.global.discernibility.heuristic.RST(decision.table, ...),
-    	                local.disc.matrix = D.local.discernibility.matrix.RST(decision.table, ...),
-    	                max.disc.matrix = D.max.discernibility.matrix.RST(decision.table, ...) )
+                      global.discernibility = D.global.discernibility.heuristic.RST(decision.table, ...),
+    	                local.disc.matrix = D.local.discernibility.matrix.RST(decision.table),
+    	                max.disc.matrix = D.max.discernibility.matrix.RST(decision.table) )
   	
 	return(cut.values)
 }
@@ -139,7 +139,6 @@ D.discretization.RST <- function(decision.table, type.method = "unsupervised.qua
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
 #'        It should be noted that the function need the nominal decision attribute. 
-#' @param ... other parameters,
 #' @seealso \code{\link{D.max.discernibility.matrix.RST}}, \code{\link{D.discretize.quantiles.RST}},
 #'
 #' \code{\link{D.discretize.equal.intervals.RST}}, and \code{\link{D.global.discernibility.heuristic.RST}}
@@ -172,7 +171,7 @@ D.discretization.RST <- function(decision.table, type.method = "unsupervised.qua
 #' ## generate new decision table
 #' new.decTable <- SF.applyDecTable(decision.table, cut.values)
 #' @export
-D.local.discernibility.matrix.RST <- function(decision.table, ...){
+D.local.discernibility.matrix.RST <- function(decision.table){
 	## get data
 	objects <- decision.table
 	desc.attrs <- attr(decision.table, "desc.attrs")
@@ -318,7 +317,6 @@ D.local.discernibility.matrix.RST <- function(decision.table, ...){
 #'
 #' @param decision.table a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
 #'        It should be noted that the function need the nominal decision attribute.
-#' @param ... other parameters.
 #' @seealso \code{\link{D.local.discernibility.matrix.RST}}, \code{\link{D.discretize.quantiles.RST}},
 #'
 #' \code{\link{D.discretize.equal.intervals.RST}}, and \code{\link{D.global.discernibility.heuristic.RST}}
@@ -350,7 +348,7 @@ D.local.discernibility.matrix.RST <- function(decision.table, ...){
 #' ## generate new decision table
 #' new.decTable <- SF.applyDecTable(decision.table, cut.values)
 #' @export
-D.max.discernibility.matrix.RST <- function(decision.table, ...){
+D.max.discernibility.matrix.RST <- function(decision.table){
 	
 	## get data
 	objects <- decision.table
@@ -452,14 +450,13 @@ D.max.discernibility.matrix.RST <- function(decision.table, ...){
 #' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
 #'        See \code{\link{SF.asDecisionTable}}.
 #' @param nOfIntervals a positive integer giving the number of intervals.
-#' @param ... additional parameters (currently unsupported).
-#' 
-#' @seealso \code{\link{D.discretize.equal.intervals.RST}}, \code{\link{D.global.discernibility.heuristic.RST}},
-#'          \code{\link{SF.applyDecTable}}.
 #' 
 #' @return An object of a class \code{"Discretization"} which stores cuts for each conditional attribute. 
 #'         See \code{\link{D.discretization.RST}}.
-#'         
+#'
+#' @seealso \code{\link{D.discretize.equal.intervals.RST}}, \code{\link{D.global.discernibility.heuristic.RST}},
+#'          \code{\link{SF.applyDecTable}}.
+#'                           
 #' @references
 #' J. Dougherty, R. Kohavi, and M. Sahami, "Supervised and Unsupervised Discretization of Continuous Features",
 #' In A. Prieditis & S. J. Russell, eds. Work. Morgan Kaufmann, p. 194-202 (1995).
@@ -478,7 +475,7 @@ D.max.discernibility.matrix.RST <- function(decision.table, ...){
 #' lapply(wine.discretized, unique)
 #' 
 #' @export
-D.discretize.quantiles.RST <- function(decision.table, nOfIntervals = 4, ...) {
+D.discretize.quantiles.RST <- function(decision.table, nOfIntervals = 4) {
   
   nominalAttrs = attr(decision.table, "nominal.attrs")
   if (!is.null(attr(decision.table, "decision.attr"))) {
@@ -518,14 +515,13 @@ D.discretize.quantiles.RST <- function(decision.table, nOfIntervals = 4, ...) {
 #' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system. 
 #'        See \code{\link{SF.asDecisionTable}}.
 #' @param nOfIntervals a positive integer giving the number of intervals.
-#' @param ... additional parameters (currently unsupported).
-#' 
-#' @seealso \code{\link{D.discretize.quantiles.RST}}, \code{\link{D.global.discernibility.heuristic.RST}}, 
-#'          \code{\link{SF.applyDecTable}}.
 #' 
 #' @return An object of a class \code{"Discretization"} which stores cuts for each conditional attribute. 
 #'         See \code{\link{D.discretization.RST}}.
 #'         
+#' @seealso \code{\link{D.discretize.quantiles.RST}}, \code{\link{D.global.discernibility.heuristic.RST}}, 
+#'          \code{\link{SF.applyDecTable}}.
+#'
 #' @references
 #' J. Dougherty, R. Kohavi, and M. Sahami, "Supervised and Unsupervised Discretization of Continuous Features",
 #' In A. Prieditis & S. J. Russell, eds. Work. Morgan Kaufmann, p. 194-202 (1995).
@@ -544,7 +540,7 @@ D.discretize.quantiles.RST <- function(decision.table, nOfIntervals = 4, ...) {
 #' lapply(wine.discretized, unique)
 #' 
 #' @export
-D.discretize.equal.intervals.RST <- function(decision.table, nOfIntervals = 4, ...) {
+D.discretize.equal.intervals.RST <- function(decision.table, nOfIntervals = 4) {
 	
   nominalAttrs = attr(decision.table, "nominal.attrs")
   if (!is.null(attr(decision.table, "decision.attr"))) {

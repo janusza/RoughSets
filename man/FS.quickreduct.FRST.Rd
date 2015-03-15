@@ -5,7 +5,7 @@
 \title{The fuzzy QuickReduct algorithm based on FRST}
 \usage{
 FS.quickreduct.FRST(decision.table, type.method = "fuzzy.dependency",
-  type.QR = "fuzzy.QR", control = list(), ...)
+  type.QR = "fuzzy.QR", control = list())
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -58,8 +58,6 @@ The complete description can be found in Section \code{Details}.}
         It should be noted that instead of supplying all the above parameters, we only set
         those parameters needed by the considered method. See in Section \code{Details}.
         Also, we provide some examples to illustrate how the parameters are used.}
-
-\item{...}{other parameters.}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:

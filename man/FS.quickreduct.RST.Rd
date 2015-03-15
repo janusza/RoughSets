@@ -4,18 +4,16 @@
 \alias{FS.quickreduct.RST}
 \title{QuickReduct algorithm based on RST}
 \usage{
-FS.quickreduct.RST(decision.table, control = list(), ...)
+FS.quickreduct.RST(decision.table, control = list())
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
 
 \item{control}{other parameters. It contains the following component:
-\itemize{
-\item \code{randomize}: it has a boolean value. For the detailed description, see in Section \code{Details}.
-      The default value is \code{FALSE}.
-}}
-
-\item{...}{other parameters.}
+       \itemize{
+       \item \code{randomize}: it has a boolean value. For the detailed description, see in Section \code{Details}.
+             The default value is \code{FALSE}.
+       }}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:

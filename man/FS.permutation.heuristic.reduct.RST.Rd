@@ -5,7 +5,7 @@
 \title{The permutation heuristic algorithm for computation of a decision reduct}
 \usage{
 FS.permutation.heuristic.reduct.RST(decision.table, permutation = NULL,
-  decisionIdx = ncol(decision.table), ...)
+  decisionIdx = ncol(decision.table))
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -17,8 +17,6 @@ is \code{NULL} or \code{TRUE} a random permutation will be generated. In the cas
 elimination will be performed in the order of attributes in the decision system.}
 
 \item{decisionIdx}{an index of the decision attribute. The default value is the last column of a decision table.}
-
-\item{...}{parameters passes to other functions (currently omitted).}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:

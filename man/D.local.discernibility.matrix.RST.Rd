@@ -4,13 +4,11 @@
 \alias{D.local.discernibility.matrix.RST}
 \title{The local discretization strategy algorithm}
 \usage{
-D.local.discernibility.matrix.RST(decision.table, ...)
+D.local.discernibility.matrix.RST(decision.table)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
 It should be noted that the function need the nominal decision attribute.}
-
-\item{...}{other parameters,}
 }
 \value{
 A class \code{"Discretization"} that contains the following components:

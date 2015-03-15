@@ -11,9 +11,7 @@ FS.one.reduct.computation(discernibilityMatrix, greedy = TRUE, power = 1)
 
 \item{greedy}{a boolean value indicating whether the greedy heuristic or a randomized search should be used in computations.}
 
-\item{power}{a numeric representing a parameter of the randomized search heuristic.
-
-See \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}.}
+\item{power}{a numeric representing a parameter of the randomized search heuristic.}
 }
 \value{
 A class \code{"ReductSet"}.
@@ -61,5 +59,8 @@ new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.red
 }
 \author{
 Andrzej Janusz
+}
+\seealso{
+\code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}.
 }
 

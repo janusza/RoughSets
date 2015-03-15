@@ -4,15 +4,13 @@
 \alias{D.discretize.quantiles.RST}
 \title{The quantile-based discretization}
 \usage{
-D.discretize.quantiles.RST(decision.table, nOfIntervals = 4, ...)
+D.discretize.quantiles.RST(decision.table, nOfIntervals = 4)
 }
 \arguments{
 \item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
 See \code{\link{SF.asDecisionTable}}.}
 
 \item{nOfIntervals}{a positive integer giving the number of intervals.}
-
-\item{...}{additional parameters (currently unsupported).}
 }
 \value{
 An object of a class \code{"Discretization"} which stores cuts for each conditional attribute.

@@ -16,7 +16,8 @@ FS.reduct.computation(decision.table, method = "greedy.heuristic", ...)
 }
 \value{
 An object of a class \code{"FeatureSubset"}. See \code{\link{FS.greedy.heuristic.reduct.RST}},
-\code{\link{FS.DAAR.heuristic.RST}}, \code{\link{FS.permutation.heuristic.reduct.RST}} or \code{\link{FS.nearOpt.fvprs.FRST}} for more details.
+\code{\link{FS.DAAR.heuristic.RST}}, \code{\link{FS.permutation.heuristic.reduct.RST}} or
+\code{\link{FS.nearOpt.fvprs.FRST}} for more details.
 }
 \description{
 This function is a wrapper for computing different types of decision reducts

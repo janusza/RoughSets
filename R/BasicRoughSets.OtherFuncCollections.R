@@ -1210,7 +1210,7 @@ min.disc.mat.FRST <- function(decision.table, t.tnorm = "lukasiewicz", type.rela
 # @param INDclass equivalence class
 # @param splitVec a vector of splitted INDclass
 splitINDclass <- function(INDclass, splitVec)  {
-  split(INDclass, splitVec[INDclass], drop = T)
+  split(INDclass, splitVec[INDclass], drop = TRUE)
 }
 
 # It is used to calculate transitive closure

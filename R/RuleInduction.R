@@ -1032,11 +1032,11 @@ predict.RuleSetRST <- function(object, newdata, ...) {
                      ruleSet = object[order(sapply(object, function(X) X$laplace), decreasing = TRUE)]
                      INDclasses = sapply(ruleSet, function(x) paste(unlist(x$values), collapse = " "))
                      consequents = sapply(ruleSet, function(x) x$consequent)
-                     newdata = do.call(paste, newdata[,ruleSet[[1]]$idx, drop = FALSE])
+                     newdata = do.call(paste, newdata[, ruleSet[[1]]$idx, drop = FALSE])
 						         sapply(newdata, bestFirst, INDclasses, consequents, majorityCls, uniqueCls, clsProbs)
                    },
                    
-                   CN2Rules = apply(as.matrix(newdata), 1, firstWin, ruleSet = object, ...), 
+                   CN2Rules = apply(as.matrix(newdata), 1, firstWin, ruleSet = object), 
                    
                    LEM2Rules = apply(as.matrix(newdata), 1, rulesVoting, ruleSet = object, ...),
                    

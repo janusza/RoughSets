@@ -45,11 +45,12 @@
 #' @param ...  other parameters. See the parameters of \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}},
 #'        \code{\link{FS.nearOpt.fvprs.FRST}} and \code{\link{FS.permutation.heuristic.reduct.RST}}.
 #'        
+#' @return An object of a class \code{"FeatureSubset"}. See \code{\link{FS.greedy.heuristic.reduct.RST}},
+#' \code{\link{FS.DAAR.heuristic.RST}}, \code{\link{FS.permutation.heuristic.reduct.RST}} or 
+#' \code{\link{FS.nearOpt.fvprs.FRST}} for more details.
+#' 
 #' @seealso \code{\link{D.discretization.RST}}, \code{\link{BC.LU.approximation.RST}}
 #' 
-#' @return An object of a class \code{"FeatureSubset"}. See \code{\link{FS.greedy.heuristic.reduct.RST}},
-#' \code{\link{FS.DAAR.heuristic.RST}}, \code{\link{FS.permutation.heuristic.reduct.RST}} or \code{\link{FS.nearOpt.fvprs.FRST}} for more details.
-#'
 #' @examples
 #' ##############################################################
 #' ## Example 1: generate reduct and new decision table 
@@ -131,8 +132,7 @@ FS.reduct.computation <- function(decision.table, method = "greedy.heuristic", .
 #'        is \code{NULL} or \code{TRUE} a random permutation will be generated. In the case when \code{permutation} is FALSE, the 
 #'        elimination will be performed in the order of attributes in the decision system.
 #' @param decisionIdx  an index of the decision attribute. The default value is the last column of a decision table.
-#' @param ...  parameters passes to other functions (currently omitted).
-#' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.reduct.computation}}.
+#'
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
 #' \item \code{reduct}: a list representing a single reduct. In this case, it could be a superreduct or just a subset of features.
@@ -140,7 +140,10 @@ FS.reduct.computation <- function(decision.table, method = "greedy.heuristic", .
 #' \item \code{type.task}: a string showing the type of task which is \code{"feature selection"}.
 #' \item \code{model}: a string representing the type of model. In this case, it is \code{"RST"} which means rough set theory.
 #' \item \code{epsilon}: the approximation threshold.
-#' }  
+#' }
+#' 
+#' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.reduct.computation}}.
+#' 
 #' @references
 #' A. Janusz and D. Ślęzak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data"
 #'										Proceedings of Federated Conference on Computer Science and Information Systems - FedCSIS, p. 295 - 302 (2012).
@@ -167,7 +170,7 @@ FS.reduct.computation <- function(decision.table, method = "greedy.heuristic", .
 #' @export
 FS.permutation.heuristic.reduct.RST <- function(decision.table, 
                                                 permutation = NULL, 
-                                                decisionIdx = ncol(decision.table), ...){
+                                                decisionIdx = ncol(decision.table)){
 
 	## get the data 
 	names.attrs = colnames(decision.table)
@@ -273,8 +276,7 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table,
 #'        a standard decision reduct is computed.
 #' @param inconsistentDecisionTable logical indicating whether the decision table is suspected 
 #'        to be inconsistent.
-#' @param ... other parameters passed to quality functions (unsupported).
-#' @seealso \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
+#'        
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
 #' \item \code{reduct}: a list representing a single reduct. In this case, it could be a superreduct or just a subset of features.
@@ -282,7 +284,10 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table,
 #' \item \code{type.task}: a string showing the type of task which is \code{"feature selection"}.
 #' \item \code{model}: a string representing the type of model. In this case, it is \code{"RST"} which means rough set theory.
 #' \item \code{epsilon}: the approximation threshold.
-#' }  
+#' }
+#'   
+#' @seealso \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
+#'
 #' @references
 #' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem", 
 #' Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
@@ -310,7 +315,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
                                            attrDescriptions = attr(decision.table, "desc.attrs"),
                                            decisionIdx = ncol(decision.table), 
                                            qualityF = X.gini, nAttrs = NULL, 
-                                           epsilon = 0.0, inconsistentDecisionTable = FALSE, ...)  {
+                                           epsilon = 0.0, inconsistentDecisionTable = FALSE)  {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
   
@@ -457,8 +462,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 #'        should be conducted within indescernibility classes.
 #' @param inconsistentDecisionTable logical indicating whether the decision table is suspected 
 #'        to be inconsistent.
-#' @param ... other parameters passed to quality functions.
-#' @seealso \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
+#'        
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
 #' \item \code{reduct}: a list representing a single reduct. In this case, it could be a superreduct or just a subset of features.
@@ -467,10 +471,14 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 #' \item \code{model}: a string representing the type of model. In this case, it is \code{"RST"} which means rough set theory.
 #' \item \code{relevanceProbabilities}: an intiger vector with estimated relevances of selected attributes.
 #' \item \code{epsilon}: a value between 0 and 1 representing the estimated approximation threshold.
-#' }  
+#' }
+#'   
+#' @seealso \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
+#'
 #' @references
 #' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem", 
 #' Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
+#' 
 #' A. Janusz and D. Ślęzak, "Random Probes in Computation and Assessment of Approximate Reducts", 
 #' Proceedings of {RSEISP} 2014, Springer, LNCS vol. 8537: p. 53 - 64 (2014).
 #'
@@ -495,7 +503,7 @@ FS.DAAR.heuristic.RST = function(decision.table,
                                  allowedRandomness = 1/ncol(decision.table), 
                                  nOfProbes = ncol(decision.table), 
                                  permsWithinINDclasses = FALSE, 
-                                 inconsistentDecisionTable = FALSE, ...) 
+                                 inconsistentDecisionTable = FALSE) 
 {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
@@ -664,8 +672,10 @@ FS.DAAR.heuristic.RST = function(decision.table,
 #' @param decision.table an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
 #' @param method a character representing the type of a method to use for computations. See in Section \code{Details}.
 #' @param ... other parameters corresponding to the chosen \code{method}.
-#' @seealso \code{\link{FS.greedy.heuristic.superreduct.RST}}, \code{\link{FS.quickreduct.RST}}, \code{\link{FS.quickreduct.FRST}}.
+#' 
 #' @return A class \code{"FeatureSubset"}. 
+#' 
+#' @seealso \code{\link{FS.greedy.heuristic.superreduct.RST}}, \code{\link{FS.quickreduct.RST}}, \code{\link{FS.quickreduct.FRST}}.
 #'
 #' @examples
 #' ###############################################################
@@ -718,8 +728,8 @@ FS.feature.subset.computation <- function(decision.table, method = "greedy.heuri
                        greedy.heuristic.superreduct = FS.greedy.heuristic.superreduct.RST(decision.table, 
                                                                                           attrDescriptions = desc.attrs,
                                                                                           decisionIdx = decIdx, ...),
-                       quickreduct.rst = FS.quickreduct.RST(decision.table, ...),
-                       quickreduct.frst = FS.quickreduct.FRST(decision.table, ...) )
+                       quickreduct.rst = FS.quickreduct.RST(decision.table),
+                       quickreduct.frst = FS.quickreduct.FRST(decision.table) )
   
 	return(superreduct)
 }
@@ -748,8 +758,7 @@ FS.feature.subset.computation <- function(decision.table, method = "greedy.heuri
 #'        \item \code{randomize}: it has a boolean value. For the detailed description, see in Section \code{Details}.
 #'              The default value is \code{FALSE}.
 #'        }
-#' @param ... other parameters.
-#' @seealso \code{\link{FS.quickreduct.FRST}}
+#' 
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
 #' \item \code{reduct}: a list representing single reduct. In this case, it could be super reduct or just subset of feature.
@@ -757,6 +766,9 @@ FS.feature.subset.computation <- function(decision.table, method = "greedy.heuri
 #' \item \code{type.task}: a string showing type of task which is \code{"feature selection"}.
 #' \item \code{model}: a string representing a type of model. In this case, it is \code{"RST"} which means rough set theory.
 #' } 
+#' 
+#' @seealso \code{\link{FS.quickreduct.FRST}}
+#' 
 #' @references
 #' Q. Shen and A. Chouchoulas, "A Modular Approach to Generating Fuzzy Rules with Reduced Attributes for the Monitoring of Complex Systems",
 #' Engineering Applications of Artificial Intelligence, vol. 13, p. 263 - 278 (2000).
@@ -776,7 +788,7 @@ FS.feature.subset.computation <- function(decision.table, method = "greedy.heuri
 #' new.decTable <- SF.applyDecTable(decision.table, res.1)
 #'
 #' @export
-FS.quickreduct.RST <- function(decision.table, control = list(), ...){
+FS.quickreduct.RST <- function(decision.table, control = list()){
 	
 	names.attrs <-  names(attr(decision.table, "desc.attrs"))	
 	super.reduct <- quickreduct.alg(decision.table, type.method = "quickreduct.RST", control = control)
@@ -807,9 +819,6 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #'        to a standard greedy method for computation of decision reducts.
 #' @param inconsistentDecisionTable logical indicating whether the decision table is suspected 
 #'        to be inconsistent.
-#' @param ... other parameters passed to quality function (currently unsupported).
-#' 
-#' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
 #' 
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
@@ -818,6 +827,9 @@ FS.quickreduct.RST <- function(decision.table, control = list(), ...){
 #' \item \code{type.task}: a string showing the type of task which is \code{"feature selection"}.
 #' \item \code{model}: a string representing the type of model. In this case, it is \code{"RST"} which means rough set theory.
 #' }  
+#' 
+#' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
+#' 
 #' @references
 #' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem", 
 #' Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
@@ -845,7 +857,7 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
                                                 attrDescriptions = attr(decision.table, "desc.attrs"), 
                                                 decisionIdx = ncol(decision.table), 
                                                 qualityF = X.gini, nAttrs = NULL, 
-                                                inconsistentDecisionTable = FALSE, ...)  {
+                                                inconsistentDecisionTable = FALSE)  {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
   
@@ -1090,7 +1102,6 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
 #'         those parameters needed by the considered method. See in Section \code{Details}. 
 #'         Also, we provide some examples to illustrate how the parameters are used.
 #'  
-#' @param ... other parameters.
 #' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
@@ -1226,7 +1237,7 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
 #' new.decTable <- SF.applyDecTable(decision.table, reduct.1)
 #'					 
 #' @export
-FS.quickreduct.FRST <- function(decision.table, type.method = "fuzzy.dependency", type.QR = "fuzzy.QR", control = list(), ...) {	
+FS.quickreduct.FRST <- function(decision.table, type.method = "fuzzy.dependency", type.QR = "fuzzy.QR", control = list()) {	
 	
 	## execute quickreduct algorithm
 	super.reduct <- quickreduct.alg(decision.table, type.method, type.QR, control)
@@ -1260,7 +1271,6 @@ FS.quickreduct.FRST <- function(decision.table, type.method = "fuzzy.dependency"
 #' @param alpha.precision a numeric value representing variable precision of FVPRS. 
 #'
 #'        See \code{\link{BC.LU.approximation.FRST}}.
-#' @param ... other parameters.
 #' @seealso \code{\link{BC.discernibility.mat.FRST}}
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
@@ -1298,7 +1308,7 @@ FS.quickreduct.FRST <- function(decision.table, type.method = "fuzzy.dependency"
 #' ## get new decision table according to the reduct
 #' new.decTable <- SF.applyDecTable(decision.table, reduct.2)
 #' @export
-FS.nearOpt.fvprs.FRST <- function(decision.table, alpha.precision = 0.05, ...) {
+FS.nearOpt.fvprs.FRST <- function(decision.table, alpha.precision = 0.05) {
 
 	if (is.null(attr(decision.table, "decision.attr"))){
 		stop("A decision attribute is not indicated.")
@@ -1408,10 +1418,10 @@ FS.nearOpt.fvprs.FRST <- function(decision.table, alpha.precision = 0.05, ...) {
 #'
 #' @param discernibilityMatrix an \code{"DiscernibilityMatrix"} object representing 
 #' a discernibility matrix of a decision system.
-#'
-#' @seealso \code{\link{BC.discernibility.mat.RST}}, \code{\link{BC.discernibility.mat.FRST}}. 
 #' 
 #' @return An object of a class \code{"ReductSet"}.
+#' 
+#' @seealso \code{\link{BC.discernibility.mat.RST}}, \code{\link{BC.discernibility.mat.FRST}}. 
 #'  
 #' @examples
 #' ########################################################
@@ -1480,8 +1490,10 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
 #' @param greedy a boolean value indicating whether the greedy heuristic or a randomized search should be used in computations.
 #' @param power a numeric representing a parameter of the randomized search heuristic.
 #'
-#' See \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}. 
 #' @return A class \code{"ReductSet"}. 
+#' 
+#' @seealso \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}. 
+#' 
 #' @examples
 #' ########################################################
 #' ## Example 1: Generate one reducts and 

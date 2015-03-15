@@ -197,7 +197,7 @@ global.discernibility <- function(vecList, cutCandidatesVecList, decVec, nOfCuts
       
       tmpDiscretizedVec = as.integer(vecList[[attrSampleIdx[bestAttrIdx]]] >= 
                                        cutCandidatesVecList[[attrSampleIdx[bestAttrIdx]]][chosenCutIdx])
-      newINDclasses = unlist(lapply(INDclasses, splitINDclass, tmpDiscretizedVec), recursive = F)
+      newINDclasses = unlist(lapply(INDclasses, splitINDclass, tmpDiscretizedVec), recursive = FALSE)
       tmpClassesToRmIdx = which(sapply(newINDclasses, function(x, decV) length(unique(decV[x])) == 1,
                                        as.character(decVec)))
       if(length(tmpClassesToRmIdx) > 0) newINDclasses = newINDclasses[-tmpClassesToRmIdx]

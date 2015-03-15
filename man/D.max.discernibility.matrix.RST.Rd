@@ -4,13 +4,11 @@
 \alias{D.max.discernibility.matrix.RST}
 \title{The maximal discernibility algorithm}
 \usage{
-D.max.discernibility.matrix.RST(decision.table, ...)
+D.max.discernibility.matrix.RST(decision.table)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.
 It should be noted that the function need the nominal decision attribute.}
-
-\item{...}{other parameters.}
 }
 \value{
 A class \code{"Discretization"} that contains the following components:

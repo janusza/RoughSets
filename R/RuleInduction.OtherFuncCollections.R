@@ -198,10 +198,10 @@ bestFirst <- function(object, ruleValues, consequents, majorityCls, ...) {
 # @param a data vector representing the object for which predictions are to be made
 # @param object a class "RuleSetRST"
 # @return a predicted value 
-firstWin <- function(object, ruleSet, ...) {
+firstWin <- function(object, ruleSet) {
   rulesCount = length(ruleSet)
   i = 1
-  endFlag = F
+  endFlag = FALSE
   prediction = NULL
   
   while(!endFlag) {
@@ -209,7 +209,7 @@ firstWin <- function(object, ruleSet, ...) {
       endFlag = T
       prediction = ruleSet[[i]]$consequent
     } else  {
-      if(i >= rulesCount) endFlag = T
+      if(i >= rulesCount) endFlag = TRUE
       i = i + 1
     }
   }

@@ -14,10 +14,9 @@ Authors@R: c(person("Lala Septem", "Riza", role = "aut",
              person("Christoph", "Bergmeir", role = c("ctb", "cre"),
                     email = "c.bergmeir@decsai.ugr.es"),
              person("Sebastian", "Stawicki", role = "ctb"))
-Description: This package provides comprehensive implementations of algorithms
-    based on rough set theory (RST) and fuzzy rough set theory (FRST), and
-    integrates these two theories into a single package. It provides
-    implementations, not only for the basic concepts of RST and FRST, but also
+Description: Implementations of algorithms for data analysis
+    based on the rough set theory (RST) and the fuzzy rough set theory (FRST). We 
+    not only provide implementations for the basic concepts of RST and FRST but also
     popular algorithms that derive from those theories. The methods included in the 
     package can be divided into several categories based on their functionality: 
     discretization, feature selection, instance selection, rule induction and classification
@@ -28,11 +27,7 @@ Description: This package provides comprehensive implementations of algorithms
     the indiscernibility relation for objects/instances, RST does not require
     additional parameters to analyze the data. FRST is an extension of RST. The
     FRST combines concepts of vagueness and indiscernibility that are expressed
-    with fuzzy sets (as proposed by Zadeh, in 1965) and RST. In addition, we
-    provide a new feature in this version which is missing value completion.
-    Finally, our package should be considered as an alternative software
-    library for analyzing data based on RST and FRST. Furthermore, in this
-    version we provide some algorithms for dealing with missing values.
+    with fuzzy sets (as proposed by Zadeh, in 1965) and RST.
 Version: 1.2-0
 URL: http://sci2s.ugr.es/dicits/software/RoughSets
 Date: 2015-03-06

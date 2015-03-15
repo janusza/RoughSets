@@ -4,7 +4,7 @@
 \alias{FS.nearOpt.fvprs.FRST}
 \title{The near-optimal reduction algorithm based on fuzzy rough set theory}
 \usage{
-FS.nearOpt.fvprs.FRST(decision.table, alpha.precision = 0.05, ...)
+FS.nearOpt.fvprs.FRST(decision.table, alpha.precision = 0.05)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.
@@ -13,8 +13,6 @@ In this case, the decision attribute must be nominal.}
 \item{alpha.precision}{a numeric value representing variable precision of FVPRS.
 
        See \code{\link{BC.LU.approximation.FRST}}.}
-
-\item{...}{other parameters.}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:

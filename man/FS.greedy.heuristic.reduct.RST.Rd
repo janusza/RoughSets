@@ -7,7 +7,7 @@
 FS.greedy.heuristic.reduct.RST(decision.table,
   attrDescriptions = attr(decision.table, "desc.attrs"),
   decisionIdx = ncol(decision.table), qualityF = X.gini, nAttrs = NULL,
-  epsilon = 0, inconsistentDecisionTable = FALSE, ...)
+  epsilon = 0, inconsistentDecisionTable = FALSE)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -34,9 +34,7 @@ indicates whether to compute approximate reducts or not. If it equals 0 (the def
 a standard decision reduct is computed.}
 
 \item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
-to be inconsistent.}
-
-\item{...}{other parameters passed to quality functions (unsupported).}
+       to be inconsistent.}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:

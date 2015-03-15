@@ -8,7 +8,7 @@ FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
   "desc.attrs"), decisionIdx = ncol(decision.table), qualityF = X.gini,
   nAttrs = NULL, allowedRandomness = 1/ncol(decision.table),
   nOfProbes = ncol(decision.table), permsWithinINDclasses = FALSE,
-  inconsistentDecisionTable = FALSE, ...)
+  inconsistentDecisionTable = FALSE)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -41,9 +41,7 @@ when the relevance of a selected attribute fall below this threshold.}
 should be conducted within indescernibility classes.}
 
 \item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
-to be inconsistent.}
-
-\item{...}{other parameters passed to quality functions.}
+       to be inconsistent.}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:
@@ -88,6 +86,7 @@ Andrzej Janusz
 \references{
 A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
 Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
+
 A. Janusz and D. Ślęzak, "Random Probes in Computation and Assessment of Approximate Reducts",
 Proceedings of {RSEISP} 2014, Springer, LNCS vol. 8537: p. 53 - 64 (2014).
 }
