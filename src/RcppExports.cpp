@@ -9,34 +9,26 @@ using namespace Rcpp;
 List compute_indiscernibility(List input, CharacterVector attr_val, CharacterVector unique_attr_val);
 RcppExport SEXP RoughSets_compute_indiscernibility(SEXP inputSEXP, SEXP attr_valSEXP, SEXP unique_attr_valSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< List >::type input(inputSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type attr_val(attr_valSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type unique_attr_val(unique_attr_valSEXP );
-        List __result = compute_indiscernibility(input, attr_val, unique_attr_val);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type attr_val(attr_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type unique_attr_val(unique_attr_valSEXP);
+    __result = Rcpp::wrap(compute_indiscernibility(input, attr_val, unique_attr_val));
+    return __result;
 END_RCPP
 }
 // compute_chaos
 double compute_chaos(List input, CharacterVector dec_val, CharacterVector unique_dec_val, Function chaosF);
 RcppExport SEXP RoughSets_compute_chaos(SEXP inputSEXP, SEXP dec_valSEXP, SEXP unique_dec_valSEXP, SEXP chaosFSEXP) {
 BEGIN_RCPP
-    SEXP __sexp_result;
-    {
-        Rcpp::RNGScope __rngScope;
-        Rcpp::traits::input_parameter< List >::type input(inputSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type dec_val(dec_valSEXP );
-        Rcpp::traits::input_parameter< CharacterVector >::type unique_dec_val(unique_dec_valSEXP );
-        Rcpp::traits::input_parameter< Function >::type chaosF(chaosFSEXP );
-        double __result = compute_chaos(input, dec_val, unique_dec_val, chaosF);
-        PROTECT(__sexp_result = Rcpp::wrap(__result));
-    }
-    UNPROTECT(1);
-    return __sexp_result;
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type dec_val(dec_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type unique_dec_val(unique_dec_valSEXP);
+    Rcpp::traits::input_parameter< Function >::type chaosF(chaosFSEXP);
+    __result = Rcpp::wrap(compute_chaos(input, dec_val, unique_dec_val, chaosF));
+    return __result;
 END_RCPP
 }
