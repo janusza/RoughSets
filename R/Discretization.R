@@ -631,7 +631,7 @@ D.global.discernibility.heuristic.RST <- function(decision.table, maxNOfCuts = 2
 
 	if (!is.null(attr(decision.table, "decision.attr"))) {
 		infoSystem = decision.table[-attr(decision.table, "decision.attr")] 
-		decisionAttr =  decision.table[[attr(decision.table, "decision.attr")]]
+		decisionAttr = factor(decision.table[[attr(decision.table, "decision.attr")]])
 	} else {
     stop("A decision attribute is not indicated.")
 	}
