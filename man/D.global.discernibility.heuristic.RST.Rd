@@ -11,8 +11,8 @@ D.global.discernibility.heuristic.RST(decision.table, maxNOfCuts = 2 *
 \arguments{
 \item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
 See \code{\link{SF.asDecisionTable}}.
-It should be noted that especially for this method, all conditional attributes
-must in real values. So, in the case we have mixed values, we should choose other methods.}
+It should be noted that for this particular method all conditional attributes
+must be numeric.}
 
 \item{maxNOfCuts}{a positive integer indicating the maximum number of allowed cuts.}
 
