@@ -28,9 +28,9 @@ Description: Implementations of algorithms for data analysis
     additional parameters to analyze the data. FRST is an extension of RST. The
     FRST combines concepts of vagueness and indiscernibility that are expressed
     with fuzzy sets (as proposed by Zadeh, in 1965) and RST.
-Version: 1.2-1
+Version: 1.2-2
 URL: http://sci2s.ugr.es/dicits/software/RoughSets
-Date: 2015-03-20
+Date: 2015-04-28
 Suggests: class
 LinkingTo: Rcpp
 Depends: Rcpp

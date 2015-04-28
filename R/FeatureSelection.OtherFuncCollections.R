@@ -17,25 +17,25 @@
 #  A PARTICULAR PURPOSE. See the GNU General Public License for more details.
 #
 #############################################################################
-# This is a function for implementing the algorithms of quick reduct for feature selection 
+# This is a function for implementing the algorithms of quick reduct for feature selection
 # based on rough set theory and fuzzy rough set theory.
-# 
-# There are several variety of algorithms based on QuickReduct algorithm (\code{\link{FS.quickreduct.RST}}) and 
+#
+# There are several variety of algorithms based on QuickReduct algorithm (\code{\link{FS.quickreduct.RST}}) and
 # (\code{\link{FS.quickreduct.FRST}})
-# It should be noted that new decision table is produced based on one chosen reduct. 
+# It should be noted that new decision table is produced based on one chosen reduct.
 #
 # @title QuickReduct algorithm based on rough set theory and fuzzy rough set theory
-# 
-# @param decision.table a data frame representing decision table. See \code{\link{BC.IND.relation.FRST}}. 
-# @param type.method a type of the methods 
+#
+# @param decision.table a data frame representing decision table. See \code{\link{BC.IND.relation.FRST}}.
+# @param type.method a type of the methods
 # @param type.QR a type of quick reduct
-# @param control a list of other parameters 
+# @param control a list of other parameters
 # @seealso \code{\link{FS.brute.force.RST}}, \code{\link{FS.heuristic.filter.RST}}
-# @return reduct. 
+# @return reduct.
 quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", type.QR = "fuzzy.QR", control = list()){
 	options(warn=-1)
 	## set default values of all parameters
-	control <- setDefaultParametersIfMissing(control, list(type.aggregation = c("t.tnorm", "lukasiewicz"), alpha = 0.95, 
+	control <- setDefaultParametersIfMissing(control, list(type.aggregation = c("t.tnorm", "lukasiewicz"), alpha = 0.95,
                                      	t.implicator = "lukasiewicz", type.relation = c("tolerance", "eq.3"), q.some = c(0.1, 0.6), q.most = c(0.2, 1),
 										alpha.precision = 0.05, penalty.fact = 0.8, m.owa = round(0.5*nrow(decision.table)),
 										k.rfrs = round(0.5*nrow(decision.table)), beta.quasi = 0.05, type.rfrs = "k.trimmed.min", randomize = FALSE))
@@ -44,7 +44,7 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 	desc.attrs <- attr(decision.table, "desc.attrs")
 	nominal.att <- attr(decision.table, "nominal.attrs")
 	decision.attr <- attr(decision.table, "decision.attr")
-	
+
 	if (is.null(attr(decision.table, "decision.attr"))){
 		decision.attr <- ncol(objects)
 	} else {
@@ -55,7 +55,7 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 			nominal.att <- c(nominal.att[-decision.attr], nominal.att[decision.attr])
 		}
 	}
-	
+
 	num.att <- ncol(objects)
 	t.implicator <- control$t.implicator
 	decision.attr <- control$decision.attr
@@ -75,81 +75,81 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 	k.rfrs <- control$k.rfrs
 	beta.quasi <- control$beta.quasi
 	randomize <- control$randomize
-	
+
 	## get all conditional attributes
     P <- matrix(c(seq(1, (num.att - 1), by = 1)), nrow = 1)
 	init.IND <- list()
-	
+
 	## generate indiscernibility relation for each attributes as initial values
-	 if (any(type.method == c("fuzzy.dependency", "fuzzy.boundary.reg", "min.positive.reg", 
-							    "hybrid.rule.induction", "fvprs", "sfrs", "vqrs", "owa", "rfrs", "beta.pfrs"))){	
+	 if (any(type.method == c("fuzzy.dependency", "fuzzy.boundary.reg", "min.positive.reg",
+							    "hybrid.rule.induction", "fvprs", "sfrs", "vqrs", "owa", "rfrs", "beta.pfrs"))){
 		  control.ind <- list(type.aggregation = type.aggregation, type.relation = type.relation)
 		  for (i in 1 : ncol(P)){
-			 ## perform indiscernibility relation			 
-			  temp.IND <- BC.IND.relation.FRST(decision.table = decision.table, attributes = c(P[, i]), 
-								     control = control.ind)  								   
-			
+			 ## perform indiscernibility relation
+			  temp.IND <- BC.IND.relation.FRST(decision.table = decision.table, attributes = c(P[, i]),
+								     control = control.ind)
+
 			## Save indiscernibility relation of each attributes
 			  init.IND[[i]] <- temp.IND$IND.relation
-		  }	
-		  obj.IND.decAttr <- BC.IND.relation.FRST(decision.table = decision.table, attributes = c(num.att), control = control.ind) 
+		  }
+		  obj.IND.decAttr <- BC.IND.relation.FRST(decision.table = decision.table, attributes = c(num.att), control = control.ind)
 	  }
 
-	
+
 	## get indiscernibility relation for ALL attribute for stopping criteria
 	if (type.method == "quickreduct.RST"){
 		## make equivalence class
 		IND <- BC.IND.relation.RST(decision.table, feature.set = c(P))
-			
+
 		## get rough set
 		roughset <- BC.LU.approximation.RST(decision.table, IND)
-			
+
 		## using def.region.RST to get degree of dependency
 		region <- BC.positive.reg.RST(decision.table, roughset)
-			
+
 		## get degree of dependency for all attributes
-		degree.all <- region$degree.dependency	
-	}	
-	
+		degree.all <- region$degree.dependency
+	}
+
 	else if (any(type.method == c("vqrs", "hybrid.rule.induction"))){
 		## perform fuzzy indiscernibility relation for all attributes by reducing init.IND
 		 IND <- Reduce.IND(init.IND, t.tnorm)
 		 list.IND <- list(IND.relation = IND, type.relation = type.relation, type.aggregation = type.aggregation, type.model = "FRST")
 		 obj.IND <- ObjectFactory(list.IND, classname = "IndiscernibilityRelation")
-		 
+
 		 # compute LU approximations
 		 if (type.method == "vqrs"){
-			control.vqrs <- list(q.some = q.some, q.most = q.most, t.tnorm = t.tnorm)	
-			FRST <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr, 
+			control.vqrs <- list(q.some = q.some, q.most = q.most, t.tnorm = t.tnorm)
+			FRST <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr,
 								    type.LU = "vqrs", control = control.vqrs)
 		 } else {
 			control.LU <- list(t.implicator = t.implicator, t.tnorm = t.tnorm)
-			FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr, 
+			FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr,
 										 type.LU = "implicator.tnorm", control = control.LU)
 		 }
 		 ## define fuzzy regions
 		 res.temp <- BC.def.region.FRST(decision.table = decision.table, FRST)
-		 
+
 		 ## get positive regions and degree of dependency
-		 pos.region.all <- res.temp$positive.freg		 
+		 pos.region.all <- res.temp$positive.freg
 	}
-	
+
 	## quickreduct based on fuzzy discernibility matrix
 	else if (type.method == c("fuzzy.discernibility")){
 		## Calculate discernibility matrix based on fuzzy rough set
-		IND.cond <- build.discMatrix.FRST(decision.table, type.discernibility = "fuzzy.disc", type.relation = type.relation, 
-		                               t.implicator = t.implicator, type.LU = "implicator.tnorm", show.discernibilityMatrix = FALSE, 
+		IND.cond <- build.discMatrix.FRST(decision.table, type.discernibility = "fuzzy.disc", type.relation = type.relation,
+		                               t.implicator = t.implicator, type.LU = "implicator.tnorm", show.discernibilityMatrix = FALSE,
 									   type.aggregation = type.aggregation)$IND.conditionAttr
-		IND.dec <- build.discMatrix.FRST(decision.table, type.discernibility = "fuzzy.disc", type.relation = type.relation, 
-		                               t.implicator = t.implicator, type.LU = "implicator.tnorm", show.discernibilityMatrix = FALSE, 
+		IND.dec <- build.discMatrix.FRST(decision.table, type.discernibility = "fuzzy.disc", type.relation = type.relation,
+		                               t.implicator = t.implicator, type.LU = "implicator.tnorm", show.discernibilityMatrix = FALSE,
 									   type.aggregation = type.aggregation)$IND.decisionAttr
-				
+
 		## calculate degree of satisfaction for all condition attributes
 		SAT.all <- sum(calc.SAT(IND.cond, IND.dec, attributes = c(P)))
 	}
-	
+
 	## initialization
-	exit <- FALSE	
+	exit <- FALSE
 	cov.rules <- NULL
 	cover.indx <- c()
 	all.indx.obj <- seq(1, nrow(objects))
@@ -157,16 +157,16 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 	gamma.best.bound <- 100000
 	gamma.best.level <- 0
 	gamma.best.bound.level <- 100000
-	
-	while (exit == FALSE){	
+
+	while (exit == FALSE){
 		gamma.prev <- gamma.best
 		gamma.prev.bound <- gamma.best.bound
 		gamma.prev.level <- gamma.best.level
 		gamma.prev.bound <- gamma.best.bound.level
 		reject.attr <- c()
-		
+
 		## calculate degree of dependency
-		for (i in 1 : ncol(P)){		
+		for (i in 1 : ncol(P)){
 			if (type.method == "quickreduct.RST"){
 				## make equivalence class
 				IND <- BC.IND.relation.RST(decision.table, feature.set = c(P[, i]))
@@ -178,57 +178,57 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 				region <- BC.positive.reg.RST(decision.table, roughset)
 
 				## calculate degree of dependency
-				degree <- region$degree.dependency	
+				degree <- region$degree.dependency
 			}
 			## check the type of concept
-			else if (any(type.method == c("fuzzy.dependency", "fuzzy.boundary.reg", "min.positive.reg", 
+			else if (any(type.method == c("fuzzy.dependency", "fuzzy.boundary.reg", "min.positive.reg",
 			                              "hybrid.rule.induction", "fvprs", "sfrs", "vqrs", "owa", "rfrs", "beta.pfrs"))){
-				
-				## calculate and construct the class of indiscernibility relation of each attribute in collection P 			
+
+				## calculate and construct the class of indiscernibility relation of each attribute in collection P
 				IND <- Reduce.IND(init.IND[c(P[, i])], t.tnorm)
 				list.IND <- list(IND.relation = IND, type.relation = type.relation, type.aggregation = type.aggregation, type.model = "FRST")
 				obj.IND <- ObjectFactory(list.IND, classname = "IndiscernibilityRelation")
-				
+
 				if (any(type.method == c("fuzzy.dependency", "hybrid.rule.induction", "fuzzy.boundary.reg", "min.positive.reg"))){
 					## get lower and upper approximation
 					control.LU <- list(t.implicator = t.implicator, t.tnorm = t.tnorm)
-					FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr, 
+					FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr,
 													type.LU = "implicator.tnorm", control = control.LU)
-					
+
 					## define fuzzy regions
 					fuzzy.region <- BC.def.region.FRST(decision.table = decision.table, FRST)
-					
+
 					if (any(type.method == c("fuzzy.dependency", "hybrid.rule.induction"))){
 						## save the degree
 						degree <- fuzzy.region$degree.dependency
-						
+
 						## perform rule induction: check positive region of each iteration
 						## Based on R. Jensen, C. Cornelis, Q. Shen, "Hybrid fuzzy-rough rule induction and feature selection"
-						if (type.method == "hybrid.rule.induction"){	
+						if (type.method == "hybrid.rule.induction"){
 							pos.i <- fuzzy.region$positive.freg
 							IND <- obj.IND$IND.relation
 
-							## all.indx.obj is indexes of objects which are considered, 
+							## all.indx.obj is indexes of objects which are considered,
 							## initially, it is all indexes of objects
-							## cover.indx is indexes which are convered 
-							cons.indx <- all.indx.obj[all.indx.obj %in% cover.indx == FALSE]						
-							
+							## cover.indx is indexes which are convered
+							cons.indx <- all.indx.obj[all.indx.obj %in% cover.indx == FALSE]
+
 							## loop until all objects are covered
 							ii <- 1
-							while (ii <= length(cons.indx)){			 
+							while (ii <= length(cons.indx)){
 								## condition when positive region of subset attributes is the same as positive region on all attributes
 							   if (pos.i[cons.indx[ii]] == pos.region.all[cons.indx[ii]]){
 
 									## the following step refers to the "check" procedure in the paper
-									add <- TRUE		
-									
+									add <- TRUE
+
 									## it is for first time/initialization
-									if (is.null(cov.rules)){								
-										
-										 ## collect rule									
-										 rules <- list(attributes = list(colnames(objects[c(P[, i])])), objects = list(cons.indx[ii])) 
+									if (is.null(cov.rules)){
+
+										 ## collect rule
+										 rules <- list(attributes = list(colnames(objects[c(P[, i])])), objects = list(cons.indx[ii]))
 										 IND.rules <- IND[cons.indx[ii], ,drop = FALSE]
-										 cov.rules <- IND[cons.indx[ii], ,drop = FALSE]								
+										 cov.rules <- IND[cons.indx[ii], ,drop = FALSE]
 										 num.rules <- 1
 
 
@@ -236,9 +236,9 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 										 add <- FALSE
 									}	else {
 										## repeat for each existing rules
-										for (j in 1 : num.rules){	
-											## if existing rule is subset of new rule											
-											if (all(rules$attributes[[j]] %in% colnames(objects[c(P[, i])])) == TRUE){											
+										for (j in 1 : num.rules){
+											## if existing rule is subset of new rule
+											if (all(rules$attributes[[j]] %in% colnames(objects[c(P[, i])])) == TRUE){
 												## compare degree of coverage between existing rule and new one
 
 												if (all(IND[cons.indx[ii], ,drop = FALSE] <= cov.rules) == TRUE){
@@ -247,39 +247,39 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 												}	else if (all(IND.rules[j, ,drop = FALSE] < IND[cons.indx[ii], ,drop = FALSE]) == TRUE){
 													IND.rules[j, , drop = FALSE] <- NA
 													rules$attributes[[j]] <- NULL
-													rules$objects[[j]] <- NULL	
-												}				
-											
+													rules$objects[[j]] <- NULL
+												}
+
 											}
-										
-										}										
+
+										}
 									}
-									## add a new rule and update coverage 
+									## add a new rule and update coverage
 									if (add == TRUE){
 										rules$attributes <- append(rules$attributes, list(colnames(objects[c(P[, i])])))
 										rules$objects <- append(rules$objects, list(cons.indx[ii]))
 										IND.rules <- rbind(IND.rules, IND[cons.indx[ii], ,drop = FALSE])
-										cov.rules <- apply(rbind(cov.rules, IND[cons.indx[ii], ,drop = FALSE]), 
-													 2, function(x) max(x))	
-										
+										cov.rules <- apply(rbind(cov.rules, IND[cons.indx[ii], ,drop = FALSE]),
+													 2, function(x) max(x))
+
 										cover.indx <- which(cov.rules == 1)
-										
-										cons.indx <- all.indx.obj[all.indx.obj %in% cover.indx == FALSE]	
-										
+
+										cons.indx <- all.indx.obj[all.indx.obj %in% cover.indx == FALSE]
+
 										num.rules <- num.rules + 1
 										ii <- 0
 									}
 								}
 								ii <- ii + 1
-							}												
+							}
 						}
-					}	
+					}
 					else if (type.method == c("fuzzy.boundary.reg")){
 						## get boundary fuzzy region
 						boundary.reg <- fuzzy.region$boundary.freg
-					
+
 						## degree of uncertainty
-						degree <- sum(unlist(boundary.reg))/length(boundary.reg)					
+						degree <- sum(unlist(boundary.reg))/length(boundary.reg)
 					}	else if (type.method == c("min.positive.reg")){
 						positive.reg <- fuzzy.region$positive.freg
 						degree <- min(positive.reg) #/min(pos.region.all)
@@ -288,50 +288,50 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 					if (type.method == "fvprs"){
 						## get lower and upper approximation
 						control.fvprs <- list(t.implicator = t.implicator, t.tnorm = t.tnorm, alpha = alpha.precision)
-						FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr, 
+						FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr,
 													type.LU = "fvprs", control = control.fvprs)
 					}	else if (type.method == "sfrs"){
 						## get lower and upper approximation
 						control.sfrs <- list(penalty.fact = penalty.fact)
-						FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr, 
+						FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr,
 													type.LU = "sfrs", control = control.sfrs)
 					}	else if (type.method == "owa"){
 						control.owa <- list(t.implicator = t.implicator, t.tnorm = t.tnorm, m.owa = m.owa)
-						FRST <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr, 
+						FRST <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr,
 							  type.LU = "owa", control = control.owa)
 					}	else if (type.method == "rfrs"){
 						control.rfrs <- list(t.implicator = t.implicator, t.tnorm = t.tnorm, type.rfrs = type.rfrs, k.rfrs = k.rfrs)
-						FRST <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr, 
+						FRST <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr,
 								  type.LU = "rfrs", control = control.rfrs)
-					}	else if (type.method == "beta.pfrs"){	
+					}	else if (type.method == "beta.pfrs"){
 						control.beta.pfrs <- list(t.implicator = t.implicator, t.tnorm = t.tnorm, beta.quasi = beta.quasi)
-						FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr, 
+						FRST <- BC.LU.approximation.FRST(decision.table = decision.table, obj.IND, obj.IND.decAttr,
 											 type.LU = "beta.pfrs", control = control.beta.pfrs)
 					}
 					## define fuzzy regions
 					fuzzy.region <- BC.positive.reg.FRST(decision.table = decision.table, FRST)
-				
+
 					## calculate degree of dependency
 					degree <- fuzzy.region$degree.dependency
 				}	else if (type.method == "vqrs"){
 					## perform LU approximation
-					control.vqrs <- list(q.some = q.some, q.most = q.most, t.tnorm = t.tnorm)		
-					FRST.VQRS <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr, 
+					control.vqrs <- list(q.some = q.some, q.most = q.most, t.tnorm = t.tnorm)
+					FRST.VQRS <- BC.LU.approximation.FRST(decision.table, obj.IND, obj.IND.decAttr,
 											  type.LU = "vqrs", control = control.vqrs)
-					
+
 					## determine regions
 					pos.region <- BC.positive.reg.FRST(decision.table, FRST.VQRS)$positive.freg
 					degree <- min(1, sum(pos.region)/sum(pos.region.all))
-				}			
+				}
 			}	else if (type.method == c("fuzzy.discernibility")){
 				SAT <- sum(calc.SAT(IND.cond, IND.dec, attributes = c(P[, i])))
 				degree <- SAT/SAT.all
 			}
-			
+
 			if (type.QR == "modified.QR"){
 				if (type.method == "fuzzy.boundary.reg"){
-					if ((degree < gamma.best.bound)  || (degree < gamma.prev.bound)){	
-						reject.attr <- append(reject.attr, i)						
+					if ((degree < gamma.best.bound)  || (degree < gamma.prev.bound)){
+						reject.attr <- append(reject.attr, i)
 					}
 				}	else {
 					if ((degree < gamma.best.level)  || (degree < gamma.prev.level)){
@@ -339,7 +339,7 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 					}
 				}
 			}
-			
+
 			## check to get reduct
 			if (type.method == "fuzzy.boundary.reg"){
 				if (degree < gamma.best.bound){
@@ -347,7 +347,7 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 					degree.reduct <- degree
 					gamma.best.bound <- degree
 					indx.min <- i
-				}				
+				}
 			}	else {
 				if (degree > gamma.best){
 					reduct <- P[, i]
@@ -355,40 +355,40 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 					gamma.best <- degree
 					indx.max <- i
 				}
-			}			
+			}
 		}
-	
+
 		########### Procedure to select the attributes ###############
-		## for fuzzy.boundary.reg: get min of degree 
-		if (type.method == "fuzzy.boundary.reg"){					
-			## check terminating condition		
-			if (abs(gamma.best.bound - gamma.prev.bound) < 0.00005){			
+		## for fuzzy.boundary.reg: get min of degree
+		if (type.method == "fuzzy.boundary.reg"){
+			## check terminating condition
+			if (abs(gamma.best.bound - gamma.prev.bound) < 0.00005){
 				exit <- TRUE
 			}	else if (nrow(P) == (num.att - 1)){
 				exit <- TRUE
 			}	else {
 				if (type.QR == "modified.QR"){
 					gamma.best.level <- degree.reduct
-					
+
 					if (!is.null(indx.min)){
-						
+
 						## add attribute which has max degree into P
-						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max 
+						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max
 						P <- rbind(P, P[1,indx.min])
-						
+
 						## delete the column of max degree attribute
 						P <- P[, -c(indx.min, reject.attr), drop = FALSE]
-						
+
 						## check whether randomize = TRUE means we select attributes randomly
 						if (randomize == TRUE){
 							P <- randomize.attrs(attributes = P)
 						}
-						
+
 						if (ncol(P) <= 1){
 							exit <- TRUE
 							reduct <- P
 						}
-					}	else { 
+					}	else {
 						exit <- TRUE
 						reduct <- P
 					}
@@ -399,23 +399,23 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 						P <- rbind(P, P[1,indx.min])
 
 						## delete the column of max degree attribute
-						P <- P[, -indx.min, drop = FALSE]	
-						
+						P <- P[, -indx.min, drop = FALSE]
+
 						## check whether randomize = TRUE means we select attributes randomly
 						if (randomize == TRUE){
 							P <- randomize.attrs(attributes = P)
 						}
-						
+
 					}
 					else {
 						exit <- TRUE
 					}
-					
+
 					indx.min <- NULL
 				}
-			}						
-		} 
-		
+			}
+		}
+
 		## for others: get max of degree
 		else if (any(type.method == c("fuzzy.discernibility", "min.positive.reg", "vqrs"))){
 			if (degree.reduct >= alpha){
@@ -426,19 +426,19 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 				if (type.QR == "modified.QR"){
 					if (!is.null(indx.max)){
 						gamma.best.level <- degree.reduct
-						
+
 						## add attribute which has max degree into P
-						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max 
+						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max
 						P <- rbind(P, P[1,indx.max])
-						
+
 						## delete the column of max degree attribute
 						P <- P[, -c(indx.max, reject.attr), drop = FALSE]
-						
+
 						## check whether randomize = TRUE means we select attributes randomly
 						if (randomize == TRUE){
 							P <- randomize.attrs(attributes = P)
 						}
-						
+
 						if (ncol(P) <= 1){
 							exit <- TRUE
 							reduct <- P
@@ -451,77 +451,12 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 				}	else {
 					if (!is.null(indx.max)){
 						## add attribute which has max degree into P
-						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max 
+						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max
 						P <- rbind(P, P[1,indx.max])
-						
-						## delete the column of max degree attribute
-						P <- P[, -indx.max, drop = FALSE]	
-						
-						## check whether randomize = TRUE means we select attributes randomly
-						if (randomize == TRUE){
-							P <- randomize.attrs(attributes = P)
-						}
-					}	else {
-						exit <- TRUE
-					}
-					indx.max <- NULL
-				}
-			}	
-		}	else if (any(type.method == c("quickreduct.RST"))){
-			if (degree.reduct == degree.all){
-				exit <- TRUE
-			}	else {
-				## add attribute which has max degree into P
-				## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max 
-				P <- rbind(P, P[1,indx.max])
-				
-				## delete the column of max degree attribute
-				P <- P[, -indx.max, drop = FALSE]
 
-				## check whether randomize = TRUE means we select attributes randomly
-				if (randomize == TRUE){
-					P <- randomize.attrs(attributes = P)
-				}
-			}			
-		}	else if (any(type.method == c("fuzzy.dependency", "owa", "rfrs", "fvprs", "sfrs", "beta.pfrs", "hybrid.rule.induction"))){
-			if (abs(gamma.best - gamma.prev) < 0.000005){
-				exit <- TRUE
-			}	else if (nrow(P) == (num.att - 1)){
-				exit <- TRUE
-			}	else {
-				if (type.QR == "modified.QR"){
-					if (!is.null(indx.max)){
-						gamma.best.level <- degree.reduct
-						
-						## add attribute which has max degree into P
-						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max 
-						P <- rbind(P, P[1,indx.max])
-						
-						## delete the column of max degree attribute
-						P <- P[, -c(indx.max, reject.attr), drop = FALSE]
-						
-						## check whether randomize = TRUE means we select attributes randomly
-						if (randomize == TRUE){
-							P <- randomize.attrs(attributes = P)
-						}
-						
-						if (ncol(P) <= 1){
-							exit <- TRUE
-							reduct <- P
-						}
-					}	else {
-						exit <- TRUE
-					}	
-					indx.max <- NULL
-				}	else {
-					if (!is.null(indx.max)){
-						## add attribute which has max degree into P
-						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max 
-						P <- rbind(P, P[1,indx.max])
-						
 						## delete the column of max degree attribute
 						P <- P[, -indx.max, drop = FALSE]
-						
+
 						## check whether randomize = TRUE means we select attributes randomly
 						if (randomize == TRUE){
 							P <- randomize.attrs(attributes = P)
@@ -532,9 +467,74 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 					indx.max <- NULL
 				}
 			}
-		}					
+		}	else if (any(type.method == c("quickreduct.RST"))){
+			if (degree.reduct == degree.all){
+				exit <- TRUE
+			}	else {
+				## add attribute which has max degree into P
+				## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max
+				P <- rbind(P, P[1,indx.max])
+
+				## delete the column of max degree attribute
+				P <- P[, -indx.max, drop = FALSE]
+
+				## check whether randomize = TRUE means we select attributes randomly
+				if (randomize == TRUE){
+					P <- randomize.attrs(attributes = P)
+				}
+			}
+		}	else if (any(type.method == c("fuzzy.dependency", "owa", "rfrs", "fvprs", "sfrs", "beta.pfrs", "hybrid.rule.induction"))){
+			if (abs(gamma.best - gamma.prev) < 0.000005){
+				exit <- TRUE
+			}	else if (nrow(P) == (num.att - 1)){
+				exit <- TRUE
+			}	else {
+				if (type.QR == "modified.QR"){
+					if (!is.null(indx.max)){
+						gamma.best.level <- degree.reduct
+
+						## add attribute which has max degree into P
+						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max
+						P <- rbind(P, P[1,indx.max])
+
+						## delete the column of max degree attribute
+						P <- P[, -c(indx.max, reject.attr), drop = FALSE]
+
+						## check whether randomize = TRUE means we select attributes randomly
+						if (randomize == TRUE){
+							P <- randomize.attrs(attributes = P)
+						}
+
+						if (ncol(P) <= 1){
+							exit <- TRUE
+							reduct <- P
+						}
+					}	else {
+						exit <- TRUE
+					}
+					indx.max <- NULL
+				}	else {
+					if (!is.null(indx.max)){
+						## add attribute which has max degree into P
+						## e.g. P <- [1,2,3,4; 2,2,2,2] when indx attr 2 is max
+						P <- rbind(P, P[1,indx.max])
+
+						## delete the column of max degree attribute
+						P <- P[, -indx.max, drop = FALSE]
+
+						## check whether randomize = TRUE means we select attributes randomly
+						if (randomize == TRUE){
+							P <- randomize.attrs(attributes = P)
+						}
+					}	else {
+						exit <- TRUE
+					}
+					indx.max <- NULL
+				}
+			}
+		}
 	}
-	
+
 	if (type.method == "hybrid.rule.induction"){
 		## change into standard form of rules and then produce result
 		return(std.rules(rules, type.method = "RI.hybridFS.FRST", decision.table, t.similarity, t.tnorm))
@@ -549,15 +549,15 @@ quickreduct.alg <- function(decision.table, type.method = "fuzzy.dependency", ty
 # @param IND.dec indiscernibility matrix for decision attribute
 # @param attributes a list of considered attributes
 calc.SAT <- function(IND.cond, IND.dec, attributes){
-	
+
 	SAT	<- matrix()
 	ii <- 1
 	for (j in 1 : nrow(IND.cond)){
 		for (k in 1 : ncol(IND.cond)){
 			if (j < k) {
 				temp <- matrix()
-				for (i in 1 : length(attributes)){				
-						temp[i] <- unlist(IND.cond[j, k])[attributes[i]]	
+				for (i in 1 : length(attributes)){
+						temp[i] <- unlist(IND.cond[j, k])[attributes[i]]
 				}
 				if (length(attributes) > 1){
 					val <- calc.conorm(func.conorm, data = temp[-1], init.val = temp[1], t.conorm = "lukasiewicz")
@@ -576,7 +576,7 @@ calc.SAT <- function(IND.cond, IND.dec, attributes){
 # This function is used to calculate conorm all relations
 #
 # @title conorm calculation
-# @param func.conorm a function to calculate 2 variable using a certain conorm 
+# @param func.conorm a function to calculate 2 variable using a certain conorm
 # @param data a vector of data
 # @param init.val a value of attribute
 # @param t.conorm a type of t-conorm
@@ -589,7 +589,7 @@ calc.conorm <- function(func.conorm, data, init.val, t.conorm = "lukasiewicz", .
 		}
 	}
 	return(conorm.val)
-	
+
 }
 
 # This function is used to calculate conorm of two variables
@@ -607,14 +607,14 @@ func.conorm <- function(right.val, init.val, t.conorm){
 }
 
 #' An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
-#' It is based on the \emph{gini} index as a measure of information (Stoffel and Raileanu, 2000). 
+#' It is based on the \emph{gini} index as a measure of information (Stoffel and Raileanu, 2000).
 #'
 #' @title The gini-index measure
 #' @author Andrzej Janusz
-#' 
+#'
 #' @param decisionDistrib an integer vector corresponding to a distribution of attribute values.
-#' 
-#' @return a numeric value indicating the gini index of an attribute. 
+#'
+#' @return a numeric value indicating the gini index of an attribute.
 #' @references
 #' K. Stoffel and L. E. Raileanu, "Selecting Optimal Split-Functions with Linear Threshold Unit Trees and Madaline-Style Networks",
 #' in: Research and Development in Intelligent Systems XVII, BCS Conference Series (2000).
@@ -629,9 +629,9 @@ X.gini <- function(decisionDistrib)  {
 #'
 #' @title The entropy measure
 #' @author Andrzej Janusz
-#' 
+#'
 #' @param decisionDistrib an integer vector corresponding to a distribution of attribute values
-#' 
+#'
 #' @return a numeric value indicating entropy of an attribute.
 #' @references
 #' C. E. Shannon, "A Mathematical Theory of Communication", Bell System Technical Journal, vol. 27, p. 379 - 423, 623 - 656 (1948).
@@ -646,10 +646,10 @@ X.entropy <- function(decisionDistrib)  {
 #'
 #' @title  The discernibility measure
 #' @author Andrzej Janusz
-#' 
+#'
 #' @param decisionDistrib an integer vector corresponding to a distribution of decision attribute values
 #' @return a numeric value indicating a number of conflicts in a decision attribute
-#' 
+#'
 #' @export
 X.nOfConflicts <- function(decisionDistrib)  {
   return(as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * as.numeric(decisionDistrib))))
@@ -659,7 +659,7 @@ X.nOfConflicts <- function(decisionDistrib)  {
 #
 # @title The discernibility measure function based on \code{log2}
 # @param decisionDistrib a distribution of values on the decision attribute.
-# @return \code{qualityF}. 
+# @return \code{qualityF}.
 X.nOfConflictsLog <- function(decisionDistrib)  {
   return(log2(1+as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * decisionDistrib))))
 }
@@ -668,22 +668,25 @@ X.nOfConflictsLog <- function(decisionDistrib)  {
 #
 # @title The discernibility measure function based on \code{sqrt}
 # @param decisionDistrib a distribution of values on the decision attribute.
-# @return \code{qualityF}. 
+# @return \code{qualityF}.
 X.nOfConflictsSqrt <- function(decisionDistrib)  {
   return(sqrt(as.numeric(sum(as.numeric(sum(decisionDistrib) - decisionDistrib) * as.numeric(decisionDistrib)))))
 }
 
 # This is an auxiliary function for computing decision reducts
-qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions, 
+qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions,
                         INDclasses, baseChaos, chaosFunction = X.gini)  {
 
   INDclasses = compute_indiscernibility(INDclasses, as.character(vec), uniqueValues)
-  
+
   if(length(INDclasses) > 0) {
-    remainingChaos = compute_chaos(INDclasses, as.character(decisionVec),
-                                   uniqueDecisions, chaosFunction)
+    classCountsList = compute_chaos(INDclasses, as.character(decisionVec),
+                                    as.character(uniqueDecisions))
+    remainingChaos = sapply(classCountsList, chaosFunction)
+    INDclassesLengths = sapply(INDclasses, length) / length(decisionVec)
+    remainingChaos = sum(remainingChaos * INDclassesLengths)
   } else remainingChaos = 0.0
-  
+
   return(as.numeric(baseChaos - remainingChaos))
 }
 
@@ -703,16 +706,16 @@ randomize.attrs <- function(attributes){
 # This function is used to calculate a discernibility function used to get all reducts
 # @param discernibilityMatrix an object of a class "DiscernibilityMatrix
 calc.all.reducts <- function(discernibilityMatrix) {
-  
+
   disc.list = discernibilityMatrix$disc.list
   disc.mat = discernibilityMatrix$disc.mat
   type.discernibility = discernibilityMatrix$type.discernibility
   type.model = discernibilityMatrix$type.model
   names.attr = discernibilityMatrix$names.attr
-  
+
   ## delete redundant of discernibility matrix
   disc.list <- unique(disc.list)
-  
+
   ## delete blank characters
   disc.list.temp <- c()
   j <- 1
@@ -723,38 +726,38 @@ calc.all.reducts <- function(discernibilityMatrix) {
     }
   }
   disc.list <- disc.list.temp
-  
+
   ## perform boolean function
   res <- boolean.func(disc.list)
-  
+
   ## results
   if (length(res$dec.red) == 0){
     ## construct DecisionReduct class
-    mod <- list(discernibility.matrix = disc.mat, decision.reduct = NULL, core = NULL, discernibility.type = type.discernibility, 
-                type.task = "computation of all reducts", type.model = type.model)					
-    class.mod <- ObjectFactory(mod, classname = "ReductSet")	
-    
+    mod <- list(discernibility.matrix = disc.mat, decision.reduct = NULL, core = NULL, discernibility.type = type.discernibility,
+                type.task = "computation of all reducts", type.model = type.model)
+    class.mod <- ObjectFactory(mod, classname = "ReductSet")
+
     return(class.mod)
-  } 
+  }
   else if (length(res$dec.red) == 1){
 
 	## construct DecisionReduct class
     reduct = which(as.character(names.attr) %in% res$dec.red)
     names(reduct) = names.attr[reduct]
-    
-    mod <- list(discernibility.matrix = disc.mat, decision.reduct = list(reduct), core = reduct, discernibility.type = type.discernibility, 
-                type.task = "computation of all reducts", type.model = type.model)					
-    class.mod <- ObjectFactory(mod, classname = "ReductSet")	
-    
+
+    mod <- list(discernibility.matrix = disc.mat, decision.reduct = list(reduct), core = reduct, discernibility.type = type.discernibility,
+                type.task = "computation of all reducts", type.model = type.model)
+    class.mod <- ObjectFactory(mod, classname = "ReductSet")
+
     return(class.mod)
-  } 
+  }
   else {
     ## transform CNF into DNF
     CNFclauses = res$dec.red
     CNFlengths = sapply(CNFclauses, length)
     CNFclauses = CNFclauses[order(CNFlengths)]
     tmpDNF = CNFclauses[[1]]
-  
+
 	for(i in 2:length(CNFclauses))  {
       tmpDNF = expand.grid(tmpDNF, CNFclauses[[i]], KEEP.OUT.ATTRS = F, stringsAsFactors = F)
       tmpDNF = split(tmpDNF, 1:nrow(tmpDNF))
@@ -770,29 +773,29 @@ calc.all.reducts <- function(discernibilityMatrix) {
         tmpDNFlength = length(tmpDNF)
       }
     }
-    
-    DNFclauses = lapply(tmpDNF, function(x) x[order(x)])			
-    
+
+    DNFclauses = lapply(tmpDNF, function(x) x[order(x)])
+
     if (length(DNFclauses) == 1){
       core <- DNFclauses
-    } 
+    }
 	else {
       core <- res$core
     }
-    
+
     if(length(core) > 0) {
       core = which(as.character(names.attr) %in% core)
       names(core) = names.attr[core]
     }
-    
-    DNFclauses = lapply(DNFclauses, function(x,namesVec) {x = which(namesVec %in% x); 
-                                                          names(x) = namesVec[x]; 
+
+    DNFclauses = lapply(DNFclauses, function(x,namesVec) {x = which(namesVec %in% x);
+                                                          names(x) = namesVec[x];
                                                           return(x)}, as.character(names.attr))
-    
-    mod <- list(decision.reduct = DNFclauses, core = core, discernibility.type = type.discernibility, 
-                type.task = "computation of all reducts", type.model = type.model)					
-    class.mod <- ObjectFactory(mod, classname = "ReductSet")	
-    
+
+    mod <- list(decision.reduct = DNFclauses, core = core, discernibility.type = type.discernibility,
+                type.task = "computation of all reducts", type.model = type.model)
+    class.mod <- ObjectFactory(mod, classname = "ReductSet")
+
     return(class.mod)
   }
 }
@@ -802,9 +805,9 @@ calc.all.reducts <- function(discernibilityMatrix) {
 boolean.func <- function(disc.list){
 #	req.suc <- require("sets", quietly=TRUE)
 #	if(!req.suc) stop("In order to use this function, you need to install the package sets.")
-		
+
 	## check subset among objects
-	if (length(disc.list) > 1){	
+	if (length(disc.list) > 1){
 		## create a function to be vectorize
 		func.ch.duplicate <- function(i, j, disc.list){
 			if (j > i){
@@ -823,7 +826,7 @@ boolean.func <- function(disc.list){
 		VecFun <- Vectorize(func.ch.duplicate, vectorize.args=list("i","j"))
 		outer(1 : length(disc.list), 1 : length(disc.list), VecFun, disc.list)
 	}
-	
+
 	## filter the list
 	## collect decision reduct and core
 	dec.red <- list()
@@ -836,37 +839,37 @@ boolean.func <- function(disc.list){
 			}
 		}
 	}
-	
+
 	return(list(dec.red = dec.red, core = core))
 }
 
 # a function for converting formulas in a CNF form to a DNF form
 convertCNFtoDNF <- function(CNFclauses){
-  
+
   if(length(CNFclauses) > 1) {
-    ## sort the clauses by their length  
+    ## sort the clauses by their length
     CNFlengths = sapply(CNFclauses, length)
     if(any(CNFlengths == 0)) {
       CNFclauses = CNFclauses[CNFlengths > 0]
       CNFlengths = CNFlengths[CNFlengths > 0]
     }
     CNFclauses = CNFclauses[order(CNFlengths)]
-    
+
     ## eliminate unnecessary clauses for efficiency
     tmpCNFlength = length(CNFclauses)
     j = 2
-    while(j <= tmpCNFlength){    
+    while(j <= tmpCNFlength){
       tmpIdx = sapply(CNFclauses[j:tmpCNFlength], function(x,y) all(y %in% x), CNFclauses[[j-1]])
       CNFclauses = CNFclauses[c(rep(T, j-1), !tmpIdx)]
       j = j + 1
       tmpCNFlength = length(CNFclauses)
     }
-    
+
     ## convert to DNF form - start from the first CNF clause
     tmpDNF = CNFclauses[[1]]
     for(i in 2:length(CNFclauses))  {
       ## expand two clauses into possible DNFs
-      tmpDNF = expand.grid(tmpDNF, CNFclauses[[i]], 
+      tmpDNF = expand.grid(tmpDNF, CNFclauses[[i]],
                            KEEP.OUT.ATTRS = FALSE, stringsAsFactors = FALSE)
       tmpDNF = split(tmpDNF, 1:nrow(tmpDNF))
       ## take only those which are unique
@@ -886,7 +889,7 @@ convertCNFtoDNF <- function(CNFclauses){
   } else {
     tmpDNF = CNFclauses
   }
-  
+
   DNFclauses = lapply(tmpDNF, function(x) x[order(x)])
   names(DNFclauses) = paste("reduct", 1:length(DNFclauses), sep = "")
   return(DNFclauses)
@@ -894,7 +897,7 @@ convertCNFtoDNF <- function(CNFclauses){
 
 # a function for computing a core from a list of all reducts of a data set
 computeCore = function(reductList) {
-  
+
   if(length(reductList) > 0) {
     stopFlag = FALSE
     i = 2
@@ -905,13 +908,13 @@ computeCore = function(reductList) {
       if(length(core) < 1) stopFlag = TRUE
     }
   } else stop("empty reduct list")
-  
+
   return(core)
 }
 
 # An auxiliary function for computing attribute relevance using random probes.
 # It is used by FS.DAAR.heuristic.RST function.
-computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues, 
+computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues,
                                 attrScore, decisionVec, uniqueDecisions, baseChaos,
                                 qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)
 {
@@ -919,14 +922,14 @@ computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues,
     attributeList = lapply(INDclasses, function(x, y) y[x], attributeVec)
     tmpAttribute = attributeVec
     flattenINDclasses = unlist(INDclasses, use.names = FALSE)
-    probeScores = replicate(nOfProbes, 
-                            {tmpAttributePermutation = unlist(lapply(attributeList, sample), 
+    probeScores = replicate(nOfProbes,
+                            {tmpAttributePermutation = unlist(lapply(attributeList, sample),
                                                               use.names = FALSE);
                              tmpAttribute[flattenINDclasses] = tmpAttributePermutation;
                              qualityGain(tmpAttribute, uniqueValues, decisionVec, uniqueDecisions,
                                          INDclasses, baseChaos, chaosFunction = qualityF)})
   } else {
-    probeScores = replicate(nOfProbes, 
+    probeScores = replicate(nOfProbes,
                             {tmpAttribute = sample(attributeVec);
                              qualityGain(tmpAttribute, uniqueValues, decisionVec, uniqueDecisions,
                                          INDclasses, baseChaos, chaosFunction = qualityF)})

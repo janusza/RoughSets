@@ -19,16 +19,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // compute_chaos
-double compute_chaos(List input, CharacterVector dec_val, CharacterVector unique_dec_val, Function chaosF);
-RcppExport SEXP RoughSets_compute_chaos(SEXP inputSEXP, SEXP dec_valSEXP, SEXP unique_dec_valSEXP, SEXP chaosFSEXP) {
+List compute_chaos(List input, CharacterVector dec_val, CharacterVector unique_dec_val);
+RcppExport SEXP RoughSets_compute_chaos(SEXP inputSEXP, SEXP dec_valSEXP, SEXP unique_dec_valSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
     Rcpp::traits::input_parameter< List >::type input(inputSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type dec_val(dec_valSEXP);
     Rcpp::traits::input_parameter< CharacterVector >::type unique_dec_val(unique_dec_valSEXP);
-    Rcpp::traits::input_parameter< Function >::type chaosF(chaosFSEXP);
-    __result = Rcpp::wrap(compute_chaos(input, dec_val, unique_dec_val, chaosF));
+    __result = Rcpp::wrap(compute_chaos(input, dec_val, unique_dec_val));
     return __result;
 END_RCPP
 }
