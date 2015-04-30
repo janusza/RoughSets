@@ -9,3 +9,11 @@ compute_chaos <- function(input, dec_val, unique_dec_val) {
     .Call('RoughSets_compute_chaos', PACKAGE = 'RoughSets', input, dec_val, unique_dec_val)
 }
 
+compute_indiscernibility_and_chaos <- function(input, attr_val, unique_attr_val, dec_val, unique_dec_val) {
+    .Call('RoughSets_compute_indiscernibility_and_chaos', PACKAGE = 'RoughSets', input, attr_val, unique_attr_val, dec_val, unique_dec_val)
+}
+
+compute_indiscernibility_and_chaos2 <- function(input, attr_val, unique_attr_val, dec_val, unique_dec_val) {
+    .Call('RoughSets_compute_indiscernibility_and_chaos2', PACKAGE = 'RoughSets', input, attr_val, unique_attr_val, dec_val, unique_dec_val)
+}
+

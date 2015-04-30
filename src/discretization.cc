@@ -4,7 +4,7 @@
 #include <vector>
 
 extern "C" {
-void  chooseBestCutC(int *k, double *cutCandidates, int *N, double *vec, int *objectsIdx, int *objectsIdxLengths, 
+void  chooseBestCutC(int *k, double *cutCandidates, int *N, double *vec, int *objectsIdx, int *objectsIdxLengths,
                      int *numOfInt, int *decVec, int *nOfDec, int *attrType, int *minIntervalSize,
                      int *rmVec, int *idxVec, double *maxTPtoFP)	{
 
@@ -15,7 +15,7 @@ void  chooseBestCutC(int *k, double *cutCandidates, int *N, double *vec, int *ob
   int sFlag = false;
 
 
-  if(k[0] >= 1)  {   
+  if(k[0] >= 1)  {
   int posAttr = 0;
   int negAttr = 0;
 
@@ -24,19 +24,19 @@ void  chooseBestCutC(int *k, double *cutCandidates, int *N, double *vec, int *ob
 
   int tmpObjIdx = 0;
   double tmpIntLength = 0.0;
-  for(int j = 0; j <= k[0] - 1;  j++) {
+  for(int j = 0; j <= k[0] - 1;  ++j) {
     if(attrType[0] > 0) {
       tmpObjIdx = 0;
       flag = 0;
       curScore = 0;
-      for(int m = 0; m <= numOfInt[0] - 1; m++)  {
+      for(int m = 0; m <= numOfInt[0] - 1; ++m)  {
         posAttr = 0;
         negAttr = 0;
-        for(int i = 0; i <= nOfDec[0] - 1; i++) {
+        for(int i = 0; i <= nOfDec[0] - 1; ++i) {
           posAttrDecisionCounts[i] = 0;
           negAttrDecisionCounts[i] = 0;
         }
-        for(int i = tmpObjIdx; i <= tmpObjIdx + objectsIdxLengths[m] - 1; i++) {
+        for(int i = tmpObjIdx; i <= tmpObjIdx + objectsIdxLengths[m] - 1; ++i) {
           if(vec[objectsIdx[i] - 1] >= cutCandidates[j]) {
             posAttr++;
             posAttrDecisionCounts[decVec[i] - 1]++;
@@ -47,14 +47,14 @@ void  chooseBestCutC(int *k, double *cutCandidates, int *N, double *vec, int *ob
           }
         }
         if( posAttr >= 0.5*objectsIdxLengths[m] ) tmpIntLength = posAttr - 0.5*objectsIdxLengths[m];
-        else tmpIntLength = 0.5*objectsIdxLengths[m] - posAttr; 
+        else tmpIntLength = 0.5*objectsIdxLengths[m] - posAttr;
         if( 0.5*objectsIdxLengths[m] - tmpIntLength >= minIntervalSize[0])  {
           if(flag == false) {
             curScore = 0;
             flag = true;
             sFlag = true;
           }
-          for(int i = 0; i <= nOfDec[0] - 1; i++) {
+          for(int i = 0; i <= nOfDec[0] - 1; ++i) {
              curScore = curScore + (negAttr - negAttrDecisionCounts[i])*posAttrDecisionCounts[i] + (posAttr - posAttrDecisionCounts[i])*negAttrDecisionCounts[i];
           }
         }
@@ -87,7 +87,7 @@ void  chooseBestCutC(int *k, double *cutCandidates, int *N, double *vec, int *ob
 extern "C" {
 void  chooseCutCandidatesC(double *vec, int *decVec, int *N, int *candidatesIdx, double *candidates) {
 
-  for(int i = 0; i < N[0] - 1; i++)	{
+  for(int i = 0; i < N[0] - 1; ++i)	{
     if(decVec[i] != decVec[i+1])	{
       candidates[i] = (vec[i] + vec[i+1])*0.5;
       candidatesIdx[i] = true;
@@ -97,3 +97,22 @@ void  chooseCutCandidatesC(double *vec, int *decVec, int *N, int *candidatesIdx,
 }
 }
 
+extern "C" {
+void  computeIndiscernibilityAndChaos(int *INDclasses, int *INDsizes, int *NOfINDClasses,
+                                      int *attrValues, int *NOfAttrValues,
+                                      int *decValues, int *NOfDecs,
+                                      int *output)  {
+
+  int objectIterator = 0;
+  for (int i=0; i<NOfINDClasses[0]; ++i) {
+    for (int j=0; j<INDsizes[i]; ++j) {
+      ++output[i*NOfAttrValues[0]*NOfDecs[0] +
+               (attrValues[INDclasses[objectIterator] - 1] - 1)*NOfDecs[0] +
+               decValues[INDclasses[objectIterator] - 1] - 1];
+      ++objectIterator;
+    }
+  }
+
+  return;
+}
+}

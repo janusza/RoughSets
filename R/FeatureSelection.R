@@ -313,7 +313,7 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table,
 #' @export
 FS.greedy.heuristic.reduct.RST <- function(decision.table,
                                            attrDescriptions = attr(decision.table, "desc.attrs"),
-                                           decisionIdx = ncol(decision.table),
+                                           decisionIdx = attr(decision.table, "decision.attr"),
                                            qualityF = X.gini, nAttrs = NULL,
                                            epsilon = 0.0, inconsistentDecisionTable = FALSE)  {
   toRmVec = decisionIdx
@@ -331,6 +331,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
   }
 
   INDrelation = list(1:nrow(decision.table))
+  INDsizes = nrow(decision.table)
   decisionChaos = compute_chaos(INDrelation, decision.table[[decisionIdx]],
                                 attrDescriptions[[decisionIdx]])
   decisionChaos = qualityF(decisionChaos[[1]])
@@ -338,6 +339,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
                          MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
                                          uniqueDecisions = attrDescriptions[[decisionIdx]],
                                          INDclasses = INDrelation,
+                                         INDclassesSizes = INDsizes,
                                          baseChaos = decisionChaos,
                                          chaosFunction = qualityF),
                          SIMPLIFY = TRUE, USE.NAMES = FALSE)
@@ -387,10 +389,12 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
       if (!is.null(nAttrs)) {
         tmpAttrSub = sample(attrIdxVec, min(nAttrs, length(attrIdxVec)))
       }	else tmpAttrSub = attrIdxVec
+      INDsizes = sapply(INDrelation, length)
       attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
                              MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
                                              uniqueDecisions = attrDescriptions[[decisionIdx]],
                                              INDclasses = INDrelation,
+                                             INDclassesSizes = INDsizes,
                                              baseChaos = tmpChaos,
                                              chaosFunction = qualityF),
                              SIMPLIFY = TRUE, USE.NAMES = FALSE)
@@ -503,7 +507,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 #' @export
 FS.DAAR.heuristic.RST = function(decision.table,
                                  attrDescriptions = attr(decision.table, "desc.attrs"),
-                                 decisionIdx = ncol(decision.table),
+                                 decisionIdx = attr(decision.table, "decision.attr"),
                                  qualityF = X.gini, nAttrs = NULL,
                                  allowedRandomness = 1/ncol(decision.table),
                                  nOfProbes = ncol(decision.table),
@@ -525,6 +529,7 @@ FS.DAAR.heuristic.RST = function(decision.table,
   }
 
   INDrelation = list(1:nrow(decision.table))
+  INDsizes = nrow(decision.table)
   decisionChaos = compute_chaos(INDrelation, decision.table[[decisionIdx]],
                                 attrDescriptions[[decisionIdx]])
   decisionChaos = qualityF(decisionChaos[[1]])
@@ -532,11 +537,12 @@ FS.DAAR.heuristic.RST = function(decision.table,
                          MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
                                          uniqueDecisions = attrDescriptions[[decisionIdx]],
                                          INDclasses = INDrelation,
+                                         INDclassesSizes = INDsizes,
                                          baseChaos = decisionChaos,
                                          chaosFunction = qualityF),
                          SIMPLIFY = TRUE, USE.NAMES = FALSE)
   tmpBestIdx = which.max(attrScoresVec)
-  relevanceProbVec = computeRelevanceProb(INDrelation, decision.table[[tmpAttrSub[tmpBestIdx]]],
+  relevanceProbVec = computeRelevanceProb(INDrelation, INDsizes, decision.table[[tmpAttrSub[tmpBestIdx]]],
                                           uniqueValues = attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
                                           attrScore = attrScoresVec[tmpBestIdx],
                                           decisionVec = decision.table[[decisionIdx]],
@@ -588,15 +594,17 @@ FS.DAAR.heuristic.RST = function(decision.table,
       }
       else tmpAttrSub = attrIdxVec
 
+      INDsizes = sapply(INDrelation, length)
       attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
                              MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
                                              uniqueDecisions = attrDescriptions[[decisionIdx]],
                                              INDclasses = INDrelation,
+                                             INDclassesSizes = INDsizes,
                                              baseChaos = tmpChaos,
                                              chaosFunction = qualityF),
                              SIMPLIFY = TRUE, USE.NAMES = FALSE)
       tmpBestIdx = which.max(attrScoresVec)
-      tmpProbeP = computeRelevanceProb(INDrelation, decision.table[[tmpAttrSub[tmpBestIdx]]],
+      tmpProbeP = computeRelevanceProb(INDrelation, INDsizes, decision.table[[tmpAttrSub[tmpBestIdx]]],
                                        uniqueValues = attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
                                        attrScore = attrScoresVec[tmpBestIdx],
                                        decisionVec = decision.table[[decisionIdx]],
@@ -865,7 +873,7 @@ FS.quickreduct.RST <- function(decision.table, control = list()){
 #' @export
 FS.greedy.heuristic.superreduct.RST <- function(decision.table,
                                                 attrDescriptions = attr(decision.table, "desc.attrs"),
-                                                decisionIdx = ncol(decision.table),
+                                                decisionIdx = attr(decision.table, "decision.attr"),
                                                 qualityF = X.gini, nAttrs = NULL,
                                                 inconsistentDecisionTable = FALSE)  {
   toRmVec = decisionIdx
@@ -879,6 +887,7 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
   }  else tmpAttrSub = attrIdxVec
 
   INDrelation = list(1:nrow(decision.table))
+  INDsizes = nrow(decision.table)
   decisionChaos = compute_chaos(INDrelation, decision.table[[decisionIdx]],
                                 attrDescriptions[[decisionIdx]])
   decisionChaos = qualityF(decisionChaos[[1]])
@@ -886,6 +895,7 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
                          MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
                                          uniqueDecisions = attrDescriptions[[decisionIdx]],
                                          INDclasses = INDrelation,
+                                         INDclassesSizes = INDsizes,
                                          baseChaos = decisionChaos,
                                          chaosFunction = qualityF),
                          SIMPLIFY = TRUE, USE.NAMES = FALSE)
@@ -932,10 +942,12 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
       if (!is.null(nAttrs)) {
         tmpAttrSub = sample(attrIdxVec, min(nAttrs, length(attrIdxVec)))
       }  else tmpAttrSub = attrIdxVec
+      INDsizes = sapply(INDrelation, length)
       attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
                              MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
                                              uniqueDecisions = attrDescriptions[[decisionIdx]],
                                              INDclasses = INDrelation,
+                                             INDclassesSizes = INDsizes,
                                              baseChaos = tmpChaos,
                                              chaosFunction = qualityF),
                              SIMPLIFY = TRUE, USE.NAMES = FALSE)

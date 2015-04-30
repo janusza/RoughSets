@@ -6,8 +6,8 @@
 \usage{
 FS.greedy.heuristic.superreduct.RST(decision.table,
   attrDescriptions = attr(decision.table, "desc.attrs"),
-  decisionIdx = ncol(decision.table), qualityF = X.gini, nAttrs = NULL,
-  inconsistentDecisionTable = FALSE)
+  decisionIdx = attr(decision.table, "decision.attr"), qualityF = X.gini,
+  nAttrs = NULL, inconsistentDecisionTable = FALSE)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table.

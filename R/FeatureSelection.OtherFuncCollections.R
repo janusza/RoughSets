@@ -674,21 +674,57 @@ X.nOfConflictsSqrt <- function(decisionDistrib)  {
 }
 
 # This is an auxiliary function for computing decision reducts
-qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions,
-                        INDclasses, baseChaos, chaosFunction = X.gini)  {
+qualityGain2 <- function(vec, uniqueValues, decisionVec, uniqueDecisions,
+                        INDclasses, INDclassesSizes, baseChaos, chaosFunction = X.gini)  {
 
-  INDclasses = compute_indiscernibility(INDclasses, as.character(vec), uniqueValues)
+#  INDclasses = compute_indiscernibility(INDclasses, as.character(vec), uniqueValues)
 
-  if(length(INDclasses) > 0) {
-    classCountsList = compute_chaos(INDclasses, as.character(decisionVec),
-                                    as.character(uniqueDecisions))
-    remainingChaos = sapply(classCountsList, chaosFunction)
-    INDclassesLengths = sapply(INDclasses, length) / length(decisionVec)
-    remainingChaos = sum(remainingChaos * INDclassesLengths)
-  } else remainingChaos = 0.0
+#  if(length(INDclasses) > 0) {
+#    classCountsList = compute_chaos(INDclasses, as.character(decisionVec),
+#                                    as.character(uniqueDecisions))
+#  classCountsList = compute_indiscernibility_and_chaos2(INDclasses, as.character(vec), as.character(uniqueValues),
+#                                                       as.character(decisionVec), as.character(uniqueDecisions))
+  classCountsList = compute_indiscernibility_and_chaos2(INDclasses, vec, uniqueValues,
+                                                        decisionVec, uniqueDecisions)
+  INDclassesLengths = classCountsList[[1]]
+  tmpInd = which(INDclassesLengths > 1)
+  if(length(tmpInd) > 0) {
+    remainingChaos = sapply(classCountsList[tmpInd + 1], chaosFunction)
+    remainingChaos = sum(remainingChaos * INDclassesLengths[tmpInd]) / length(decisionVec)
+  } else remainingChaos = 0
+#  remainingChaos = sapply(classCountsList[2:length(classCountsList)], chaosFunction)
+#  remainingChaos = sum(remainingChaos * INDclassesLengths) / length(decisionVec)
+#  } else remainingChaos = 0.0
 
   return(as.numeric(baseChaos - remainingChaos))
 }
+
+qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions,
+                        INDclassesList, INDclassesSizes, baseChaos, chaosFunction = X.gini)  {
+
+  classCounts = .C("computeIndiscernibilityAndChaos",
+                   INDclasses = as.integer(unlist(INDclassesList)),
+                   INDsizes = as.integer(INDclassesSizes),
+                   NOfINDClasses = as.integer(length(INDclassesSizes)),
+                   attrValues = as.integer(vec),
+                   NOfAttrValues = as.integer(length(uniqueValues)),
+                   decValues = as.integer(decisionVec),
+                   NOfDecs = as.integer(length(uniqueDecisions)),
+                   output = as.integer(rep(0,length(INDclassesList)*length(uniqueValues)*length(uniqueDecisions))))
+
+  classCounts = matrix(classCounts$output,
+                       nrow = length(INDclassesList)*length(uniqueValues),
+                       ncol = length(uniqueDecisions), byrow=TRUE)
+  newINDsizes = rowSums(classCounts)
+  tmpInd = newINDsizes > 1
+  if(sum(tmpInd) > 0) {
+    remainingChaos = apply(classCounts[tmpInd, ,drop=FALSE], 1, chaosFunction)
+    remainingChaos = sum(remainingChaos * newINDsizes[tmpInd]) / length(decisionVec)
+  } else remainingChaos = 0
+
+  return(as.numeric(baseChaos - remainingChaos))
+}
+
 
 # It is used to randomize attributes
 # @param attributes a matrix of attributes
@@ -914,7 +950,7 @@ computeCore = function(reductList) {
 
 # An auxiliary function for computing attribute relevance using random probes.
 # It is used by FS.DAAR.heuristic.RST function.
-computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues,
+computeRelevanceProb = function(INDclasses, INDclassesSizes, attributeVec, uniqueValues,
                                 attrScore, decisionVec, uniqueDecisions, baseChaos,
                                 qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)
 {
@@ -927,12 +963,12 @@ computeRelevanceProb = function(INDclasses, attributeVec, uniqueValues,
                                                               use.names = FALSE);
                              tmpAttribute[flattenINDclasses] = tmpAttributePermutation;
                              qualityGain(tmpAttribute, uniqueValues, decisionVec, uniqueDecisions,
-                                         INDclasses, baseChaos, chaosFunction = qualityF)})
+                                         INDclasses, INDclassesSizes, baseChaos, chaosFunction = qualityF)})
   } else {
     probeScores = replicate(nOfProbes,
                             {tmpAttribute = sample(attributeVec);
                              qualityGain(tmpAttribute, uniqueValues, decisionVec, uniqueDecisions,
-                                         INDclasses, baseChaos, chaosFunction = qualityF)})
+                                         INDclasses, INDclassesSizes, baseChaos, chaosFunction = qualityF)})
   }
 
 return(mean(attrScore > probeScores))

@@ -31,3 +31,33 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// compute_indiscernibility_and_chaos
+List compute_indiscernibility_and_chaos(List input, CharacterVector attr_val, CharacterVector unique_attr_val, CharacterVector dec_val, CharacterVector unique_dec_val);
+RcppExport SEXP RoughSets_compute_indiscernibility_and_chaos(SEXP inputSEXP, SEXP attr_valSEXP, SEXP unique_attr_valSEXP, SEXP dec_valSEXP, SEXP unique_dec_valSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type attr_val(attr_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type unique_attr_val(unique_attr_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type dec_val(dec_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type unique_dec_val(unique_dec_valSEXP);
+    __result = Rcpp::wrap(compute_indiscernibility_and_chaos(input, attr_val, unique_attr_val, dec_val, unique_dec_val));
+    return __result;
+END_RCPP
+}
+// compute_indiscernibility_and_chaos2
+List compute_indiscernibility_and_chaos2(List input, CharacterVector attr_val, CharacterVector unique_attr_val, CharacterVector dec_val, CharacterVector unique_dec_val);
+RcppExport SEXP RoughSets_compute_indiscernibility_and_chaos2(SEXP inputSEXP, SEXP attr_valSEXP, SEXP unique_attr_valSEXP, SEXP dec_valSEXP, SEXP unique_dec_valSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type input(inputSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type attr_val(attr_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type unique_attr_val(unique_attr_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type dec_val(dec_valSEXP);
+    Rcpp::traits::input_parameter< CharacterVector >::type unique_dec_val(unique_dec_valSEXP);
+    __result = Rcpp::wrap(compute_indiscernibility_and_chaos2(input, attr_val, unique_attr_val, dec_val, unique_dec_val));
+    return __result;
+END_RCPP
+}

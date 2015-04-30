@@ -5,8 +5,9 @@
 \title{The DAAR heuristic for computation of decision reducts}
 \usage{
 FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
-  "desc.attrs"), decisionIdx = ncol(decision.table), qualityF = X.gini,
-  nAttrs = NULL, allowedRandomness = 1/ncol(decision.table),
+  "desc.attrs"), decisionIdx = attr(decision.table, "decision.attr"),
+  qualityF = X.gini, nAttrs = NULL,
+  allowedRandomness = 1/ncol(decision.table),
   nOfProbes = ncol(decision.table), permsWithinINDclasses = FALSE,
   inconsistentDecisionTable = FALSE)
 }
