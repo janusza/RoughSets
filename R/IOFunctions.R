@@ -125,15 +125,17 @@ SF.asDecisionTable <- function(dataset, decision.attr = NULL, indx.nominal = NUL
   ## assign nominal.attrs showing the nominal of attributes
   class.vector = sapply(dataset, class)
   nominal.attrs[class.vector %in% c("factor", "character")] = TRUE
+  character.attrs = which(class.vector == "character")
+  if(length(character.attrs) > 0) {
+    dataset[character.attrs] = lapply(dataset[character.attrs], factor)
+  }
 
   ## construct desc.attrs as a description of attributes
   desc.attrs = list()
   desc.attrs[1:ncol(dataset)] = numeric(1)
   indx.nominal = which(nominal.attrs)
   if(length(indx.nominal) > 0) {
-		desc.attrs[indx.nominal] = lapply(dataset[indx.nominal], function(x) {tmp = unique(x);
-                                                                       tmp = tmp[order(tmp)];
-                                                                       as.character(tmp)})
+		desc.attrs[indx.nominal] = lapply(dataset[indx.nominal], levels)
     if(sum(nominal.attrs) != ncol(dataset)) {
       desc.attrs[which(!nominal.attrs)] = lapply(dataset[which(!nominal.attrs)], range)
     }
@@ -144,7 +146,7 @@ SF.asDecisionTable <- function(dataset, decision.attr = NULL, indx.nominal = NUL
 
   ## construct the class "DecisionTable"
   names(desc.attrs) <- colnames(dataset)
-  decision.table = dataset
+  decision.table = data.frame(dataset)
   attr(decision.table, "nominal.attrs") = nominal.attrs
   attr(decision.table, "desc.attrs") = desc.attrs
   attr(decision.table, "decision.attr") = decision.attr
@@ -596,11 +598,7 @@ SF.applyDecTable <- function(decision.table, object, control = list()) {
     stop("Provided data should inherit from the \'DecisionTable\' class.")
   }
 
-#	objects <- decision.table
-#	nominal.att <- attr(objects, "nominal.attrs")
-#	desc.attrs <- attr(objects, "desc.attrs")
 	control <- setDefaultParametersIfMissing(control, list(indx.reduct = 1))
-#	names.attrs <- colnames(decision.table)
 
   if (inherits(object, "FeatureSubset")) {
     tmpIdx = c(object$reduct, attr(decision.table, "decision.attr"))
@@ -653,7 +651,7 @@ SF.applyDecTable <- function(decision.table, object, control = list()) {
       if (length(cut.values) != (ncol(decision.table) - 1))
         stop("The discretization is not conforming with the decision table.")
 
-      decision.attr = as.character(decision.table[[attr(decision.table, "decision.attr")]])
+      decision.attr = factor(decision.table[[attr(decision.table, "decision.attr")]])
       new.data = mapply(applyDiscretization,
                         decision.table[-attr(decision.table, "decision.attr")], cut.values,
                         attr(decision.table, "nominal.attrs")[-attr(decision.table, "decision.attr")],

@@ -950,7 +950,7 @@ computeCore = function(reductList) {
 
 # An auxiliary function for computing attribute relevance using random probes.
 # It is used by FS.DAAR.heuristic.RST function.
-computeRelevanceProb = function(INDclasses, INDclassesSizes, attributeVec, uniqueValues,
+computeRelevanceProb2 = function(INDclasses, INDclassesSizes, attributeVec, uniqueValues,
                                 attrScore, decisionVec, uniqueDecisions, baseChaos,
                                 qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)
 {
@@ -972,4 +972,41 @@ computeRelevanceProb = function(INDclasses, INDclassesSizes, attributeVec, uniqu
   }
 
 return(mean(attrScore > probeScores))
+}
+
+# An auxiliary function for computing attribute relevance using random probes.
+# It is used by FS.DAAR.heuristic.RST function.
+computeRelevanceProb = function(INDclasses, INDclassesSizes, attributeVec, uniqueValues,
+                                attrScore, decisionVec, uniqueDecisions, baseChaos,
+                                qualityF = X.gini, nOfProbes = 100, withinINDclasses = FALSE)
+{
+  if(withinINDclasses) {
+    attributeList = lapply(INDclasses, function(x, y) y[x], attributeVec)
+    flattenINDclasses = unlist(INDclasses, use.names = FALSE)
+    probesList = replicate(nOfProbes,
+                           {tmpAttribute = attributeVec;
+                            tmpAttributePermutation = unlist(lapply(attributeList, sample),
+                                                             use.names = FALSE);
+                            tmpAttribute[flattenINDclasses] = tmpAttributePermutation;
+                            tmpAttribute},
+                           simplify = FALSE)
+
+    probeScores = sapply(probesList, qualityGain,
+                         uniqueValues = uniqueValues,
+                         decisionVec = decisionVec,
+                         uniqueDecisions = uniqueDecisions,
+                         INDclassesList = INDclasses,
+                         INDclassesSizes = INDclassesSizes,
+                         baseChaos = baseChaos,
+                         chaosFunction = qualityF,
+                         USE.NAMES = FALSE)
+    rm(probesList, flattenINDclasses, attributeList)
+  } else {
+    probeScores = replicate(nOfProbes,
+                            {tmpAttribute = sample(attributeVec);
+                            qualityGain(tmpAttribute, uniqueValues, decisionVec, uniqueDecisions,
+                                        INDclasses, INDclassesSizes, baseChaos, chaosFunction = qualityF)})
+  }
+
+  return(mean(attrScore > probeScores))
 }
