@@ -275,7 +275,8 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table,
 #'        indicates whether to compute approximate reducts or not. If it equals 0 (the default)
 #'        a standard decision reduct is computed.
 #' @param inconsistentDecisionTable logical indicating whether the decision table is suspected
-#'        to be inconsistent.
+#'        to be inconsistent or \code{NULL} (the default) which indicated that a test should
+#'        be made to determine the data consistency.
 #'
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
@@ -315,7 +316,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
                                            attrDescriptions = attr(decision.table, "desc.attrs"),
                                            decisionIdx = attr(decision.table, "decision.attr"),
                                            qualityF = X.gini, nAttrs = NULL,
-                                           epsilon = 0.0, inconsistentDecisionTable = FALSE)  {
+                                           epsilon = 0.0, inconsistentDecisionTable = NULL)  {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
 
@@ -338,7 +339,7 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
   attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
                          MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
                                          uniqueDecisions = attrDescriptions[[decisionIdx]],
-                                         INDclasses = INDrelation,
+                                         INDclassesList = INDrelation,
                                          INDclassesSizes = INDsizes,
                                          baseChaos = decisionChaos,
                                          chaosFunction = qualityF),
@@ -350,6 +351,14 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
                                          as.character(decision.table[[selectedAttrIdxVec]]),
                                          attrDescriptions[[selectedAttrIdxVec]])
   attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
+
+  if(is.null(inconsistentDecisionTable)) {
+    if(sum(duplicated(decision.table)) == sum(duplicated(decision.table[-decisionIdx]))) {
+      inconsistentDecisionTable = FALSE
+    } else {
+      inconsistentDecisionTable = TRUE
+    }
+  }
 
   endFlag = FALSE
   iteration = 1
@@ -470,7 +479,8 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 #' @param permsWithinINDclasses a logical value indicating whether the permutation test
 #'        should be conducted within indescernibility classes.
 #' @param inconsistentDecisionTable logical indicating whether the decision table is suspected
-#'        to be inconsistent.
+#'        to be inconsistent or \code{NULL} (the default) which indicated that a test should
+#'        be made to determine the data consistency.
 #'
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
@@ -512,7 +522,7 @@ FS.DAAR.heuristic.RST = function(decision.table,
                                  allowedRandomness = 1/ncol(decision.table),
                                  nOfProbes = ncol(decision.table),
                                  permsWithinINDclasses = FALSE,
-                                 inconsistentDecisionTable = FALSE)
+                                 inconsistentDecisionTable = NULL)
 {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
@@ -557,6 +567,14 @@ FS.DAAR.heuristic.RST = function(decision.table,
                                          as.character(decision.table[[selectedAttrIdxVec]]),
                                          attrDescriptions[[selectedAttrIdxVec]])
   attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
+
+  if(is.null(inconsistentDecisionTable)) {
+    if(sum(duplicated(decision.table)) == sum(duplicated(decision.table[-decisionIdx]))) {
+      inconsistentDecisionTable = FALSE
+    } else {
+      inconsistentDecisionTable = TRUE
+    }
+  }
 
   endFlag = FALSE
   iteration = 1
@@ -836,7 +854,8 @@ FS.quickreduct.RST <- function(decision.table, control = list()){
 #'        If set to \code{NULL} (default) all attributes are used and the algorithm changes
 #'        to a standard greedy method for computation of decision reducts.
 #' @param inconsistentDecisionTable logical indicating whether the decision table is suspected
-#'        to be inconsistent.
+#'        to be inconsistent or \code{NULL} (the default) which indicated that a test should
+#'        be made to determine the data consistency.
 #'
 #' @return A class \code{"FeatureSubset"} that contains the following components:
 #' \itemize{
@@ -875,7 +894,7 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
                                                 attrDescriptions = attr(decision.table, "desc.attrs"),
                                                 decisionIdx = attr(decision.table, "decision.attr"),
                                                 qualityF = X.gini, nAttrs = NULL,
-                                                inconsistentDecisionTable = FALSE)  {
+                                                inconsistentDecisionTable = NULL)  {
   toRmVec = decisionIdx
   attrIdxVec = (1:ncol(decision.table))[-toRmVec]
 
@@ -906,6 +925,14 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
                                          as.character(decision.table[[selectedAttrIdxVec]]),
                                          attrDescriptions[[selectedAttrIdxVec]])
   attrIdxVec = (1:ncol(decision.table))[-c(selectedAttrIdxVec, toRmVec)]
+
+  if(is.null(inconsistentDecisionTable)) {
+    if(sum(duplicated(decision.table)) == sum(duplicated(decision.table[-decisionIdx]))) {
+      inconsistentDecisionTable = FALSE
+    } else {
+      inconsistentDecisionTable = TRUE
+    }
+  }
 
   endFlag = F
   iteration = 1

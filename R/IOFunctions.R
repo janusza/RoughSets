@@ -118,16 +118,15 @@ SF.read.DecisionTable <- function(filename, decision.attr = NULL, indx.nominal =
 SF.asDecisionTable <- function(dataset, decision.attr = NULL, indx.nominal = NULL) {
 
   nominal.attrs = rep(FALSE, ncol(dataset))
-  if (length(indx.nominal) > 0) {
+  if (!is.null(indx.nominal)) {
 		nominal.attrs[indx.nominal] = TRUE
   }
 
-  ## assign nominal.attrs showing the nominal of attributes
   class.vector = sapply(dataset, class)
   nominal.attrs[class.vector %in% c("factor", "character")] = TRUE
-  character.attrs = which(class.vector == "character")
-  if(length(character.attrs) > 0) {
-    dataset[character.attrs] = lapply(dataset[character.attrs], factor)
+
+  if(any(nominal.attrs)) {
+    dataset[nominal.attrs] = lapply(dataset[nominal.attrs], factor)
   }
 
   ## construct desc.attrs as a description of attributes

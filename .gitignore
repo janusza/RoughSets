@@ -1,3 +1,6 @@
 *.Rproj
 .Rproj.user/9EEDD20/build_options
 .Rproj.user/9EEDD20/sdb/s-B83CAB37/lock_file
+*.dll
+*.o
+*.dll

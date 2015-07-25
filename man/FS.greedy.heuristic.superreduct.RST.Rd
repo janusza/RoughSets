@@ -7,7 +7,7 @@
 FS.greedy.heuristic.superreduct.RST(decision.table,
   attrDescriptions = attr(decision.table, "desc.attrs"),
   decisionIdx = attr(decision.table, "decision.attr"), qualityF = X.gini,
-  nAttrs = NULL, inconsistentDecisionTable = FALSE)
+  nAttrs = NULL, inconsistentDecisionTable = NULL)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table.
@@ -27,7 +27,8 @@ If set to \code{NULL} (default) all attributes are used and the algorithm change
 to a standard greedy method for computation of decision reducts.}
 
 \item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
-       to be inconsistent.}
+       to be inconsistent or \code{NULL} (the default) which indicated that a test should
+       be made to determine the data consistency.}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:

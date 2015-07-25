@@ -9,7 +9,7 @@ FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
   qualityF = X.gini, nAttrs = NULL,
   allowedRandomness = 1/ncol(decision.table),
   nOfProbes = ncol(decision.table), permsWithinINDclasses = FALSE,
-  inconsistentDecisionTable = FALSE)
+  inconsistentDecisionTable = NULL)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -42,7 +42,8 @@ when the relevance of a selected attribute fall below this threshold.}
 should be conducted within indescernibility classes.}
 
 \item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
-       to be inconsistent.}
+       to be inconsistent or \code{NULL} (the default) which indicated that a test should
+       be made to determine the data consistency.}
 }
 \value{
 A class \code{"FeatureSubset"} that contains the following components:
