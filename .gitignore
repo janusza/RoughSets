@@ -12,3 +12,6 @@
 .Rproj.user/872786DD/cpp-definition-cache
 .Rproj.user/872786DD/build_options
 .Rproj.user/872786DD/saved_source_markers
+.Rproj.user/872786DD/sdb/s-B5ACD770/lock_file
+*.RData
+.Rhistory
