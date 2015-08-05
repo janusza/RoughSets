@@ -4,10 +4,13 @@
 \alias{print.RuleSetRST}
 \title{The print function for RST rule sets}
 \usage{
-\method{print}{RuleSetRST}(x, ...)
+\method{print}{RuleSetRST}(x, howMany = min(10, length(x)), ...)
 }
 \arguments{
 \item{x}{a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.}
+
+\item{howMany}{an integer giving the number of rules to be printed.
+The default is minimum from 10 and the total number of rules in the set.}
 
 \item{...}{the other parameters.}
 }
@@ -19,14 +22,15 @@ A print method for RuleSetRST objects.
 }
 \examples{
 ###########################################################
-## Example : Classification problem
+## Example : Printing of a decision rule set problem
 ###########################################################
 data(RoughSetData)
 hiring.data <- RoughSetData$hiring.dt
 
 rules <- RI.LEM2Rules.RST(hiring.data)
 
-print(rules)
+rules             # all rules are printed
+print(rules, 2)   # only first two rules are printed
 }
 \author{
 Andrzej Janusz

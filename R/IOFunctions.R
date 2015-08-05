@@ -281,8 +281,49 @@ summary.RuleSetRST <- function(object, ...){
 #' @author Andrzej Janusz
 #'
 #' @param x a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.
+#' @param howMany an integer giving the number of rules to be printed. 
+#'        The default is minimum from 10 and the total number of rules in the set.
 #' @param ... the other parameters.
 #' @return prints its argument and returns it invisibly
+#' @examples
+#' ###########################################################
+#' ## Example : Printing of a decision rule set problem
+#' ###########################################################
+#' data(RoughSetData)
+#' hiring.data <- RoughSetData$hiring.dt
+#'
+#' rules <- RI.LEM2Rules.RST(hiring.data)
+#'
+#' rules             # all rules are printed
+#' print(rules, 2)   # only first two rules are printed
+#' @export
+#' @method print RuleSetRST
+print.RuleSetRST <- function(x, howMany = min(10, length(x)), ...){
+
+  if(!inherits(x, "RuleSetRST")) stop("not a legitimate object in this package")
+  if(howMany < 1 || howMany > length(x)) stop("wrong parameter value")
+  cat("A set of ", length(x), " rules:\n")
+  tmp <- attributes(x)
+  xTmp <- x[1:min(howMany,length(x))]
+  attributes(xTmp) <- attributes(x)
+  rules <- sapply(xTmp, convertRuleIntoCharacter, attr(x, 'colnames'))
+  rules <- mapply(function(x, n) paste(n, ". ", x, sep = ""), rules, 1:length(rules), SIMPLIFY = FALSE)
+  lapply(rules, function(x) cat(x, "\n"))
+  if(length(x) > howMany) {
+    cat(paste0('... and ', length(x) - howMany, ' other rules.\n'))
+  }
+
+  invisible(x)
+}
+
+#' A function for converting a set of rules into their character representation.
+#'
+#' @title The \code{as.character} method for RST rule sets
+#' @author Andrzej Janusz
+#'
+#' @param x a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.
+#' @param ... the other parameters.
+#' @return Converts rules from a set into their character representation.
 #' @examples
 #' ###########################################################
 #' ## Example : Classification problem
@@ -292,18 +333,32 @@ summary.RuleSetRST <- function(object, ...){
 #'
 #' rules <- RI.LEM2Rules.RST(hiring.data)
 #'
-#' print(rules)
+#' as.character(rules)
 #' @export
 #' @method print RuleSetRST
-print.RuleSetRST <- function(x, ...){
-
+as.character.RuleSetRST = function(x, ...) {
+  
   if(!inherits(x, "RuleSetRST")) stop("not a legitimate object in this package")
-  cat("A set of ", length(x), " rules:\n")
-  rules <- toStr.rules(rules = x, type.model = "RST")
-  rules <- mapply(function(x, n) paste(n, ". ", x, sep = ""), rules, 1:length(rules), SIMPLIFY = FALSE)
-  lapply(rules, function(x) cat(x, "\n"))
+  colNames <- attr(x, "colnames")
+  rules <- sapply(x, convertRuleIntoCharacter, colNames)
+  rules <- sub('\n\t\t', ' ', rules)
+  rules
+}
 
-  invisible(x)
+# auxiliary function used in print and as.character methods of RuleSetRST objects
+convertRuleIntoCharacter = function(x, colNames) {
+  desc <- paste(colNames[x$idx[1]], x$values[1], sep = " is ")
+  if(length(x$values) > 1) {
+    for (j in 2 : length(x$values)){
+      temp <- paste(colNames[x$idx[j]], x$values[j], sep = " is ")
+      desc <- paste(desc, temp, sep = " and ")
+    }
+  }
+  cons <- paste(attr(x, "dec.attr"), paste(x$consequent, ";\n\t\t(supportSize=",
+                                           length(x$support), "; ", "laplace=",
+                                           x$laplace,")", sep=""), sep = c(" is "))
+  rule <- paste("IF", desc, "THEN", cons)
+  rule
 }
 
 #' This is a print method for FeatureSubset objects.
