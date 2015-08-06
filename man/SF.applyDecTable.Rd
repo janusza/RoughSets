@@ -100,10 +100,11 @@ decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 4,
                                     indx.nominal = c(2:4))
 
 ## missing value completion
-val.NA = MV.missingValueCompletion(decision.table, type.method = "globalClosetFit")
+val.NA = MV.missingValueCompletion(decision.table, type.method = "globalClosestFit")
 
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, val.NA)
+new.decTable
 }
 \author{
 Lala Septem Riza and Andrzej Janusz

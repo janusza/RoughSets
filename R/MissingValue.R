@@ -391,10 +391,20 @@ MV.conceptClosestFit <- function(decision.table){
 #' new.decTable <- SF.applyDecTable(decision.table, indx)
 #' @export
 MV.missingValueCompletion <- function(decision.table, type.method = "deletionCases"){
+  
+  if (!(type.method %in% c("deletionCases", "mostCommonValResConcept", "mostCommonVal",
+                           "globalClosestFit", "conceptClosestFit"))) {
+    stop("Unrecognized method.")
+  }
+  
+  if (!inherits(decision.table, "DecisionTable")) {
+    stop("Provided data should inherit from the \'DecisionTable\' class.")
+  }
+  
 	val.NA <- switch(type.method,  
     	             deletionCases = MV.deletionCases(decision.table),
     	             mostCommonValResConcept = MV.mostCommonValResConcept(decision.table),
-                     mostCommonVal = MV.mostCommonVal(decision.table),
+                   mostCommonVal = MV.mostCommonVal(decision.table),
     	             globalClosestFit = MV.globalClosestFit(decision.table),
     	             conceptClosestFit = MV.conceptClosestFit(decision.table) )
   	

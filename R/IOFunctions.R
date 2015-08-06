@@ -136,7 +136,7 @@ SF.asDecisionTable <- function(dataset, decision.attr = NULL, indx.nominal = NUL
   if(length(indx.nominal) > 0) {
 		desc.attrs[indx.nominal] = lapply(dataset[indx.nominal], levels)
     if(sum(nominal.attrs) != ncol(dataset)) {
-      desc.attrs[which(!nominal.attrs)] = lapply(dataset[which(!nominal.attrs)], range)
+      desc.attrs[which(!nominal.attrs)] = lapply(dataset[which(!nominal.attrs)], range, na.rm = TRUE)
     }
 	}
 	else {
@@ -398,7 +398,8 @@ convertRuleIntoCharacter = function(x, colNames) {
 #' rules2[c(2,4)] <- rules[c(1,3)]
 #' rules2
 #' @export
-#' @method Extract RuleSetRST
+#' @aliases Extract.RuleSetRST
+#' @method [ RuleSetRST
 "[.RuleSetRST" = function (x, i, ...) {
   tmp <- attributes(x)
   x <- as.list(x)[i]
@@ -712,15 +713,21 @@ ObjectFactory <- function(mod, classname){
 #'                                     indx.nominal = c(2:4))
 #'
 #' ## missing value completion
-#' val.NA = MV.missingValueCompletion(decision.table, type.method = "globalClosetFit")
+#' val.NA = MV.missingValueCompletion(decision.table, type.method = "globalClosestFit")
 #'
 #' ## generate new decision table
 #' new.decTable <- SF.applyDecTable(decision.table, val.NA)
+#' new.decTable
 #' @export
 SF.applyDecTable <- function(decision.table, object, control = list()) {
 
   if(!inherits(decision.table, "DecisionTable")) {
     stop("Provided data should inherit from the \'DecisionTable\' class.")
+  }
+  
+  if(!(inherits(object, c("FeatureSubset", "ReductSet", "InstanceSelection",
+                          "Discretization", "MissingValue")))) {
+    stop("Class of the object was not recognized.")
   }
 
 	control <- setDefaultParametersIfMissing(control, list(indx.reduct = 1))
