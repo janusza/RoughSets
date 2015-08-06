@@ -17,8 +17,6 @@ Currently it can be one of the following methods:
    \item \code{"global.discernibility"}: See \code{\link{D.global.discernibility.heuristic.RST}}.
    \item \code{"unsupervised.intervals"}: See \code{\link{D.discretize.equal.intervals.RST}}.
    \item \code{"unsupervised.quantiles"}: See \code{\link{D.discretize.quantiles.RST}}.
-   \item \code{"local.disc.matrix"}: See \code{\link{D.local.discernibility.matrix.RST}}.
-   \item \code{"max.disc.matrix"}: See \code{\link{D.max.discernibility.matrix.RST}}.
 }}
 
 \item{...}{parameters that are passed to the discretization methods. See the manual of particular functions.}

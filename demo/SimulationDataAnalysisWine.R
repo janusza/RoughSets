@@ -31,11 +31,11 @@ print(attr(new.decTable, "nominal.attrs"))
 print(attr(new.decTable, "desc.attrs"))
 print(attr(new.decTable, "decision.attr"))
 
-## In order to use functions based on RST, we need to do discretization
+## In order to use functions based on RST we need to perform a discretization of numeric attributes
 obj.cutVal <- D.discretization.RST(new.decTable, 
-   type.method = "local.disc.matrix")
+   type.method = "global.discernibility")
 
-## Generate a new decision table considering cut values from discretization
+## Generate a new decision table using cut values from discretization
 new.decTable <- SF.applyDecTable(new.decTable, 
    obj.cutVal)
 print(new.decTable) 

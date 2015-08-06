@@ -90,15 +90,11 @@ The following description explains domains and their algorithms implemented in t
                       \item Discernibility matrix: It is used to create a discernibility matrix showing attributes that discern each pair of objects.
                             It is implemented in \code{\link{BC.discernibility.mat.RST}}.
                       }
-            \item Discretization: There are several methods considered in the package as follows:
+            \item Discretization: There are a few methods included in the package:
                      \itemize{
-                      \item \code{\link{D.max.discernibility.matrix.RST}}: It implements the maximal discernibility algorithm to choose the cut values
-                             which discern the largest number of pairs of objects in the decision-relative discernibility matrix.
-                      \item \code{\link{D.local.discernibility.matrix.RST}}: It implements the local strategy
-                             which implements decision tree to calculate the quality of a cut (i.e., number of objects discerned by cut).
                       \item \code{\link{D.global.discernibility.heuristic.RST}}: It implements the global discernibility algorithm
                              which is computing globally semi-optimal cuts using the maximum discernibility heuristic.
-						 \item \code{\link{D.discretize.quantiles.RST}}: It is a function used for computing cuts of the "quantile-based" discretization into \eqn{n} intervals.
+						           \item \code{\link{D.discretize.quantiles.RST}}: It is a function used for computing cuts of the "quantile-based" discretization into \eqn{n} intervals.
                       \item \code{\link{D.discretize.equal.intervals.RST}}: It is a function used for computing cuts of the "equal interval size" discretization into \eqn{n} intervals.
                       }
      		The output of these functions is a list of cut values which are the values for converting real to nominal values.

@@ -695,7 +695,7 @@ ObjectFactory <- function(mod, classname){
 #'                   indx.nominal = 3)
 #'
 #' ## get cut values using the local strategy algorithm
-#' cut.values <- D.discretization.RST(decision.table, type.method = "local.disc.matrix")
+#' cut.values <- D.discretization.RST(decision.table, type.method = "global.discernibility")
 #'
 #' ## generate new decision table
 #' new.decTable <- SF.applyDecTable(decision.table, cut.values)

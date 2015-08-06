@@ -20,8 +20,6 @@ IS.FRPS.FRST	 Instance selection using FRPS algorithm based on FRST
 RI.classification.FRST	 Rule induction on classification task using RI.hybrid and RI.GFRS algorithms based on FRST
 RI.regression.FRST	 Rule induction on regression task using RI.hybrid algorithm based on FRST
 RI.indiscernibilityBasedRules.RST Rule induction on classification task using RI.indiscernibilityBasedRules.RST
-D.local.discernibility.matrix.RST	Discretization using D.local.discernibility.matrix.RST
-D.max.discernibility.matrix.RST	Discretization using D.max.discernibility.matrix.RST
 D.global.discernibility.heuristic.RST Discretization using D.global.discernibility.heuristic.RST
 D.discretize.equal.intervals.RST Discretization using D.discretize.equal.intervals.RST
 D.discretize.quantiles.RST Discretization using D.discretize.quantiles.RST
