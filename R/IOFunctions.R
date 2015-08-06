@@ -310,9 +310,7 @@ print.RuleSetRST <- function(x, howMany = min(10, length(x)), ...){
       cat("A set consisting of 1 rule:\n")
     } else stop("Empty rule set")
   }
-#  tmp <- attributes(x)
   xTmp <- x[1:min(howMany,length(x))]
-#  attributes(xTmp) <- attributes(x)
   rules <- sapply(xTmp, convertRuleIntoCharacter, attr(x, 'colnames'))
   rules <- mapply(function(x, n) paste(n, ". ", x, sep = ""), rules, 1:length(rules), SIMPLIFY = FALSE)
   lapply(rules, function(x) cat(x, "\n"))
@@ -432,6 +430,7 @@ as.list.RuleSetRST = function(x, ...) {
   class(x) = 'list'
   x
 }
+
 
 #' This is a print method for FeatureSubset objects.
 #'

@@ -19,10 +19,11 @@ See \code{\link{SF.asDecisionTable}}.}
 An object of a class \code{"RuleSetRST"}, which is a list with additional attributes:
 \itemize{
  \item \code{uniqueCls}: a vector of possible decision classes,
+ \item \code{supportDenominator}: an integer giving the number of objects in the data,
  \item \code{clsProbs}: a vector giving the a priori probability of the decision classes,
  \item \code{majorityCls}: a class label representing the majority class in the data,
  \item \code{method}: the type a rule induction method used for computations,
- \item \code{dec.attr}: a name of the decision attribute in data,
+ \item \code{dec.attr}: a name of the decision attribute in the data,
  \item \code{colnames}: a vector of conditional attribute names.
 }
 Each rule is a list with the following elements:

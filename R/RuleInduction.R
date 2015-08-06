@@ -374,10 +374,11 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 #' @return An object of a class \code{"RuleSetRST"}, which is a list with additional attributes:
 #' \itemize{
 #'  \item \code{uniqueCls}: a vector of possible decision classes,
+#'  \item \code{supportDenominator}: an integer giving the number of objects in the data,
 #'  \item \code{clsProbs}: a vector giving the a priori probability of the decision classes,
 #'  \item \code{majorityCls}: a class label representing the majority class in the data,
 #'  \item \code{method}: the type a rule induction method used for computations,
-#'  \item \code{dec.attr}: a name of the decision attribute in data,
+#'  \item \code{dec.attr}: a name of the decision attribute in the data,
 #'  \item \code{colnames}: a vector of conditional attribute names.
 #' }
 #' Each rule is a list with the following elements:
@@ -445,6 +446,7 @@ RI.indiscernibilityBasedRules.RST <- function(decision.table, feature.set) {
                    reduct, decision.table, decision.table[[decisionIdx]], uniqueCls)
   
 	attr(ruleSet, "uniqueCls") <- as.character(uniqueCls)
+	attr(ruleSet, "supportDenominator") <- nrow(decision.table)
 	attr(ruleSet, "clsProbs") <- clsFreqs/sum(clsFreqs)
 	attr(ruleSet, "majorityCls") <- as.character(uniqueCls[which.max(table(decision.table[[decisionIdx]]))])
 	attr(ruleSet, "method") <- "indiscernibilityBasedRules"
@@ -543,6 +545,7 @@ RI.CN2Rules.RST <- function(decision.table, K = 3)  {
   }
   
   attr(rules, "uniqueCls") <- as.character(sort(uniqueCls))
+  attr(rules, "supportDenominator") <- nrow(decision.table)
   attr(rules, "clsProbs") <- clsFreqs/sum(clsFreqs)
   attr(rules, "majorityCls") <- as.character(sort(uniqueCls)[which.max(clsFreqs)])
   attr(rules, "method") <- "CN2Rules"
@@ -657,6 +660,7 @@ RI.LEM2Rules.RST <- function(decision.table)  {
                                                     decision.table, clsVec, uniqueCls, suppIdx = x$support))
   
   attr(rules, "uniqueCls") <- as.character(sort(uniqueCls))
+  attr(rules, "supportDenominator") <- nrow(decision.table)
   attr(rules, "clsProbs") <- clsFreqs/sum(clsFreqs)
   attr(rules, "majorityCls") <- as.character(sort(uniqueCls)[which.max(clsFreqs)])
   attr(rules, "method") <- "LEM2Rules"
@@ -779,6 +783,7 @@ RI.AQRules.RST <- function(decision.table, confidence = 1.0, timesCovered = 1)  
 	                                                  decision.table, clsVec, uniqueCls, suppIdx = x$support))
   
 	attr(rules, "uniqueCls") <- as.character(sort(uniqueCls))
+	attr(rules, "supportDenominator") <- nrow(decision.table)
 	attr(rules, "clsProbs") <- clsFreqs/sum(clsFreqs)
 	attr(rules, "majorityCls") <- as.character(sort(uniqueCls)[which.max(clsFreqs)])
 	attr(rules, "method") <- "AQRules"
@@ -1047,5 +1052,86 @@ predict.RuleSetRST <- function(object, newdata, ...) {
   colnames(predVec) <- "predictions"
   
   return(predVec)
+}
+
+#' Functions for extracting quality indices of rules. 
+#'
+#' @title Quality indicators of RST decision rules
+#' @author Andrzej Janusz
+#' 
+#' @usage 
+#' RI.laplace(rules, ...)
+#' RI.support(rules, ...)
+#' RI.confidence(rules, ...)
+#' RI.lift(rules, ...)
+#'
+#' @param rules a \code{"RuleSetRST"} object containing a set of decision rules. See \code{\link{RI.LEM2Rules.RST}}.
+#' @param ... the other parameters (currently omitted).
+#' 
+#' @return A numeric vector with values of the corresponding quality measure.
+#' 
+#' @examples
+#' ###########################################################
+#' ## Example : Filtering a set of decision rules
+#' ###########################################################
+#' data(RoughSetData)
+#' hiring.data <- RoughSetData$hiring.dt
+#'
+#' rules <- RI.LEM2Rules.RST(hiring.data)
+#'
+#' rules
+#' 
+#' # a vector of rules' Laplace estimate of the confidence:
+#' RI.laplace(rules)
+#' # a vector of rules' confidence values:
+#' RI.confidence(rules)
+#' 
+#' # subsetting a set of rules:
+#' rules[RI.support(rules) > 0.2]
+#' rules[RI.lift(rules) < 1.5]
+#' 
+#' @aliases 
+#' RI.support
+#' RI.confidence
+#' RI.lift
+#' 
+#' @export
+RI.laplace = function(rules, ...) {
+  
+  if(!inherits(rules, "RuleSetRST")) stop("not a legitimate RuleSetRST object")
+  
+  qualityVec = sapply(rules, function(x) x$laplace)
+  names(qualityVec) = paste0('Rule_', 1:length(rules))
+  qualityVec
+}
+RI.support = function(rules, ...) {
+  
+  if(!inherits(rules, "RuleSetRST")) stop("not a legitimate RuleSetRST object")
+  
+  suppD = attr(rules, "supportDenominator")
+  qualityVec = sapply(rules, function(x, N) length(x$support)/N, suppD)
+  names(qualityVec) = paste0('Rule_', 1:length(rules))
+  qualityVec
+}
+RI.confidence = function(rules, ...) {
+  
+  if(!inherits(rules, "RuleSetRST")) stop("not a legitimate RuleSetRST object")
+  
+  nOfClasses = length(attr(rules, "uniqueCls"))
+  qualityVec = sapply(rules, function(x, N) (x$laplace*(length(x$support) + N) - 1)/length(x$support), nOfClasses)
+  names(qualityVec) = paste0('Rule_', 1:length(rules))
+  qualityVec
+}
+RI.lift = function(rules, ...) {
+  
+  if(!inherits(rules, "RuleSetRST")) stop("not a legitimate RuleSetRST object")
+  
+  suppD = attr(rules, "supportDenominator")
+  clsProbs = attr(rules, "clsProbs")
+  qualityVec = sapply(rules, 
+                      function(x, probs, N) x$laplace/((probs[x$consequent]*N + 1)/(length(probs) + N)), 
+                      clsProbs, suppD)
+  names(qualityVec) = paste0('Rule_', 1:length(rules))
+  qualityVec
 }
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/IOFunctions.R
 \name{summary.IndiscernibilityRelation}
 \alias{summary.IndiscernibilityRelation}
-\title{The summary function of indiscernibility relation based on RST and FRST}
+\title{The summary function for an indiscernibility relation}
 \usage{
 \method{summary}{IndiscernibilityRelation}(object, ...)
 }
