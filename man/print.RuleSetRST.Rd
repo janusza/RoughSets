@@ -30,7 +30,10 @@ hiring.data <- RoughSetData$hiring.dt
 rules <- RI.LEM2Rules.RST(hiring.data)
 
 rules             # all rules are printed
-print(rules, 2)   # only first two rules are printed
+print(rules, 2)   # only the first two rules are printed
+
+# printing a subset of rules
+rules[2:3]
 }
 \author{
 Andrzej Janusz

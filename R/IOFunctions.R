@@ -267,8 +267,6 @@ summary.RuleSetRST <- function(object, ...){
  print("RST")
  cat("The type of the considered method: ", "\n")
  print(attr(object, "method"))
- cat("The type of the considered task: ", "\n")
- print("Classification")
  print(object)
 
  invisible(object)
@@ -295,22 +293,32 @@ summary.RuleSetRST <- function(object, ...){
 #' rules <- RI.LEM2Rules.RST(hiring.data)
 #'
 #' rules             # all rules are printed
-#' print(rules, 2)   # only first two rules are printed
+#' print(rules, 2)   # only the first two rules are printed
+#' 
+#' # printing a subset of rules
+#' rules[2:3]
 #' @export
 #' @method print RuleSetRST
 print.RuleSetRST <- function(x, howMany = min(10, length(x)), ...){
 
   if(!inherits(x, "RuleSetRST")) stop("not a legitimate object in this package")
   if(howMany < 1 || howMany > length(x)) stop("wrong parameter value")
-  cat("A set of ", length(x), " rules:\n")
-  tmp <- attributes(x)
+  if(length(x) > 1) {
+    cat("A set consisting of ", length(x), " rules:\n")
+  } else {
+    if(length(x) == 1) {
+      cat("A set consisting of 1 rule:\n")
+    } else stop("Empty rule set")
+  }
+#  tmp <- attributes(x)
   xTmp <- x[1:min(howMany,length(x))]
-  attributes(xTmp) <- attributes(x)
+#  attributes(xTmp) <- attributes(x)
   rules <- sapply(xTmp, convertRuleIntoCharacter, attr(x, 'colnames'))
   rules <- mapply(function(x, n) paste(n, ". ", x, sep = ""), rules, 1:length(rules), SIMPLIFY = FALSE)
   lapply(rules, function(x) cat(x, "\n"))
   if(length(x) > howMany) {
-    cat(paste0('... and ', length(x) - howMany, ' other rules.\n'))
+    if(length(x) - howMany > 1) cat(paste0('... and ', length(x) - howMany, ' other rules.\n'))
+    else cat('... and 1 other rule.\n')
   }
 
   invisible(x)
@@ -326,7 +334,7 @@ print.RuleSetRST <- function(x, howMany = min(10, length(x)), ...){
 #' @return Converts rules from a set into their character representation.
 #' @examples
 #' ###########################################################
-#' ## Example : Classification problem
+#' ## Example : Converting a set of decision rules
 #' ###########################################################
 #' data(RoughSetData)
 #' hiring.data <- RoughSetData$hiring.dt
@@ -335,7 +343,7 @@ print.RuleSetRST <- function(x, howMany = min(10, length(x)), ...){
 #'
 #' as.character(rules)
 #' @export
-#' @method print RuleSetRST
+#' @method as.character RuleSetRST
 as.character.RuleSetRST = function(x, ...) {
   
   if(!inherits(x, "RuleSetRST")) stop("not a legitimate object in this package")
@@ -344,6 +352,7 @@ as.character.RuleSetRST = function(x, ...) {
   rules <- sub('\n\t\t', ' ', rules)
   rules
 }
+
 
 # auxiliary function used in print and as.character methods of RuleSetRST objects
 convertRuleIntoCharacter = function(x, colNames) {
@@ -361,6 +370,69 @@ convertRuleIntoCharacter = function(x, colNames) {
   rule
 }
 
+#' Subsetting a set of decision rules.
+#'
+#' @title The \code{[.} method for \code{"RuleSetRST"} objects
+#' @author Andrzej Janusz
+#'
+#' @param x a \code{"RuleSetRST"} object from which to extract rules(s) or in which to replace rules(s). 
+#'        See \code{\link{RI.LEM2Rules.RST}}.
+#' @param i integer indices specifying elements to be extracted or replaced.
+#' @param ... the other parameters.
+#' @return A subset of rules.
+#' @examples
+#' ###########################################################
+#' ## Example : Subsetting a set of decision rules
+#' ###########################################################
+#' data(RoughSetData)
+#' hiring.data <- RoughSetData$hiring.dt
+#'
+#' rules <- RI.LEM2Rules.RST(hiring.data)
+#'
+#' rules
+#' 
+#' # taking a subset of rules
+#' rules[1:3]
+#' rules[c(TRUE,FALSE,TRUE,FALSE)]
+#' 
+#' # replacing a subset of rules
+#' rules2 <- rules
+#' rules2[c(2,4)] <- rules[c(1,3)]
+#' rules2
+#' @export
+#' @method Extract RuleSetRST
+"[.RuleSetRST" = function (x, i, ...) {
+  tmp <- attributes(x)
+  x <- as.list(x)[i]
+  attributes(x) <- tmp
+  x
+}
+
+#' A function for converting a set of rules into a list.
+#'
+#' @title The \code{as.list} method for RST rule sets
+#' @author Andrzej Janusz
+#'
+#' @param x a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.
+#' @param ... the other parameters.
+#' @return Converts rules from a set into a list.
+#' @examples
+#' ###########################################################
+#' ## Example : Converting a set of decision rules
+#' ###########################################################
+#' data(RoughSetData)
+#' hiring.data <- RoughSetData$hiring.dt
+#'
+#' rules <- RI.LEM2Rules.RST(hiring.data)
+#'
+#' as.list(rules)
+#' @export
+#' @method as.list RuleSetRST
+as.list.RuleSetRST = function(x, ...) {
+  class(x) = 'list'
+  x
+}
+
 #' This is a print method for FeatureSubset objects.
 #'
 #' @title The print method of FeatureSubset objects
@@ -371,7 +443,7 @@ convertRuleIntoCharacter = function(x, colNames) {
 #' @return Prints its argument and returns it invisibly.
 #' @examples
 #' ###########################################################
-#' ## Example : Classification problem
+#' ## Example : Computation of a decision reduct
 #' ###########################################################
 #' data(RoughSetData)
 #' decision.table <- RoughSetData$hiring.dt
@@ -392,7 +464,7 @@ print.FeatureSubset <- function(x, ...){
 
 #' This function enables the output of a summary of the indiscernibility relation functions.
 #'
-#' @title The summary function of indiscernibility relation based on RST and FRST
+#' @title The summary function for an indiscernibility relation
 #' @author Lala Septem Riza
 #'
 #' @param object a \code{"IndiscernibilityRelation"} object. See \code{\link{BC.IND.relation.FRST}}

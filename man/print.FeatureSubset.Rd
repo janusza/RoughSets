@@ -19,7 +19,7 @@ This is a print method for FeatureSubset objects.
 }
 \examples{
 ###########################################################
-## Example : Classification problem
+## Example : Computation of a decision reduct
 ###########################################################
 data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
