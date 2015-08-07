@@ -15,6 +15,7 @@ See \code{\link{SF.asDecisionTable}}.}
 Currently it can be one of the following methods:
  \itemize{
    \item \code{"global.discernibility"}: See \code{\link{D.global.discernibility.heuristic.RST}}.
+   \item \code{"local.discernibility"}: See \code{\link{D.local.discernibility.heuristic.RST}}.
    \item \code{"unsupervised.intervals"}: See \code{\link{D.discretize.equal.intervals.RST}}.
    \item \code{"unsupervised.quantiles"}: See \code{\link{D.discretize.quantiles.RST}}.
 }}
@@ -42,7 +43,8 @@ need nominal attributes, for exemple, to compute the indiscernibility relation.
 
 Output of this function is an object of a class \code{Discretization} which
 contains cut values. The function \code{\link{SF.applyDecTable}} can be used
-to generate a new (discretized) decision table from the computed cuts.
+to generate a new (discretized) decision table from the computed cuts. Type of
+all attributes in the resulting table will be changed into nominal (i.e. ordered factors).
 
 All implemented supervised discretization methods need a nominal decision attribute.
 Furthermore, especially for the method type \code{"global.discernibility"}, all conditional attributes

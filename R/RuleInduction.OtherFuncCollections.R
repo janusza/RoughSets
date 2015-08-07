@@ -365,7 +365,7 @@ computeLEM2covering <- function(concept, attributeValuePairs, decisionValues, un
       correctLaplaceVec = sapply(tmpAttributeValuePairs,
                                  function(rule) {
                                    nOfCorrect = length(intersect(rule$support, tmpSupp));
-                                   if(nOfCorrect > 0) laplace = (nOfCorrect + 1)/(length(tmpSupp) + length(uniqueCls))   #(length(rule$support) + length(uniqueCls))
+                                   if(nOfCorrect > 0) laplace = nOfCorrect + rule$laplace  #(nOfCorrect + 1)/(length(tmpSupp) + length(uniqueCls))   #(length(rule$support) + length(uniqueCls))
                                    else laplace = 0;
                                    return(laplace)
                                  })
@@ -381,10 +381,15 @@ computeLEM2covering <- function(concept, attributeValuePairs, decisionValues, un
     if(length(selectedAttributeValuePairs) > 1) {
       for(i in 1:length(selectedAttributeValuePairs)) {
         suppList = lapply(selectedAttributeValuePairs[-c(toRmIdx, i)], function(x) x$support)
-        tmpSupport = Reduce(intersect, suppList)
+        if(length(suppList) > 0) {
+          tmpSupport = Reduce(intersect, suppList)
+        } else {
+          tmpSupport = -1
+        }
         if(all(tmpSupport %in% concept)) toRmIdx = c(toRmIdx, i)
       }
     }
+
     if(length(toRmIdx) > 0) {
       selectedAttributeValuePairs = selectedAttributeValuePairs[-toRmIdx]
       suppList = lapply(selectedAttributeValuePairs, function(x) x$support)

@@ -26,7 +26,8 @@
 #'
 #' Output of this function is an object of a class \code{Discretization} which
 #' contains cut values. The function \code{\link{SF.applyDecTable}} can be used
-#' to generate a new (discretized) decision table from the computed cuts.
+#' to generate a new (discretized) decision table from the computed cuts. Type of
+#' all attributes in the resulting table will be changed into nominal (i.e. ordered factors).
 #'
 #' All implemented supervised discretization methods need a nominal decision attribute.
 #' Furthermore, especially for the method type \code{"global.discernibility"}, all conditional attributes
@@ -42,6 +43,7 @@
 #'        Currently it can be one of the following methods:
 #'         \itemize{
 #'           \item \code{"global.discernibility"}: See \code{\link{D.global.discernibility.heuristic.RST}}.
+#'           \item \code{"local.discernibility"}: See \code{\link{D.local.discernibility.heuristic.RST}}.
 #'           \item \code{"unsupervised.intervals"}: See \code{\link{D.discretize.equal.intervals.RST}}.
 #'           \item \code{"unsupervised.quantiles"}: See \code{\link{D.discretize.quantiles.RST}}.
 #'        }
@@ -82,7 +84,7 @@
 #'
 #' @export
 D.discretization.RST <- function(decision.table, type.method = "unsupervised.quantiles", ...){
-	if (!(type.method %in% c("global.discernibility",
+	if (!(type.method %in% c("global.discernibility", "local.discernibility",
                            "unsupervised.intervals", "unsupervised.quantiles"))) {
     stop("Unrecognized discretization type.")
 	}
@@ -96,7 +98,7 @@ D.discretization.RST <- function(decision.table, type.method = "unsupervised.qua
 	} else decisionIdx = attr(decision.table, "decision.attr")
 
 	if (all(attr(decision.table, "nominal.attrs")[-decisionIdx])) {
-		stop("All the conditional attributes are nominal.")
+		stop("All the conditional attributes are already nominal.")
 	} else {
 		if(any(attr(decision.table, "nominal.attrs")[-decisionIdx]) && type.method == "global.discernibility") {
 			stop("This discretization method is not implemented for decision tables with mixed attribute types.")
@@ -106,7 +108,8 @@ D.discretization.RST <- function(decision.table, type.method = "unsupervised.qua
 	cut.values = switch(type.method,
     	                unsupervised.quantiles = D.discretize.quantiles.RST(decision.table, ...),
     	                unsupervised.intervals = D.discretize.equal.intervals.RST(decision.table, ...),
-                      global.discernibility = D.global.discernibility.heuristic.RST(decision.table, ...) )
+                      global.discernibility = D.global.discernibility.heuristic.RST(decision.table, ...),
+	                    local.discernibility = D.local.discernibility.heuristic.RST(decision.table, ...) )
 
 	return(cut.values)
 }
@@ -133,7 +136,8 @@ D.discretization.RST <- function(decision.table, type.method = "unsupervised.qua
 #'         See \code{\link{D.discretization.RST}}.
 #'
 #' @seealso \code{\link{D.discretize.equal.intervals.RST}}, \code{\link{D.global.discernibility.heuristic.RST}},
-#'          \code{\link{SF.applyDecTable}}.
+#'          \code{\link{D.local.discernibility.heuristic.RST}}, \code{\link{SF.applyDecTable}}.
+#'          A wrapper function for all available discretization methods: \code{\link{D.discretization.RST}}
 #'
 #' @references
 #' J. Dougherty, R. Kohavi, and M. Sahami, "Supervised and Unsupervised Discretization of Continuous Features",
@@ -198,7 +202,8 @@ D.discretize.quantiles.RST <- function(decision.table, nOfIntervals = 4) {
 #'         See \code{\link{D.discretization.RST}}.
 #'
 #' @seealso \code{\link{D.discretize.quantiles.RST}}, \code{\link{D.global.discernibility.heuristic.RST}},
-#'          \code{\link{SF.applyDecTable}}.
+#'          \code{\link{D.local.discernibility.heuristic.RST}}, \code{\link{SF.applyDecTable}}.
+#'          A wrapper function for all available discretization methods: \code{\link{D.discretization.RST}}
 #'
 #' @references
 #' J. Dougherty, R. Kohavi, and M. Sahami, "Supervised and Unsupervised Discretization of Continuous Features",
@@ -261,13 +266,15 @@ D.discretize.equal.intervals.RST <- function(decision.table, nOfIntervals = 4) {
 #' @param attrSampleSize an integer between 1 and the number of conditional attributes (the default). It indicates
 #'        the attribute sample size for the Monte Carlo selection of candidating cuts.
 #' @param cutCandidatesList an optional list containing candidates for optimal cut values.
+#'        By default the candidating cuts are determined automatically.
 #' @param discFunction a function used for computation of cuts. Currently only one implementation of maximu discernibility heuristic
 #'        is available (the default). However, this parameter can be used to integrate custom implementations of
 #'        discretization functions with the \code{RoughSets} package.
 #' @param ... additional parameters to the \code{discFunction} (currently unsupported).
 #'
-#' @seealso \code{\link{D.discretize.quantiles.RST}}, \code{\link{D.discretize.equal.intervals.RST}}
-#'          and \code{\link{SF.applyDecTable}}.
+#' @seealso \code{\link{D.discretize.quantiles.RST}}, \code{\link{D.discretize.equal.intervals.RST}},
+#'          \code{\link{D.local.discernibility.heuristic.RST}} and \code{\link{SF.applyDecTable}}.
+#'          A wrapper function for all available discretization methods: \code{\link{D.discretization.RST}}
 #'
 #' @return An object of a class \code{"Discretization"} which stores cuts for each conditional attribute.
 #'         See \code{\link{D.discretization.RST}}.
@@ -275,6 +282,11 @@ D.discretize.equal.intervals.RST <- function(decision.table, nOfIntervals = 4) {
 #' @references
 #' S. H. Nguyen, "On Efficient Handling of Continuous Attributes in Large Data Bases",
 #' Fundamenta Informaticae, vol. 48, p. 61 - 81 (2001).
+#'
+#' Jan G. Bazan, Hung Son Nguyen, Sinh Hoa Nguyen, Piotr Synak, and Jakub Wroblewski,
+#' "Rough Set Algorithms in Classification Problem", Chapter 2
+#' In: L. Polkowski, S. Tsumoto and T.Y. Lin (eds.): Rough Set Methods and Applications
+#' Physica-Verlag, Heidelberg, New York, p. 49 - 88 ( 2000).
 #'
 #' @examples
 #' #################################################################
@@ -348,5 +360,114 @@ D.global.discernibility.heuristic.RST <- function(decision.table, maxNOfCuts = 2
 	cutsList = ObjectFactory(cutsList, classname = "Discretization")
 
 	return(cutsList)
+}
+
+
+#' It is a function used for computing locally semi-optimal cuts using the local discernibility heuristic.
+#'
+#' A local (univariate) version of the algorithm described in (Nguyen, 2001) and (Bazan et al., 2000).
+#'
+#' The output of this function is an object of a class \code{"Discretization"}
+#' which contains cut values.
+#' The function \code{\link{SF.applyDecTable}} has to be used in order to generate the new (discretized) decision table.
+#'
+#' @title Supervised discretization based on the local discernibility heuristic
+#' @author Andrzej Janusz
+#'
+#' @param decision.table an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+#'        See \code{\link{SF.asDecisionTable}}.
+#'        It should be noted that for this particular method all conditional attributes
+#'        must be numeric.
+#' @param maxNOfCuts a positive integer indicating the maximum number of allowed cuts on a single attribute.
+#' @param cutCandidatesList an optional list containing candidates for optimal cut values.
+#'        By default the candidating cuts are determined automatically.
+#' @param discFunction a function used for computation of cuts. Currently only one implementation of the local discernibility heuristic
+#'        is available (the default). However, this parameter can be used to integrate custom implementations of
+#'        discretization functions with the \code{RoughSets} package.
+#' @param ... additional parameters to the \code{discFunction} (currently unsupported).
+#'
+#' @seealso \code{\link{D.discretize.quantiles.RST}}, \code{\link{D.discretize.equal.intervals.RST}},
+#'          \code{\link{D.global.discernibility.heuristic.RST}} and \code{\link{SF.applyDecTable}}.
+#'          A wrapper function for all available discretization methods: \code{\link{D.discretization.RST}}
+#'
+#' @return An object of a class \code{"Discretization"} which stores cuts for each conditional attribute.
+#'         See \code{\link{D.discretization.RST}}.
+#'
+#' @references
+#' S. H. Nguyen, "On Efficient Handling of Continuous Attributes in Large Data Bases",
+#' Fundamenta Informaticae, vol. 48, p. 61 - 81 (2001).
+#'
+#' Jan G. Bazan, Hung Son Nguyen, Sinh Hoa Nguyen, Piotr Synak, and Jakub Wroblewski,
+#' "Rough Set Algorithms in Classification Problem", Chapter 2
+#' In: L. Polkowski, S. Tsumoto and T.Y. Lin (eds.): Rough Set Methods and Applications
+#' Physica-Verlag, Heidelberg, New York, p. 49 - 88 ( 2000).
+#'
+#' @examples
+#' #################################################################
+#' ## Example: Determine cut values and generate new decision table
+#' #################################################################
+#' data(RoughSetData)
+#' wine.data <- RoughSetData$wine.dt
+#' cut.values <- D.local.discernibility.heuristic.RST(wine.data)
+#'
+#' ## generate a new decision table:
+#' wine.discretized <- SF.applyDecTable(wine.data, cut.values)
+#' dim(wine.discretized)
+#' lapply(wine.discretized, unique)
+#'
+#' @export
+D.local.discernibility.heuristic.RST <- function(decision.table, maxNOfCuts = 2,
+                                                 cutCandidatesList = NULL,
+                                                 discFunction = local.discernibility)  {
+
+  if (!is.null(attr(decision.table, "decision.attr"))) {
+    decisionIdx = attr(decision.table, "decision.attr")
+    infoSystem = decision.table[-decisionIdx]
+    decisionAttr = factor(decision.table[[decisionIdx]])
+  } else {
+    stop("A decision attribute is not indicated.")
+  }
+
+  if (maxNOfCuts < 1) {
+    stop("Wrong value of maxNOfCuts. It should be a positive integer.")
+  }
+
+  if (is.null(cutCandidatesList)) {
+    if(any(attr(decision.table, "nominal.attrs")[-decisionIdx])) {
+      cutCandidatesList = list()
+      cutCandidatesList[1:ncol(infoSystem)] = list(numeric())
+      cutCandidatesList[!(attr(decision.table, "nominal.attrs")[-decisionIdx])] =
+        lapply(infoSystem[!(attr(decision.table, "nominal.attrs")[-decisionIdx])],
+               chooseCutCandidates,
+               decisionAttr)
+    } else {
+      cutCandidatesList = lapply(infoSystem, chooseCutCandidates, decisionAttr)
+    }
+  } else {
+    if (length(cutCandidatesList) != ncol(decision.table) - 1) {
+      stop("Wrong length of a list containing candidate cuts. Its length should equal the number of conditional attributes.")
+    }
+  }
+
+  candidatesCounterVec = sapply(cutCandidatesList, length)
+  nonNullIdx = which(sapply(cutCandidatesList, function(x) return(length(x) > 0)))
+
+  cutsList = list()
+  cutsList[1:ncol(infoSystem)] = list(numeric())
+
+  tmpCutsList = mapply(discFunction,
+                       as.list(infoSystem)[nonNullIdx], cutCandidatesList[nonNullIdx],
+                       MoreArgs = list(decVec = decisionAttr, nOfCuts = maxNOfCuts,
+                                       nDecisions = length(levels(decisionAttr))),
+                       SIMPLIFY = FALSE)
+  cutsList[nonNullIdx] = tmpCutsList
+
+
+  names(cutsList) = colnames(infoSystem)
+  cutsList = list(cut.values = cutsList, type.method = "local.discernibility",
+                  type.task = "discretization", model = "RST")
+  cutsList = ObjectFactory(cutsList, classname = "Discretization")
+
+  return(cutsList)
 }
 

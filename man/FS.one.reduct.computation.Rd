@@ -60,6 +60,12 @@ new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.red
 \author{
 Andrzej Janusz
 }
+\references{
+Jan G. Bazan, Hung Son Nguyen, Sinh Hoa Nguyen, Piotr Synak, and Jakub Wroblewski,
+"Rough Set Algorithms in Classification Problem", Chapter 2
+In: L. Polkowski, S. Tsumoto and T.Y. Lin (eds.): Rough Set Methods and Applications
+Physica-Verlag, Heidelberg, New York, p. 49 - 88 ( 2000).
+}
 \seealso{
 \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}.
 }

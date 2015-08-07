@@ -51,6 +51,7 @@ In A. Prieditis & S. J. Russell, eds. Work. Morgan Kaufmann, p. 194-202 (1995).
 }
 \seealso{
 \code{\link{D.discretize.equal.intervals.RST}}, \code{\link{D.global.discernibility.heuristic.RST}},
-         \code{\link{SF.applyDecTable}}.
+         \code{\link{D.local.discernibility.heuristic.RST}}, \code{\link{SF.applyDecTable}}.
+         A wrapper function for all available discretization methods: \code{\link{D.discretization.RST}}
 }
 

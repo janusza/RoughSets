@@ -122,8 +122,8 @@ SF.asDecisionTable <- function(dataset, decision.attr = NULL, indx.nominal = NUL
 		nominal.attrs[indx.nominal] = TRUE
   }
 
-  class.vector = sapply(dataset, class)
-  nominal.attrs[class.vector %in% c("factor", "character")] = TRUE
+  class.list = lapply(dataset, class)
+  nominal.attrs[sapply(class.list, function(x) any(x %in% c("factor", "character")))] = TRUE
 
   if(any(nominal.attrs)) {
     dataset[nominal.attrs] = lapply(dataset[nominal.attrs], factor)
@@ -279,7 +279,7 @@ summary.RuleSetRST <- function(object, ...){
 #' @author Andrzej Janusz
 #'
 #' @param x a \code{"RuleSetRST"} object. See \code{\link{RI.LEM2Rules.RST}}.
-#' @param howMany an integer giving the number of rules to be printed. 
+#' @param howMany an integer giving the number of rules to be printed.
 #'        The default is minimum from 10 and the total number of rules in the set.
 #' @param ... the other parameters.
 #' @return prints its argument and returns it invisibly
@@ -294,7 +294,7 @@ summary.RuleSetRST <- function(object, ...){
 #'
 #' rules             # all rules are printed
 #' print(rules, 2)   # only the first two rules are printed
-#' 
+#'
 #' # printing a subset of rules
 #' rules[2:3]
 #' @export
@@ -343,7 +343,7 @@ print.RuleSetRST <- function(x, howMany = min(10, length(x)), ...){
 #' @export
 #' @method as.character RuleSetRST
 as.character.RuleSetRST = function(x, ...) {
-  
+
   if(!inherits(x, "RuleSetRST")) stop("not a legitimate object in this package")
   colNames <- attr(x, "colnames")
   rules <- sapply(x, convertRuleIntoCharacter, colNames)
@@ -373,7 +373,7 @@ convertRuleIntoCharacter = function(x, colNames) {
 #' @title The \code{[.} method for \code{"RuleSetRST"} objects
 #' @author Andrzej Janusz
 #'
-#' @param x a \code{"RuleSetRST"} object from which to extract rules(s) or in which to replace rules(s). 
+#' @param x a \code{"RuleSetRST"} object from which to extract rules(s) or in which to replace rules(s).
 #'        See \code{\link{RI.LEM2Rules.RST}}.
 #' @param i integer indices specifying elements to be extracted or replaced.
 #' @param ... the other parameters.
@@ -388,11 +388,11 @@ convertRuleIntoCharacter = function(x, colNames) {
 #' rules <- RI.LEM2Rules.RST(hiring.data)
 #'
 #' rules
-#' 
+#'
 #' # taking a subset of rules
 #' rules[1:3]
 #' rules[c(TRUE,FALSE,TRUE,FALSE)]
-#' 
+#'
 #' # replacing a subset of rules
 #' rules2 <- rules
 #' rules2[c(2,4)] <- rules[c(1,3)]
@@ -724,7 +724,7 @@ SF.applyDecTable <- function(decision.table, object, control = list()) {
   if(!inherits(decision.table, "DecisionTable")) {
     stop("Provided data should inherit from the \'DecisionTable\' class.")
   }
-  
+
   if(!(inherits(object, c("FeatureSubset", "ReductSet", "InstanceSelection",
                           "Discretization", "MissingValue")))) {
     stop("Class of the object was not recognized.")
@@ -790,17 +790,19 @@ SF.applyDecTable <- function(decision.table, object, control = list()) {
                         SIMPLIFY = FALSE)
       new.data[[length(new.data) + 1]] = decision.attr
     } else {
-      if(length(cut.values) != ncol(decision.table))
+      if(length(cut.values) != ncol(decision.table)) {
         stop("The discretization is not conforming with the decision table.")
+      } else {
         new.data = mapply(applyDiscretization,
                           decision.table, cut.values,
                           attr(decision.table, "nominal.attrs"),
                           SIMPLIFY = FALSE)
+      }
     }
     new.data = data.frame(new.data, stringsAsFactors = TRUE)
     colnames(new.data) = colnames(decision.table)
 
-    ## generate decision table with changing in nominal.attrs attribute
+    ## generate a decision table object
     new.data <- SF.asDecisionTable(dataset = new.data,
                                    decision.attr = attr(decision.table, "decision.attr"),
                                    indx.nominal = 1:ncol(new.data))
