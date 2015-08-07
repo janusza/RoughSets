@@ -596,8 +596,8 @@ RI.CN2Rules.RST <- function(decision.table, K = 3)  {
 #'
 #' ## discretization:
 #' cut.values <- D.discretization.RST(wine.tra,
-#'                                    type.method = "unsupervised.quantiles",
-#'                                    nOfIntervals = 3)
+#'                                    type.method = "local.discernibility",
+#'                                    maxNOfCuts = 1)
 #' data.tra <- SF.applyDecTable(wine.tra, cut.values)
 #' data.tst <- SF.applyDecTable(wine.tst, cut.values)
 #'
