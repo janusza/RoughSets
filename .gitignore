@@ -1,4 +1,5 @@
 *.Rproj
+.Rproj.user/**
 .Rproj.user/9EEDD20/build_options
 .Rproj.user/9EEDD20/sdb/s-B83CAB37/lock_file
 *.dll
@@ -15,3 +16,4 @@
 .Rproj.user/872786DD/sdb/s-B5ACD770/lock_file
 *.RData
 .Rhistory
+*.stackdump
