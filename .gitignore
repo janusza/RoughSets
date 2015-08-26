@@ -7,3 +7,4 @@
 *.RData
 .Rhistory
 *.stackdump
+*.dll

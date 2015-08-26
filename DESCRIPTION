@@ -29,7 +29,7 @@ Description: Implementations of algorithms for data analysis
     FRST combines concepts of vagueness and indiscernibility that are expressed
     with fuzzy sets (as proposed by Zadeh, in 1965) and RST.
 Version: 1.3-0
-URL: http://sci2s.ugr.es/dicits/software/RoughSets
+URL: https://github.com/janusza/RoughSets
 Date: 2015-08-06
 Suggests: class
 LinkingTo: Rcpp

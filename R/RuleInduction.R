@@ -1104,6 +1104,7 @@ RI.laplace = function(rules, ...) {
   names(qualityVec) = paste0('Rule_', 1:length(rules))
   qualityVec
 }
+#' @export
 RI.support = function(rules, ...) {
 
   if(!inherits(rules, "RuleSetRST")) stop("not a legitimate RuleSetRST object")
@@ -1113,6 +1114,7 @@ RI.support = function(rules, ...) {
   names(qualityVec) = paste0('Rule_', 1:length(rules))
   qualityVec
 }
+#' @export
 RI.confidence = function(rules, ...) {
 
   if(!inherits(rules, "RuleSetRST")) stop("not a legitimate RuleSetRST object")
@@ -1122,6 +1124,7 @@ RI.confidence = function(rules, ...) {
   names(qualityVec) = paste0('Rule_', 1:length(rules))
   qualityVec
 }
+#' @export
 RI.lift = function(rules, ...) {
 
   if(!inherits(rules, "RuleSetRST")) stop("not a legitimate RuleSetRST object")
