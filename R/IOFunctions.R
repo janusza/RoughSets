@@ -56,7 +56,7 @@ SF.read.DecisionTable <- function(filename, decision.attr = NULL, indx.nominal =
     warning("A decision attribute is not indicated - the data will be treated as an information system.")
   }
 
-  dataset = read.table(file = filename, ...)
+  dataset = utils::read.table(file = filename, ...)
   decision.table = SF.asDecisionTable(dataset, decision.attr = decision.attr, indx.nominal = indx.nominal)
   return(decision.table)
 }
@@ -817,7 +817,7 @@ SF.applyDecTable <- function(decision.table, object, control = list()) {
         new.data[object$val.NA[i, 1], object$val.NA[i, 2]] <- object$val.NA[i, 3]
       }
     }
-    new.data <- na.omit(new.data)
+    new.data <- stats::na.omit(new.data)
     new.data <- SF.asDecisionTable(dataset = new.data,
                                    decision.attr = attr(decision.table, "decision.attr"),
                                    indx.nominal = which(nominal.indx == TRUE))
@@ -927,7 +927,7 @@ SF.asFeatureSubset = function(colNames, decisionTable,
                             type.method = "custom subset",
                             model = "custom") {
 
-  if(length(colNames) == 0 | !("character" %in% is(colNames))) {
+  if(length(colNames) == 0 | !inherits(colNames, "character")) {
     stop("No correct attribute names were provided.")
   }
 

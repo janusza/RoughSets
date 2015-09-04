@@ -159,7 +159,7 @@ calc.fsimilarity <- function(decision.table, attributes, t.similarity = "eq.1", 
 	if (disc.mat == FALSE){		
 		if (all.nom == FALSE && t.aggregation == "kernel.frst") {
 			options(warn=-1)			
-			distance <- as.matrix(dist(obj, method = "euclidean", diag = TRUE, upper = TRUE))
+			distance <- as.matrix(stats::dist(obj, method = "euclidean", diag = TRUE, upper = TRUE))
 
 			miu.Ra.temp <- do.call(t.tnorm, list(distance, delta))
 			
@@ -364,7 +364,7 @@ cal.var.range <- function(objects, attributes, nominal.att){
 	
 	for (i in c(attributes)){
 		if (nominal.att[i] == FALSE){
-			temp.variance.data <- sqrt(var(objects[, i, drop = FALSE], na.rm = TRUE))
+			temp.variance.data <- sqrt(stats::var(objects[, i, drop = FALSE], na.rm = TRUE))
 			temp.range.data <- c(desc.attrs[[i]][2] - desc.attrs[[i]][1])
 			
 			## condition to avoid "divide by zero"

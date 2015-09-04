@@ -38,7 +38,7 @@ discretize.quantiles <- function(vec, n) {
 		else cutVec = uniqueValues
 	}
 	else {
-		cutVec = quantile(vec, (1:(n-1))/n)
+		cutVec = stats::quantile(vec, (1:(n-1))/n)
 		cutVec = unique(cutVec)
 	}
 

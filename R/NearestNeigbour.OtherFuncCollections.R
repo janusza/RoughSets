@@ -34,7 +34,7 @@ get.knearest <- function(decision.table, newdata.i, k, method.type){
 	} else {
 		for (j in 1 : nrow(decision.table)){
 			## calculate distance based on method.type
-			dist.dt <- dist(rbind(decision.table[j, -ncol(decision.table), drop = FALSE], newdata.i), method = method.type)		
+			dist.dt <- stats::dist(rbind(decision.table[j, -ncol(decision.table), drop = FALSE], newdata.i), method = method.type)		
 		
 			## check if less than k (note. k + 1 because first row is NA
 			if (nrow(nearest.dt) <= (k + 1)){
@@ -48,7 +48,7 @@ get.knearest <- function(decision.table, newdata.i, k, method.type){
 		}
 	}
 	## delete first row
-	nearest.dt <- na.omit(nearest.dt)		
+	nearest.dt <- stats::na.omit(nearest.dt)		
 	
 	return(nearest.dt)
 }

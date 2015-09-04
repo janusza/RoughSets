@@ -384,7 +384,6 @@ D.global.discernibility.heuristic.RST <- function(decision.table, maxNOfCuts = 2
 #' @param discFunction a function used for computation of cuts. Currently only one implementation of the local discernibility heuristic
 #'        is available (the default). However, this parameter can be used to integrate custom implementations of
 #'        discretization functions with the \code{RoughSets} package.
-#' @param ... additional parameters to the \code{discFunction} (currently unsupported).
 #'
 #' @seealso \code{\link{D.discretize.quantiles.RST}}, \code{\link{D.discretize.equal.intervals.RST}},
 #'          \code{\link{D.global.discernibility.heuristic.RST}} and \code{\link{SF.applyDecTable}}.

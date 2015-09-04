@@ -19,10 +19,8 @@ must be numeric.}
 By default the candidating cuts are determined automatically.}
 
 \item{discFunction}{a function used for computation of cuts. Currently only one implementation of the local discernibility heuristic
-is available (the default). However, this parameter can be used to integrate custom implementations of
-discretization functions with the \code{RoughSets} package.}
-
-\item{...}{additional parameters to the \code{discFunction} (currently unsupported).}
+       is available (the default). However, this parameter can be used to integrate custom implementations of
+       discretization functions with the \code{RoughSets} package.}
 }
 \value{
 An object of a class \code{"Discretization"} which stores cuts for each conditional attribute.

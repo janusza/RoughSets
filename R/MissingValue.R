@@ -98,11 +98,11 @@ MV.mostCommonValResConcept <- function(decision.table){
 	while(i <= nrow(indx.na)){
 		indx.consider <- which(decision.table[,  indx.dec] == decision.table[indx.na[i, 1], indx.dec]) 	
 		if (attr(decision.table, "nominal.attr")[indx.na[i, 2]] == FALSE){
-			temp <- summary(as.factor(na.omit(decision.table[indx.consider, indx.na[i, 2]])))
+			temp <- summary(as.factor(stats::na.omit(decision.table[indx.consider, indx.na[i, 2]])))
 			indx.na[i, 3] <- names(which.max(temp))[1]
 		}
 		else {
-			data <- na.omit(decision.table[indx.consider, indx.na[i, 2]])		
+			data <- stats::na.omit(decision.table[indx.consider, indx.na[i, 2]])		
 			temp <- summary(as.factor(data))
 			indx.na[i, 3] <- names(which.max(temp))[1]
 		}
@@ -155,11 +155,11 @@ MV.mostCommonVal <- function(decision.table){
 	i = 1
 	while(i <= nrow(indx.na)){	 
 		if (attr(decision.table, "nominal.attr")[indx.na[i, 2]] == FALSE){
-			data <- na.omit(decision.table[, indx.na[i, 2]])		
+			data <- stats::na.omit(decision.table[, indx.na[i, 2]])		
 			indx.na[i, 3] <- mean(data)
 		}
 		else {
-			data <- na.omit(decision.table[, indx.na[i, 2]])		
+			data <- stats::na.omit(decision.table[, indx.na[i, 2]])		
 			temp <- summary(as.factor(data))
 			indx.na[i, 3] <- names(which.max(temp))[1]
 		}

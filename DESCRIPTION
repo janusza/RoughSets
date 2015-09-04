@@ -33,3 +33,4 @@ Date: 2015-09-03
 Suggests: class
 LinkingTo: Rcpp
 Depends: Rcpp
+

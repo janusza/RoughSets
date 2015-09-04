@@ -539,4 +539,3 @@ NULL
 #' @import Rcpp
 NULL
 
-
