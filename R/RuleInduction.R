@@ -194,19 +194,19 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 		## delete redundant of discernibility matrix
 		disc.list <- unique(disc.list)
 		disc.list <- disc.list[which(!is.na(disc.list))]
-		att.val.core <- disc.list[which(lapply(disc.list, length) == 1)]
+		att.val.core <- disc.list[which(sapply(disc.list, length) == 1)]
 
 		if (length(att.val.core) != 0){
 			## delete element containing core (for each core)
-			disc.list <- disc.list[which(lapply(disc.list, length) > 1)]
+			disc.list <- disc.list[which(sapply(disc.list, length) > 1)]
 
 			for (ii in 1 : length(att.val.core)){
-				disc.list <- disc.list[which(lapply(disc.list, function(x){att.val.core[ii] %in% x}) == FALSE)]
+				disc.list <- disc.list[which(sapply(disc.list, function(x){att.val.core[ii] %in% x}) == FALSE)]
 			}
 		}
 		else {
-			att.val.core <- disc.list[which.min(lapply(disc.list, length))]
-			disc.list <- disc.list[which(lapply(disc.list, function(x){att.val.core %in% x}) == FALSE)]
+			att.val.core <- disc.list[which.min(sapply(disc.list, length))]
+			disc.list <- disc.list[which(sapply(disc.list, function(x){att.val.core %in% x}) == FALSE)]
 		}
 
 		## initialization
@@ -220,7 +220,7 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 			temp.red <- c(temp.red, new.red)
 
 			## delete element containing new.red
-			disc.list <- disc.list[which(lapply(disc.list, function(x){new.red %in% x}) == FALSE)]
+			disc.list <- disc.list[which(sapply(disc.list, function(x){new.red %in% x}) == FALSE)]
 		}
 
 		temp.red <- c(temp.red, unlist(att.val.core))
@@ -263,7 +263,7 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 		cover.rule <- c()
 		num.rl <- matrix()
 		indx.seq <- seq(1, length(all.rules))
-		indx.logical.0 <- which(lapply(all.rules, length) == 0)
+		indx.logical.0 <- which(sapply(all.rules, length) == 0)
 		if (length(indx.logical.0) != 0){
 			indx.seq <- indx.seq[-indx.logical.0]
 		}
@@ -340,7 +340,7 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 		}
 
 	}
-	indx.logical.0 <- which(lapply(min.rules, length) == 0)
+	indx.logical.0 <- which(sapply(min.rules, length) == 0)
 	if (length(indx.logical.0) != 0){
 		min.rules <- min.rules[-indx.logical.0]
 		object.rules <- object.rules[-indx.logical.0]

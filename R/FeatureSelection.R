@@ -1410,15 +1410,15 @@ FS.nearOpt.fvprs.FRST <- function(decision.table, alpha.precision = 0.05) {
 
 	if (length(disc.list) > 1){
 		## get core
-		core.red <- disc.list[which(lapply(disc.list, length) == 1)]
+		core.red <- disc.list[which(sapply(disc.list, length) == 1)]
 
 		if (length(core.red) != 0){
 			## delete element == core (for each core)
-			disc.list <- disc.list[which(lapply(disc.list, length) > 1)]
+			disc.list <- disc.list[which(sapply(disc.list, length) > 1)]
 
 			## delete element containing core
 			for (i in 1 : length(core.red)){
-				disc.list <- disc.list[which(lapply(disc.list, function(x){core.red[i] %in% x}) == FALSE)]
+				disc.list <- disc.list[which(sapply(disc.list, function(x){core.red[i] %in% x}) == FALSE)]
 			}
 		}		else {
 			core.red <- c()
@@ -1433,7 +1433,7 @@ FS.nearOpt.fvprs.FRST <- function(decision.table, alpha.precision = 0.05) {
 			core.red <- c(core.red, new.red)
 
 			## delete element containing new.red
-			disc.list <- disc.list[which(lapply(disc.list, function(x){new.red %in% x}) == FALSE)]
+			disc.list <- disc.list[which(sapply(disc.list, function(x){new.red %in% x}) == FALSE)]
 
 			ii <- ii + 1
 		}
