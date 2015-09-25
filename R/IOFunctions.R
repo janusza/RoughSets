@@ -311,7 +311,7 @@ print.RuleSetRST <- function(x, howMany = min(10, length(x)), ...){
     } else stop("Empty rule set")
   }
   xTmp <- x[1:min(howMany,length(x))]
-  rules <- sapply(xTmp, convertRuleIntoCharacter, attr(x, 'colnames'))
+  rules <- sapply(xTmp, convertRuleIntoCharacter, attr(x, 'colnames'), decName = attr(x, "dec.attr"))
   rules <- mapply(function(x, n) paste(n, ". ", x, sep = ""), rules, 1:length(rules), SIMPLIFY = FALSE)
   lapply(rules, function(x) cat(x, "\n"))
   if(length(x) > howMany) {
@@ -346,14 +346,14 @@ as.character.RuleSetRST = function(x, ...) {
 
   if(!inherits(x, "RuleSetRST")) stop("not a legitimate object in this package")
   colNames <- attr(x, "colnames")
-  rules <- sapply(x, convertRuleIntoCharacter, colNames)
+  rules <- sapply(x, convertRuleIntoCharacter, colNames, decName = attr(x, "dec.attr"))
   rules <- sub('\n\t\t', ' ', rules)
   rules
 }
 
 
 # auxiliary function used in print and as.character methods of RuleSetRST objects
-convertRuleIntoCharacter = function(x, colNames) {
+convertRuleIntoCharacter = function(x, colNames, decName) {
   desc <- paste(colNames[x$idx[1]], x$values[1], sep = " is ")
   if(length(x$values) > 1) {
     for (j in 2 : length(x$values)){
@@ -361,9 +361,9 @@ convertRuleIntoCharacter = function(x, colNames) {
       desc <- paste(desc, temp, sep = " and ")
     }
   }
-  cons <- paste(attr(x, "dec.attr"), paste(x$consequent, ";\n\t\t(supportSize=",
-                                           length(x$support), "; ", "laplace=",
-                                           x$laplace,")", sep=""), sep = c(" is "))
+  cons <- paste(decName, paste(x$consequent, ";\n\t\t(supportSize=",
+                               length(x$support), "; ", "laplace=",
+                               x$laplace,")", sep=""), sep = c(" is "))
   rule <- paste("IF", desc, "THEN", cons)
   rule
 }
