@@ -23,7 +23,7 @@
 # @param cuts a vector of cut values
 applyDiscretization <- function(vec, cuts, isNominal) {
    if(!isNominal) vec = cut(vec, c(-Inf,cuts,Inf),
-                            right=TRUE, include.lowest = TRUE,
+                            right=FALSE, include.lowest = TRUE,
                             ordered_result = TRUE)
    return(vec)
 }
