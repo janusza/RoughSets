@@ -62,7 +62,7 @@ discretize.equal.intervals <- function(vec, n) {
 
 # a function for computing cuts using the maximum discernibility heuristic (the global approach)
 global.discernibility <- function(vecList, cutCandidatesVecList, decVec, nOfCuts,
-                                 nAttrs = length(vecList), minIntSupport = 0, ...) {
+                                 nAttrs = length(vecList), minIntSupport = 1, ...) {
   attrCount = length(vecList)
   cutVecList = list()
   rmVecList = list()
@@ -152,7 +152,7 @@ global.discernibility <- function(vecList, cutCandidatesVecList, decVec, nOfCuts
 
 # a function for computing cuts using the local discernibility heuristic (the local approach)
 local.discernibility <- function(vec, cutCandidatesVec, decVec,
-                                 nDecisions, nOfCuts = 2, minIntSupport = 0) {
+                                 nDecisions, nOfCuts = 2, minIntSupport = 1) {
 
   cutVec = numeric()
 
