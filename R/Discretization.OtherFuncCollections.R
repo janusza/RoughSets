@@ -70,9 +70,7 @@ global.discernibility <- function(vecList, cutCandidatesVecList, decVec, nOfCuts
   cutVecList[1:attrCount] = list(numeric())
 
   INDclasses = list(1:length(decVec))
-  minIntervalSize = ceiling(length(decVec)*minIntSupport)
   scrHistVec = rep(0, attrCount)
-#  maxDiscernPairs = conflictsCouner(decVec)
   i = 0
   numOfChosenCuts = 0
   nDecisions = length(unique(decVec))
@@ -95,7 +93,7 @@ global.discernibility <- function(vecList, cutCandidatesVecList, decVec, nOfCuts
                                           nOfDec = nDecisions,
                                           INDclassesVec = tmpINDclassesVec,
                                           INDclassesSizes = tmpObjIdxLengths,
-                                          minIntervalSize = minIntervalSize),
+                                          minIntervalSize = minIntSupport),
                           SIMPLIFY = F)
 
     maxCutScoreVec = sapply(bestCutsList, function(x) x$maxTPtoFP)
@@ -142,7 +140,7 @@ global.discernibility <- function(vecList, cutCandidatesVecList, decVec, nOfCuts
         }
       }
 
-      if(maxDiscernPairs == 0 || max(sapply(INDclasses,length)) < 2*minIntervalSize)  endFlag = TRUE
+      if(maxDiscernPairs == 0 || max(sapply(INDclasses,length)) < 2*minIntSupport)  endFlag = TRUE
     }
   }
 
@@ -157,7 +155,6 @@ local.discernibility <- function(vec, cutCandidatesVec, decVec,
   cutVec = numeric()
 
   INDclasses = list(1:length(decVec))
-  minIntervalSize = ceiling(length(decVec)*minIntSupport)
   numOfChosenCuts = 0
   endFlag = FALSE
 
@@ -170,7 +167,7 @@ local.discernibility <- function(vec, cutCandidatesVec, decVec,
                            nOfDec = nDecisions,
                            INDclassesVec = tmpINDclassesVec,
                            INDclassesSizes = tmpObjIdxLengths,
-                           minIntervalSize = minIntervalSize)
+                           minIntervalSize = minIntSupport)
 
     maxScr = bestCut$maxTPtoFP
     chosenCutIdx = bestCut$maxIdx
@@ -201,7 +198,7 @@ local.discernibility <- function(vec, cutCandidatesVec, decVec,
 
       cutCandidatesVec = cutCandidatesVec[-rmCutIdx]
 
-      if(maxDiscernPairs == 0 || max(sapply(INDclasses,length)) < 2*minIntervalSize)  endFlag = TRUE
+      if(maxDiscernPairs == 0 || max(sapply(INDclasses,length)) < 2*minIntSupport)  endFlag = TRUE
     }
   }
 
