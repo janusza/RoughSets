@@ -440,11 +440,15 @@ RI.indiscernibilityBasedRules.RST <- function(decision.table, feature.set) {
 
 	clsFreqs <- table(decision.table[[decisionIdx]])
 	uniqueCls <- names(clsFreqs)
-	ruleSet <- lapply(INDrelation,
-                   function(idxs, rule, dataS, clsVec, uniqueCls) laplaceEstimate(list(idx = reduct, values = as.vector(dataS[idxs[1],reduct])),
+	ruleSet <- sapply(INDrelation,
+                   function(idxs, rule, dataS, clsVec, uniqueCls) laplaceEstimate(list(idx = as.integer(reduct),
+                                                                                       values = as.character(unlist(dataS[idxs[1],reduct],
+                                                                                                                    use.names = FALSE))),
                                                                                   dataS, clsVec, uniqueCls, suppIdx = idxs),
-                   reduct, decision.table, decision.table[[decisionIdx]], uniqueCls)
+                   reduct, decision.table, decision.table[[decisionIdx]], uniqueCls,
+                   simplify = FALSE, USE.NAMES = FALSE)
 
+	names(ruleSet) = NULL
 	attr(ruleSet, "uniqueCls") <- as.character(uniqueCls)
 	attr(ruleSet, "supportDenominator") <- nrow(decision.table)
 	attr(ruleSet, "clsProbs") <- clsFreqs/sum(clsFreqs)
