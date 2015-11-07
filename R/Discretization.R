@@ -322,6 +322,7 @@ D.global.discernibility.heuristic.RST <- function(decision.table, maxNOfCuts = 2
 	if (!is.null(attr(decision.table, "decision.attr"))) {
 		infoSystem = decision.table[-attr(decision.table, "decision.attr")]
 		decisionAttr = factor(decision.table[[attr(decision.table, "decision.attr")]])
+		if(length(levels(decisionAttr)) < 2) stop("All data belong to a single decision class.")
 	} else {
     stop("A decision attribute is not indicated.")
 	}
@@ -423,6 +424,7 @@ D.local.discernibility.heuristic.RST <- function(decision.table, maxNOfCuts = 2,
     decisionIdx = attr(decision.table, "decision.attr")
     infoSystem = decision.table[-decisionIdx]
     decisionAttr = factor(decision.table[[decisionIdx]])
+    if(length(levels(decisionAttr)) < 2) stop("All data belong to a single decision class.")
   } else {
     stop("A decision attribute is not indicated.")
   }
