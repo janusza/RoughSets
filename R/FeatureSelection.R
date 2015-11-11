@@ -145,8 +145,12 @@ FS.reduct.computation <- function(decision.table, method = "greedy.heuristic", .
 #' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.reduct.computation}}.
 #'
 #' @references
-#' A. Janusz and D. Ślęzak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data"
-#'										Proceedings of Federated Conference on Computer Science and Information Systems - FedCSIS, p. 295 - 302 (2012).
+#' A. Janusz and D. Ślęzak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data".
+#' Proceedings of Federated Conference on Computer Science and Information Systems - FedCSIS, p. 295 - 302 (2012).
+#'
+#' Andrzej Janusz and Dominik Slezak. "Rough Set Methods for Attribute
+#' Clustering and Selection". Applied Artificial Intelligence, 28(3):220–242, 2014.
+#'
 #' @examples
 #' ###################################################
 #' ## Example 1: Generate reduct and new decision table
@@ -290,6 +294,9 @@ FS.permutation.heuristic.reduct.RST <- function(decision.table,
 #' @seealso \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.reduct.computation}}.
 #'
 #' @references
+#' Andrzej Janusz and Dominik Slezak. "Rough Set Methods for Attribute
+#' Clustering and Selection". Applied Artificial Intelligence, 28(3):220–242, 2014.
+#'
 #' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
 #' Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
 #'
@@ -495,11 +502,15 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 #' @seealso \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
 #'
 #' @references
-#' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
-#' Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
-#'
 #' A. Janusz and D. Ślęzak, "Random Probes in Computation and Assessment of Approximate Reducts",
 #' Proceedings of {RSEISP} 2014, Springer, LNCS vol. 8537: p. 53 - 64 (2014).
+#'
+#' Andrzej Janusz and Dominik Slezak. "Computation of approximate reducts with dynamically
+#' adjusted approximation threshold". In Proceedings of ISMIS 2015, LNCS
+#' volume 9384, pages 19–28. Springer, 2015.
+#'
+#' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
+#' Proceedings of International Conference on Rough Sets and Knowledge Technology (RSKT), vol. 6954, p. 45 - 50 (2011).
 #'
 #' @examples
 #' ###################################################
@@ -868,8 +879,11 @@ FS.quickreduct.RST <- function(decision.table, control = list()){
 #' @seealso \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
 #'
 #' @references
+#' Andrzej Janusz and Dominik Slezak. "Rough Set Methods for Attribute
+#' Clustering and Selection". Applied Artificial Intelligence, 28(3):220–242, 2014.
+#'
 #' A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
-#' Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
+#' Proceedings of International Conference on Rough Sets and Knowledge Technology (RSKT), vol. 6954, p. 45 - 50 (2011).
 #'
 #' D. Ślęzak, "Approximate Entropy Reducts", Fundamenta Informaticae, vol. 53, no. 3 - 4, p. 365 - 390 (2002).
 #'
@@ -1168,37 +1182,15 @@ FS.greedy.heuristic.superreduct.RST <- function(decision.table,
 #' C. Cornelis, G. Hurtado Martin, R. Jensen, and D. Slezak,
 #' "Feature Selection with Fuzzy Decision Reducts", Information Sciences, vol. 180, no. 2, p. 209 - 224 (2010).
 #'
-#' C. Cornelis, N. Verbiest, and R. Jensen, "Ordered Weighted Average Based Fuzzy Rough Sets",
-#' Proceedings of the 5th International Conference on Rough Sets and Knowledge Technology (RSKT 2010),
-#' p. 78 - 85 (2010).
-#'
 #' C. Cornelis and R. Jensen, "A Noise-tolerant Approach to Fuzzy-rough Feature Selection",
 #' Proceedings of the 2008 IEEE International Conference on Fuzzy Systems (FUZZ-IEEE 2008),
 #' p. 1598 - 1605 (2008).
-#'
-#' J. M. F. Salido and S. Murakami, "Rough Set Analysis of a General Type of Fuzzy Data
-#' Using Transitive Aggregations of Fuzzy Similarity Relations",
-#' Fuzzy Sets Syst., vol. 139, p. 635 - 660 (2003).
 #'
 # Q. Hu, S. An, and D. Yu, "Soft Fuzzy Rough Sets for Robust Feature Evaluation and Selection",
 # Information Sciences, vol. 180, p. 4384 - 4400 (2010).
 #
 #' Q. Hu, L. Zhang, S. An, D. Zhang, and D. Yu, "On Robust Fuzzy Rough Set Models",
 #' IEEE Trans. on Fuzzy Systems, vol. 20, no. 4, p. 636 - 651 (2012).
-#'
-#' R. B. Bhatt and M. Gopal, "On Fuzzy-rough Sets Approach to Feature Selection",
-#' Pattern Recognition Letters, vol. 26, no. 7, p. 965 - 975 (2005).
-#'
-#' R. Jensen and Q. Shen, "Fuzzy-rough Sets for Descriptive Dimensionality Reduction",
-#' In: Proceedings of IEEE International Conference on Fuzzy System, FUZZ-IEEE, p. 29 - 34 (2002).
-#'
-#' R. Jensen and Q. Shen, "New Approaches to Fuzzy-rough Feature Selection",
-#' IEEE Transactions on Fuzzy Systems, vol. 17, no. 4, p. 824 - 838 (2009).
-#'
-#' S. Y. Zhao, E. C. C. Tsang, and D. G. Chen,
-#' "The Model of Fuzzy Variable Precision Rough Sets",
-#' IEEE Trans. Fuzzy Systems, vol. 17, no. 2,
-#' p. 451 - 467 (2009).
 #'
 #' @examples
 #' ##########################################################
