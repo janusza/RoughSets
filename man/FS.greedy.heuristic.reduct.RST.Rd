@@ -94,6 +94,9 @@ new.decTable <- SF.applyDecTable(decision.table, res.1)
 Andrzej Janusz
 }
 \references{
+Andrzej Janusz and Dominik Slezak. "Rough Set Methods for Attribute
+Clustering and Selection". Applied Artificial Intelligence, 28(3):220–242, 2014.
+
 A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
 Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
 

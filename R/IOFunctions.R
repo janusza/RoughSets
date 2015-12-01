@@ -363,7 +363,7 @@ convertRuleIntoCharacter = function(x, colNames, decName) {
   }
   cons <- paste(decName, paste(x$consequent, ";\n\t\t(supportSize=",
                                length(x$support), "; ", "laplace=",
-                               x$laplace,")", sep=""), sep = c(" is "))
+                               round(x$laplace,4),")", sep=""), sep = c(" is "))
   rule <- paste("IF", desc, "THEN", cons)
   rule
 }

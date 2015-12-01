@@ -70,8 +70,11 @@ new.decTable <- SF.applyDecTable(decision.table, res.1)
 Andrzej Janusz
 }
 \references{
-A. Janusz and D. Ślęzak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data"
-										Proceedings of Federated Conference on Computer Science and Information Systems - FedCSIS, p. 295 - 302 (2012).
+A. Janusz and D. Ślęzak, "Utilization of Attribute Clustering Methods for Scalable Computation of Reducts from High-Dimensional Data".
+Proceedings of Federated Conference on Computer Science and Information Systems - FedCSIS, p. 295 - 302 (2012).
+
+Andrzej Janusz and Dominik Slezak. "Rough Set Methods for Attribute
+Clustering and Selection". Applied Artificial Intelligence, 28(3):220–242, 2014.
 }
 \seealso{
 \code{\link{FS.quickreduct.RST}} and \code{\link{FS.reduct.computation}}.

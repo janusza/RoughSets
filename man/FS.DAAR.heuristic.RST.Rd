@@ -86,11 +86,15 @@ new.decTable <- SF.applyDecTable(decision.table, res.1)
 Andrzej Janusz
 }
 \references{
-A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
-Proceedings of International Conference on Rough Sets and Knowledge Technology ({RSKT}), vol. 6954, p. 45 - 50 (2011).
-
 A. Janusz and D. Ślęzak, "Random Probes in Computation and Assessment of Approximate Reducts",
 Proceedings of {RSEISP} 2014, Springer, LNCS vol. 8537: p. 53 - 64 (2014).
+
+Andrzej Janusz and Dominik Slezak. "Computation of approximate reducts with dynamically
+adjusted approximation threshold". In Proceedings of ISMIS 2015, LNCS
+volume 9384, pages 19–28. Springer, 2015.
+
+A. Janusz and S. Stawicki, "Applications of Approximate Reducts to the Feature Selection Problem",
+Proceedings of International Conference on Rough Sets and Knowledge Technology (RSKT), vol. 6954, p. 45 - 50 (2011).
 }
 \seealso{
 \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
