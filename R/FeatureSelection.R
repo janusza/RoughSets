@@ -485,7 +485,9 @@ FS.greedy.heuristic.reduct.RST <- function(decision.table,
 #'        (see the references).
 #' @param permsWithinINDclasses a logical value indicating whether the permutation test
 #'        should be conducted within indescernibility classes.
-#' @param inconsistentDecisionTable logical indicating whether the decision table is suspected
+#' @param semigreedy a logical indicating whether the semigreedy heuristic should be used for
+#'        selecting the best attribute in each iteration of the algorithm
+#' @param inconsistentDecisionTable a logical indicating whether the decision table is suspected
 #'        to be inconsistent or \code{NULL} (the default) which indicated that a test should
 #'        be made to determine the data consistency.
 #'
@@ -531,8 +533,9 @@ FS.DAAR.heuristic.RST = function(decision.table,
                                  decisionIdx = attr(decision.table, "decision.attr"),
                                  qualityF = X.gini, nAttrs = NULL,
                                  allowedRandomness = 1/ncol(decision.table),
-                                 nOfProbes = ncol(decision.table),
+                                 nOfProbes = max(ncol(decision.table), 100),
                                  permsWithinINDclasses = FALSE,
+                                 semigreedy = FALSE,
                                  inconsistentDecisionTable = NULL)
 {
   toRmVec = decisionIdx
@@ -554,15 +557,35 @@ FS.DAAR.heuristic.RST = function(decision.table,
   decisionChaos = compute_chaos(INDrelation, decision.table[[decisionIdx]],
                                 attrDescriptions[[decisionIdx]])
   decisionChaos = qualityF(decisionChaos[[1]])
-  attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
-                         MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
-                                         uniqueDecisions = attrDescriptions[[decisionIdx]],
-                                         INDclasses = INDrelation,
-                                         INDclassesSizes = INDsizes,
-                                         baseChaos = decisionChaos,
-                                         chaosFunction = qualityF),
-                         SIMPLIFY = TRUE, USE.NAMES = FALSE)
+
+  if(semigreedy) {
+    uniAttrScoresVec = mapply(qualityGain, decision.table[-decisionIdx], attrDescriptions[-decisionIdx],
+                              MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
+                                              uniqueDecisions = attrDescriptions[[decisionIdx]],
+                                              INDclassesList = INDrelation,
+                                              INDclassesSizes = INDsizes,
+                                              baseChaos = decisionChaos,
+                                              chaosFunction = qualityF),
+                              SIMPLIFY = TRUE, USE.NAMES = FALSE)
+    tmpRange = range(uniAttrScoresVec)
+    if(tmpRange[2] > tmpRange[1]) {
+      heuristicMultiplier = tmpRange[2]/(tmpRange[2] - tmpRange[1])
+    } else {
+      heuristicMultiplier = 1
+    }
+    attrScoresVec = uniAttrScoresVec[tmpAttrSub]
+  } else {
+    attrScoresVec = mapply(qualityGain, decision.table[tmpAttrSub], attrDescriptions[tmpAttrSub],
+                           MoreArgs = list(decisionVec = decision.table[[decisionIdx]],
+                                           uniqueDecisions = attrDescriptions[[decisionIdx]],
+                                           INDclasses = INDrelation,
+                                           INDclassesSizes = INDsizes,
+                                           baseChaos = decisionChaos,
+                                           chaosFunction = qualityF),
+                           SIMPLIFY = TRUE, USE.NAMES = FALSE)
+  }
   tmpBestIdx = which.max(attrScoresVec)
+
   relevanceProbVec = computeRelevanceProb(INDrelation, INDsizes, decision.table[[tmpAttrSub[tmpBestIdx]]],
                                           uniqueValues = attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
                                           attrScore = attrScoresVec[tmpBestIdx],
@@ -632,7 +655,19 @@ FS.DAAR.heuristic.RST = function(decision.table,
                                              baseChaos = tmpChaos,
                                              chaosFunction = qualityF),
                              SIMPLIFY = TRUE, USE.NAMES = FALSE)
-      tmpBestIdx = which.max(attrScoresVec)
+
+      if(semigreedy) {
+        tmpRange = range(attrScoresVec)
+        if(tmpRange[2] > tmpRange[1]) {
+          heuristicDenominator = tmpRange[2] - tmpRange[1]
+        } else {
+          heuristicDenominator = 1
+        }
+        tmpBestIdx = which.max(attrScoresVec*(heuristicMultiplier/heuristicDenominator) + uniAttrScoresVec[tmpAttrSub])
+      } else {
+        tmpBestIdx = which.max(attrScoresVec)
+      }
+
       tmpProbeP = computeRelevanceProb(INDrelation, INDsizes, decision.table[[tmpAttrSub[tmpBestIdx]]],
                                        uniqueValues = attrDescriptions[[tmpAttrSub[tmpBestIdx]]],
                                        attrScore = attrScoresVec[tmpBestIdx],

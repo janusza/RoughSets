@@ -8,8 +8,8 @@ FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
   "desc.attrs"), decisionIdx = attr(decision.table, "decision.attr"),
   qualityF = X.gini, nAttrs = NULL,
   allowedRandomness = 1/ncol(decision.table),
-  nOfProbes = ncol(decision.table), permsWithinINDclasses = FALSE,
-  inconsistentDecisionTable = NULL)
+  nOfProbes = max(ncol(decision.table), 100), permsWithinINDclasses = FALSE,
+  semigreedy = FALSE, inconsistentDecisionTable = NULL)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -41,7 +41,10 @@ when the relevance of a selected attribute fall below this threshold.}
 \item{permsWithinINDclasses}{a logical value indicating whether the permutation test
 should be conducted within indescernibility classes.}
 
-\item{inconsistentDecisionTable}{logical indicating whether the decision table is suspected
+\item{semigreedy}{a logical indicating whether the semigreedy heuristic should be used for
+selecting the best attribute in each iteration of the algorithm}
+
+\item{inconsistentDecisionTable}{a logical indicating whether the decision table is suspected
        to be inconsistent or \code{NULL} (the default) which indicated that a test should
        be made to determine the data consistency.}
 }
