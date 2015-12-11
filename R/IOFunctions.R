@@ -733,7 +733,15 @@ SF.applyDecTable <- function(decision.table, object, control = list()) {
 	control <- setDefaultParametersIfMissing(control, list(indx.reduct = 1))
 
   if (inherits(object, "FeatureSubset")) {
-    tmpIdx = c(object$reduct, attr(decision.table, "decision.attr"))
+    tmpIdx = which(colnames(decision.table) %in% names(object$reduct))
+    if(length(tmpIdx) < length(object$reduct)) {
+      warning("Something might be wrong - the data table does not contain all columns included in the feature subset.")
+    } else {
+      if(any(tmpIdx != object$reduct)) {
+        warning("Ordering of columns in the resulting data is different than in the data used for computation of the reduct.")
+      }
+    }
+    tmpIdx = c(tmpIdx, attr(decision.table, "decision.attr"))
     new.data <- decision.table[, tmpIdx, drop = FALSE]
     attr(new.data, "nominal.attrs") = attr(decision.table, "nominal.attrs")[tmpIdx]
     attr(new.data, "desc.attrs") = attr(decision.table, "desc.attrs")[tmpIdx]
