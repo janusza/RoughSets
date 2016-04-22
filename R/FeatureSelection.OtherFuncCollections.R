@@ -998,5 +998,6 @@ computeRelevanceProb = function(INDclasses, INDclassesSizes, attributeVec, uniqu
                                         INDclasses, INDclassesSizes, baseChaos, chaosFunction = qualityF)})
   }
 
-  return(mean(attrScore > probeScores))
+  score = sum(attrScore > probeScores)
+  return((score + 1)/(length(attrScore) + 2))
 }
