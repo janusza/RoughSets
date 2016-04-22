@@ -175,9 +175,9 @@ local.discernibility <- function(vec, cutCandidatesVec, decVec,
 
     numOfChosenCuts = numOfChosenCuts + 1
 
-    if(maxScr == 0 || numOfChosenCuts >= nOfCuts) {
+    if(maxScr == 0 || numOfChosenCuts >= nOfCuts || numOfChosenCuts >= length(cutCandidatesVec)) {
       endFlag = TRUE
-      if(numOfChosenCuts >= nOfCuts)
+      if(numOfChosenCuts >= nOfCuts || numOfChosenCuts >= length(cutCandidatesVec))
         cutVec = c(cutVec, cutCandidatesVec[chosenCutIdx])
     } else  {
       cutVec = c(cutVec, cutCandidatesVec[chosenCutIdx])
