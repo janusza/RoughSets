@@ -905,46 +905,59 @@ toStr.rules <- function(rules, type.task = "classification", nominal.att = NULL,
 #' @author Andrzej Janusz
 #'
 #' @param colNames a character vector containing names of attributes from a decision table
-#' @param decisionTable a decision table which contains attributes from colNames
+#' @param decisionTable a decision table which contains attributes from colNames, 
+#'        can be \code{NULL} and in that case a non-NULL value of \code{attributeNames}
+#'        must be given
+#' @param attributeNames a character vector of names of decision table's attributes,
+#'        can be \code{NULL} and in that case a non-NULL value of \code{decisionTable}
+#'        must be given
 #' @param type.method an indicator of the method used for selecting the attributes
 #' @param model an indicator of the model used for selecting the attributes
 #' @return an object of a class FeatureSubset
+#' 
+#' @examples
 #' #############################################################
 #' ## Example 1:
 #' #############################################################
 #' data(RoughSetData)
 #' wine.data <- RoughSetData$wine.dt
+#' dim(wine.data)
 #'
-#' ## discretization and generation of a reduct
-#' cut.values <- D.discretization.RST(wine.data,
-#'                                    type.method = "unsupervised.quantiles",
-#'                                    nOfIntervals = 3)
-#' decision.table <- SF.applyDecTable(wine.data, cut.values)
-#' disc.matrix <- BC.discernibility.mat.RST(wine.data)
-#' reduct <- FS.one.reduct.computation(disc.matrix, greedy=TRUE)
-#' class(reduct)
-#' is(reduct$decision.reduct[[1]])
+#' ## selection of an arbitrary attribute subset
+#' attrNames = colnames(wine.data)[1:3]
+#' attrNames
+#' class(attrNames)
 #'
 #' ## convertion into a FeatureSubset object
-#' reduct <- SF.asFeatureSubset(reduct$decision.reduct[[1]], decision.table,
+#' reduct <- SF.asFeatureSubset(attrNames, wine.data,
 #'                              type.method = "greedy reduct from a discernibility matrix",
 #'                              model = reduct$type.model)
 #' class(reduct)
+#' reduct
+#' 
 #' @export
-SF.asFeatureSubset = function(colNames, decisionTable,
+SF.asFeatureSubset = function(colNames, decisionTable = NULL, attributeNames = NULL,
                             type.method = "custom subset",
                             model = "custom") {
 
-  if(length(colNames) == 0 | !inherits(colNames, "character")) {
+  if(length(colNames) == 0 | (!inherits(colNames, "character"))) {
     stop("No correct attribute names were provided.")
   }
+  
+  if(is.null(decisionTable) && is.null(attributeNames)) {
+    stop("Both \'decisionTable\' and \'attributeNames\' arguments are NULLs. Provide a non-NULL value.")
+  }
 
-  if(!inherits(decisionTable, "DecisionTable")) {
-    stop("Provided data should inherit from the \'DecisionTable\' class.")
+  if(!is.null(decisionTable) && !inherits(decisionTable, "DecisionTable")) {
+    stop("Provided data table should inherit from the \'DecisionTable\' class.")
+  }
+  
+  if(!is.null(decisionTable)) {
+    attributeNames = colnames(decisionTable)
   }
 
   fs = list()
-  fs$reduct = which(colnames(decisionTable) %in% colNames)
+  fs$reduct = which(attributeNames %in% colNames)
 
   if(length(fs$reduct) == 0) {
     stop("No attribute name was recognized in the provided decision table.")
@@ -955,7 +968,7 @@ SF.asFeatureSubset = function(colNames, decisionTable,
     }
   }
 
-  names(fs$reduct) = colnames(decisionTable)[fs$reduct]
+  names(fs$reduct) = attributeNames[fs$reduct]
 
   fs$type.method = type.method
   fs$type.task = "feature selection"

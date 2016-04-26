@@ -5,28 +5,34 @@
 \title{Computation of a decision-relative discernibility matrix based on the rough set theory}
 \usage{
 BC.discernibility.mat.RST(decision.table, range.object = NULL,
-  return.matrix = FALSE)
+  return.matrix = FALSE, attach.data = FALSE)
 }
 \arguments{
-\item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.
+\item{decision.table}{an object inheriting from the \code{DecisionTable} class, which represents a decision system.
 See \code{\link{SF.asDecisionTable}}.}
 
 \item{range.object}{an integer vector indicating objects for construction of the \eqn{k}-relative discernibility matrix.
 The default value is \code{NULL} which means that all objects in the decision table are used.}
 
 \item{return.matrix}{a logical value determining whether the discernibility matrix should be retunred in the output.
-       If it is set to FALSE (the default) only a list containing unique clauses from the CNF representation
-       of the discernibility function is returned.}
+If it is set to FALSE (the default) only a list containing unique clauses from the CNF representation
+of the discernibility function is returned.}
+
+\item{attach.data}{a logical indicating whether the original decision table should be attached as
+       an additional element of the resulting list named as \code{dec.table}.}
 }
 \value{
-An object of a class \code{"DiscernibilityMatrix"} which has the following components:
+An object of a class \code{DiscernibilityMatrix} which has the following components:
 \itemize{
 \item \code{disc.mat}: the decision-relative discernibility matrix which for pairs of objects from different
       decision classes stores names of attributes which can be used to discern between them. Only pairs of
       objects from different decision classes are considered. For other pairs the \code{disc.mat} contains
       \code{NA} values. Moreover, since the classical discernibility matrix is symmetric only the pairs
       from the lower triangular part are considered.
-\item \code{disc.list}: a list containing unique clauses from the CNF representation of the discernibility function,
+\item \code{disc.list}: a list containing unique clauses from the CNF representation of the discernibility
+      function,
+\item \code{dec.table}: an object of a class \code{DecisionTable}, which was used to compute the
+      discernibility matrix,
 \item \code{discernibility.type}: a type of discernibility relation used in the computations,
 \item \code{type.model}: a character vector identifying the type of model which was used.
                In this case, it is \code{"RST"} which means the rough set theory.

@@ -4,13 +4,19 @@
 \alias{SF.asFeatureSubset}
 \title{Converting custom attribute name sets into a FeatureSubset object}
 \usage{
-SF.asFeatureSubset(colNames, decisionTable, type.method = "custom subset",
-  model = "custom")
+SF.asFeatureSubset(colNames, decisionTable = NULL, attributeNames = NULL,
+  type.method = "custom subset", model = "custom")
 }
 \arguments{
 \item{colNames}{a character vector containing names of attributes from a decision table}
 
-\item{decisionTable}{a decision table which contains attributes from colNames}
+\item{decisionTable}{a decision table which contains attributes from colNames,
+can be \code{NULL} and in that case a non-NULL value of \code{attributeNames}
+must be given}
+
+\item{attributeNames}{a character vector of names of decision table's attributes,
+can be \code{NULL} and in that case a non-NULL value of \code{decisionTable}
+must be given}
 
 \item{type.method}{an indicator of the method used for selecting the attributes}
 
@@ -18,33 +24,32 @@ SF.asFeatureSubset(colNames, decisionTable, type.method = "custom subset",
 }
 \value{
 an object of a class FeatureSubset
-#############################################################
-## Example 1:
-#############################################################
-data(RoughSetData)
-wine.data <- RoughSetData$wine.dt
-
-## discretization and generation of a reduct
-cut.values <- D.discretization.RST(wine.data,
-                                   type.method = "unsupervised.quantiles",
-                                   nOfIntervals = 3)
-decision.table <- SF.applyDecTable(wine.data, cut.values)
-disc.matrix <- BC.discernibility.mat.RST(wine.data)
-reduct <- FS.one.reduct.computation(disc.matrix, greedy=TRUE)
-class(reduct)
-is(reduct$decision.reduct[[1]])
-
-## convertion into a FeatureSubset object
-reduct <- SF.asFeatureSubset(reduct$decision.reduct[[1]], decision.table,
-                             type.method = "greedy reduct from a discernibility matrix",
-                             model = reduct$type.model)
-class(reduct)
 }
 \description{
 The function can be used to change a custom set of attribute names from
 a decision table into an object of the FeatureSubset class. It can be useful
 for converting results of discernibility matrix-based attribute selection
 methods (i.e. functions FS.all.reducts.computation and FS.one.reduct.computation).
+}
+\examples{
+#############################################################
+## Example 1:
+#############################################################
+data(RoughSetData)
+wine.data <- RoughSetData$wine.dt
+dim(wine.data)
+
+## selection of an arbitrary attribute subset
+attrNames = colnames(wine.data)[1:3]
+attrNames
+class(attrNames)
+
+## convertion into a FeatureSubset object
+reduct <- SF.asFeatureSubset(attrNames, wine.data,
+                             type.method = "greedy reduct from a discernibility matrix",
+                             model = reduct$type.model)
+class(reduct)
+reduct
 }
 \author{
 Andrzej Janusz

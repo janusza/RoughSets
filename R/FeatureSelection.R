@@ -1551,7 +1551,9 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
 
   core <- computeCore(reductSet)
 
-  reductSet <- list(decision.reduct = reductSet,
+  reductSet <- list(decision.reduct = lapply(reductSet, 
+                                             SF.asFeatureSubset, 
+                                             attributeNames = discernibilityMatrix$names.attr),
                     core = core,
                     discernibility.type = discernibilityMatrix$type.discernibility,
                     type.task = "computation of all reducts",
@@ -1571,7 +1573,7 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
 #' @param greedy a boolean value indicating whether the greedy heuristic or a randomized search should be used in computations.
 #' @param power a numeric representing a parameter of the randomized search heuristic.
 #'
-#' @return A class \code{"ReductSet"}.
+#' @return An object of a class \code{"ReductSet"}.
 #'
 #' @seealso \code{\link{BC.discernibility.mat.RST}} and \code{\link{BC.discernibility.mat.FRST}}.
 #'
@@ -1583,14 +1585,14 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
 #'
 #' @examples
 #' ########################################################
-#' ## Example 1: Generate one reducts and
+#' ## Example 1: Generate one reduct and
 #' ##            a new decision table using RST
 #' ########################################################
 #' data(RoughSetData)
 #' decision.table <- RoughSetData$hiring.dt
 #'
 #' ## build the decision-relation discernibility matrix
-#' res.1 <- BC.discernibility.mat.RST(decision.table, range.object = NULL)
+#' res.1 <- BC.discernibility.mat.RST(decision.table)
 #'
 #' ## generate all reducts
 #' reduct <- FS.one.reduct.computation(res.1)
@@ -1599,20 +1601,20 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
 #' new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))
 #'
 #' ##############################################################
-#' ## Example 2: Generate one reducts and
+#' ## Example 2: Generate one reduct and
 #' ##            a new decision table using FRST
 #' ##############################################################
 #' data(RoughSetData)
 #' decision.table <- RoughSetData$hiring.dt
 #'
-#' ## build the decision-relation discernibility matrix
+#' ## build the decision-relative discernibility matrix
 #' control <- list(type.relation = c("crisp"),
 #'                 type.aggregation = c("crisp"),
 #'                 t.implicator = "lukasiewicz", type.LU = "implicator.tnorm")
 #' res.2 <- BC.discernibility.mat.FRST(decision.table, type.discernibility = "standard.red",
 #'                                     control = control)
 #'
-#' ## generate single reduct
+#' ## generate a single reduct
 #' reduct <- FS.one.reduct.computation(res.2)
 #'
 #' ## generate new decision table
@@ -1656,7 +1658,9 @@ FS.one.reduct.computation <- function(discernibilityMatrix, greedy = TRUE, power
     }
   }
 
-  reduct <- list(decision.reduct = list(reduct),
+  reduct <- list(decision.reduct = lapply(list(reduct), 
+                                          SF.asFeatureSubset, 
+                                          attributeNames = discernibilityMatrix$names.attr),
                  core = NULL,
                  discernibility.type = discernibilityMatrix$type.discernibility,
                  type.task = "computation of one reduct from a discernibility matrix",

@@ -14,7 +14,7 @@ FS.one.reduct.computation(discernibilityMatrix, greedy = TRUE, power = 1)
 \item{power}{a numeric representing a parameter of the randomized search heuristic.}
 }
 \value{
-A class \code{"ReductSet"}.
+An object of a class \code{"ReductSet"}.
 }
 \description{
 It is a function for computing one reduct from a discernibility matrix - it can use
@@ -22,14 +22,14 @@ the greedy heuristic or a randomized (Monte Carlo) search.
 }
 \examples{
 ########################################################
-## Example 1: Generate one reducts and
+## Example 1: Generate one reduct and
 ##            a new decision table using RST
 ########################################################
 data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
 ## build the decision-relation discernibility matrix
-res.1 <- BC.discernibility.mat.RST(decision.table, range.object = NULL)
+res.1 <- BC.discernibility.mat.RST(decision.table)
 
 ## generate all reducts
 reduct <- FS.one.reduct.computation(res.1)
@@ -38,20 +38,20 @@ reduct <- FS.one.reduct.computation(res.1)
 new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))
 
 ##############################################################
-## Example 2: Generate one reducts and
+## Example 2: Generate one reduct and
 ##            a new decision table using FRST
 ##############################################################
 data(RoughSetData)
 decision.table <- RoughSetData$hiring.dt
 
-## build the decision-relation discernibility matrix
+## build the decision-relative discernibility matrix
 control <- list(type.relation = c("crisp"),
                 type.aggregation = c("crisp"),
                 t.implicator = "lukasiewicz", type.LU = "implicator.tnorm")
 res.2 <- BC.discernibility.mat.FRST(decision.table, type.discernibility = "standard.red",
                                     control = control)
 
-## generate single reduct
+## generate a single reduct
 reduct <- FS.one.reduct.computation(res.2)
 
 ## generate new decision table
