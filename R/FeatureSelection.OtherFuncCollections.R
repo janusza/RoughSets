@@ -999,5 +999,5 @@ computeRelevanceProb = function(INDclasses, INDclassesSizes, attributeVec, uniqu
   }
 
   score = sum(attrScore > probeScores)
-  return((score + 1)/(length(attrScore) + 2))
+  return((score + 1)/(length(probeScores) + 2))
 }
