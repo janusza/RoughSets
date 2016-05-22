@@ -158,7 +158,7 @@ RI.GFRS.FRST <- function(decision.table, control = list()){
 	}
 
 	## set default values of all parameters
-	control <- setDefaultParametersIfMissing(control, list(alpha.precision = 0,05, type.aggregation = c("t.tnorm", "lukasiewicz"), type.relation = c("tolerance", "eq.1"),
+	control <- setDefaultParametersIfMissing(control, list(alpha.precision = 0.05, type.aggregation = c("t.tnorm", "lukasiewicz"), type.relation = c("tolerance", "eq.1"),
 														t.implicator = "lukasiewicz"))
 
 	## get the data
