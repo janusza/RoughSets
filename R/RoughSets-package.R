@@ -362,7 +362,7 @@
 #'
 #' Institute of Mathematics, University of Warsaw.
 #'
-#' @useDynLib RoughSets
+#' @useDynLib RoughSets, .registration = TRUE
 #' @examples
 #' ##############################################################
 #' ## A.1 Example: Basic concepts of rough set theory
