@@ -536,9 +536,7 @@ BC.boundary.reg.RST <- function(decision.table, roughset) {
 #' 
 #' @export
 BC.negative.reg.RST <- function(decision.table, roughset) {
-
-  decision.table = dt
-    
+  
   ## get all objects from the upper approximations of decision classes
   roughset.reg = unique(unlist(roughset$upper.approximation))
   names(roughset.reg) = NULL
