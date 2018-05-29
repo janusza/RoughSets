@@ -928,7 +928,8 @@ computeCore = function(reductList) {
     stopFlag = FALSE
     i = 2
     core = reductList[[1]]
-    while(!stopFlag && i < length(reductList)) {
+    # BUG FIXED: 27.05.2018 (Dariusz Jankowski) - missing equal sign, and missing closing bracket
+    while( (!stopFlag) && (i <= length(reductList)) ) {
       core = core[core %in% reductList[[i]]]
       i = i + 1
       if(length(core) < 1) stopFlag = TRUE
