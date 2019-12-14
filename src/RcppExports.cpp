@@ -31,21 +31,3 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-
-RcppExport void chooseBestCutC(void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *, void *);
-RcppExport void chooseCutCandidatesC(void *, void *, void *, void *, void *);
-RcppExport void computeIndiscernibilityAndChaos(void *, void *, void *, void *, void *, void *, void *, void *);
-
-static const R_CallMethodDef CallEntries[] = {
-    {"_RoughSets_compute_indiscernibility", (DL_FUNC) &_RoughSets_compute_indiscernibility, 3},
-    {"_RoughSets_compute_chaos", (DL_FUNC) &_RoughSets_compute_chaos, 3},
-    {"chooseBestCutC",                  (DL_FUNC) &chooseBestCutC,                  14},
-    {"chooseCutCandidatesC",            (DL_FUNC) &chooseCutCandidatesC,             5},
-    {"computeIndiscernibilityAndChaos", (DL_FUNC) &computeIndiscernibilityAndChaos,  8},
-    {NULL, NULL, 0}
-};
-
-RcppExport void R_init_RoughSets(DllInfo *dll) {
-    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
-    R_useDynamicSymbols(dll, FALSE);
-}

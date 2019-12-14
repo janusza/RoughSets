@@ -98,6 +98,7 @@ void  chooseCutCandidatesC(double *vec, int *decVec, int *N, int *candidatesIdx,
 }
 
 extern "C" {
+
 void  computeIndiscernibilityAndChaos(int *INDclasses, int *INDsizes, int *NOfINDClasses,
                                       int *attrValues, int *NOfAttrValues,
                                       int *decValues, int *NOfDecs,
@@ -116,3 +117,4 @@ void  computeIndiscernibilityAndChaos(int *INDclasses, int *INDsizes, int *NOfIN
   return;
 }
 }
+
