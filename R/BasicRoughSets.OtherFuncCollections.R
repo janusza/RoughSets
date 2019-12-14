@@ -26,7 +26,7 @@
 # @param type.implication.func a type of implication function
 calc.implFunc <- function(antecedent, consequent, type.implication.func = "lukasiewicz"){
 
-	if (class(type.implication.func) == "character"){
+	if (inherits(type.implication.func, "character")){
 		if (type.implication.func == "kleene_dienes"){
 			temp.rule.degree <- pmax(1 - antecedent, consequent)
 		}
@@ -92,7 +92,7 @@ calc.implFunc <- function(antecedent, consequent, type.implication.func = "lukas
 			outer(1 : nrow(antecedent), 1 : ncol(antecedent), VecFun, antecedent, consequent)			
 		}
 	}
-	else if (class(type.implication.func) == "function"){
+	else if (inherits(type.implication.func, "function")){
 		temp.rule.degree <- matrix(nrow = nrow(antecedent), ncol = ncol(antecedent))
 		
 		## create function for vectorizing
@@ -151,13 +151,13 @@ calc.fsimilarity <- function(decision.table, attributes, t.similarity = "eq.1", 
 	## get attributes
 	obj <- objects[, c(attributes), drop = FALSE]
 	nom <- nominal.att[c(attributes)]	
-	all.nom <- unique(nom) %in% TRUE
+	all.nom <- all(nom)
 	t.range.data <- matrix(range.data, ncol = 1)
 	t.variance.data <- matrix(variance.data, ncol = 1)
 
 	## disc.mat == FALSE means we do not create discernibility matrix
-	if (disc.mat == FALSE){		
-		if (all.nom == FALSE && t.aggregation == "kernel.frst") {
+	if (!disc.mat){
+		if (!all.nom && (t.aggregation == "kernel.frst")) {
 			options(warn=-1)			
 			distance <- as.matrix(stats::dist(obj, method = "euclidean", diag = TRUE, upper = TRUE))
 
@@ -394,7 +394,7 @@ cal.var.range <- function(objects, attributes, nominal.att){
 # @param t.tnorm a type of t-norm
 func.tnorm <- function(right.val, init.val, t.tnorm = "min"){
 
-	if (class(t.tnorm) == "character"){
+	if (inherits(t.tnorm, "character")){
 		if (t.tnorm == "lukasiewicz"){
 			return (pmax(right.val + init.val - 1, 0))
 		}
@@ -414,7 +414,7 @@ func.tnorm <- function(right.val, init.val, t.tnorm = "min"){
 			return (pmin(right.val, init.val))
 		}
 	}
-	else if (class(t.tnorm) == "function"){
+	else if (inherits(t.tnorm, "function")){
 		temp <- matrix(nrow = nrow(init.val), ncol = ncol(init.val))
 		
 		## create function for vectorizing
@@ -743,13 +743,13 @@ Reduce.IND <- function(IND.relation, t.tnorm, t.aggregation = "t.tnorm", delta =
 		}
 		else {	
 			temp.init <- IND.relation[[1]]
-			if (class(t.tnorm) == "character"){ 				
+			if (inherits(t.tnorm, "character")){ 				
 				for (i in 2 : length(IND.relation)){
 					## perform t.tnorm	
 					temp.init <- do.call(func.tnorm, list(temp.init, IND.relation[[i]], t.tnorm))		
 				}
 			}
-			else if (class(t.tnorm) == "function"){							
+			else if (inherits(t.tnorm, "function")){							
 				for (i in 1 : nrow(IND.relation[[1]])){
 					for (j in 1 : ncol(IND.relation[[1]])){
 						temp.left <- IND.relation[[1]][i,j]
@@ -767,7 +767,7 @@ Reduce.IND <- function(IND.relation, t.tnorm, t.aggregation = "t.tnorm", delta =
 		}
 	}
 	
-	if (class(new.IND) != "matrix"){
+	if (!inherits(new.IND, "matrix")){
 		new.IND = new.IND[[1]]
 	}
 	

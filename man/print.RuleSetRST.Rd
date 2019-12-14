@@ -38,4 +38,3 @@ rules[2:3]
 \author{
 Andrzej Janusz
 }
-

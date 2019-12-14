@@ -31,4 +31,3 @@ as.list(rules)
 \author{
 Andrzej Janusz
 }
-

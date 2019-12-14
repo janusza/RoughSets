@@ -4,12 +4,14 @@
 \alias{FS.DAAR.heuristic.RST}
 \title{The DAAR heuristic for computation of decision reducts}
 \usage{
-FS.DAAR.heuristic.RST(decision.table, attrDescriptions = attr(decision.table,
-  "desc.attrs"), decisionIdx = attr(decision.table, "decision.attr"),
+FS.DAAR.heuristic.RST(decision.table,
+  attrDescriptions = attr(decision.table, "desc.attrs"),
+  decisionIdx = attr(decision.table, "decision.attr"),
   qualityF = X.gini, nAttrs = NULL,
   allowedRandomness = 1/ncol(decision.table),
-  nOfProbes = max(ncol(decision.table), 100), permsWithinINDclasses = FALSE,
-  semigreedy = FALSE, inconsistentDecisionTable = NULL)
+  nOfProbes = max(ncol(decision.table), 100),
+  permsWithinINDclasses = FALSE, semigreedy = FALSE,
+  inconsistentDecisionTable = NULL)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -85,9 +87,6 @@ res.1 <- FS.DAAR.heuristic.RST(decision.table)
 ## generate a new decision table corresponding to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 }
-\author{
-Andrzej Janusz
-}
 \references{
 A. Janusz and D. Ślęzak, "Random Probes in Computation and Assessment of Approximate Reducts",
 Proceedings of {RSEISP} 2014, Springer, LNCS vol. 8537: p. 53 - 64 (2014).
@@ -102,4 +101,6 @@ Proceedings of International Conference on Rough Sets and Knowledge Technology (
 \seealso{
 \code{\link{FS.greedy.heuristic.reduct.RST}} and \code{\link{FS.reduct.computation}}.
 }
-
+\author{
+Andrzej Janusz
+}

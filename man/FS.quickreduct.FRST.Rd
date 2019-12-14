@@ -250,9 +250,6 @@ reduct.1 <- FS.quickreduct.FRST(decision.table, type.method = "fuzzy.dependency"
 new.decTable <- SF.applyDecTable(decision.table, reduct.1)
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 C. Cornelis, G. Hurtado Martin, R. Jensen, and D. Slezak,
 "Feature Selection with Fuzzy Decision Reducts", Information Sciences, vol. 180, no. 2, p. 209 - 224 (2010).
@@ -267,4 +264,6 @@ IEEE Trans. on Fuzzy Systems, vol. 20, no. 4, p. 636 - 651 (2012).
 \seealso{
 \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
 }
-
+\author{
+Lala Septem Riza
+}

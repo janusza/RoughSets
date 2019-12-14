@@ -57,10 +57,9 @@ reduct <- FS.all.reducts.computation(res.1)
 ## generate new decision table
 new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))}
 }
-\author{
-Andrzej Janusz
-}
 \seealso{
 \code{\link{BC.discernibility.mat.RST}}, \code{\link{BC.discernibility.mat.FRST}}.
 }
-
+\author{
+Andrzej Janusz
+}

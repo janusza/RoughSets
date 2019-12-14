@@ -31,4 +31,3 @@ as.character(rules)
 \author{
 Andrzej Janusz
 }
-

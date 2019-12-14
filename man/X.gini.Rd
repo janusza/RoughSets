@@ -16,11 +16,10 @@ a numeric value indicating the gini index of an attribute.
 An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 It is based on the \emph{gini} index as a measure of information (Stoffel and Raileanu, 2000).
 }
-\author{
-Andrzej Janusz
-}
 \references{
 K. Stoffel and L. E. Raileanu, "Selecting Optimal Split-Functions with Linear Threshold Unit Trees and Madaline-Style Networks",
 in: Research and Development in Intelligent Systems XVII, BCS Conference Series (2000).
 }
-
+\author{
+Andrzej Janusz
+}

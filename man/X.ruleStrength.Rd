@@ -16,10 +16,9 @@ a numerical weight of the vote
 A function returning a weight of rule's vote understood as strength of the rule.
 It is defined as a product of a cardinality of a support of a rule and the length of this rule.
 }
-\author{
-Andrzej Janusz
-}
 \seealso{
 Other currently available voting methods are: \code{\link{X.laplace}}, \code{\link{X.rulesCounting}}.
 }
-
+\author{
+Andrzej Janusz
+}

@@ -69,9 +69,6 @@ control <- list(type.LU = "implicator.tnorm", k = 20, t.tnorm = "lukasiewicz",
                               newdata = tst.iris, control = control)}
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 N. Verbiest, C. Cornelis and R. Jensen, "Fuzzy-rough Positive Region Based Nearest Neighbour Classification",
 In Proceedings of the 20th International Conference on Fuzzy Systems (FUZZ-IEEE 2012), p. 1961 - 1967 (2012).
@@ -79,4 +76,6 @@ In Proceedings of the 20th International Conference on Fuzzy Systems (FUZZ-IEEE 
 \seealso{
 \code{\link{C.FRNN.FRST}}, \code{\link{C.FRNN.O.FRST}}
 }
-
+\author{
+Lala Septem Riza
+}

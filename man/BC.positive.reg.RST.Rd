@@ -49,9 +49,6 @@ pos.region = BC.positive.reg.RST(hiring.data, roughset)
 pos.region
 
 }
-\author{
-Andrzej Janusz
-}
 \references{
 Z. Pawlak, "Rough Sets", International Journal of Computer and Information Sciences, 
 vol. 11, no. 5, p. 341 - 356 (1982).
@@ -59,4 +56,6 @@ vol. 11, no. 5, p. 341 - 356 (1982).
 \seealso{
 \code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.FRST}}
 }
-
+\author{
+Andrzej Janusz
+}

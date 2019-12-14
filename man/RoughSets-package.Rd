@@ -2,8 +2,8 @@
 % Please edit documentation in R/RoughSets-package.R
 \docType{package}
 \name{RoughSets-package}
-\alias{RoughSets}
 \alias{RoughSets-package}
+\alias{RoughSets}
 \title{Getting started with the RoughSets package}
 \description{
 This part contains global explanations about the implementation and use of the \code{RoughSets} package.
@@ -487,6 +487,20 @@ cat("The percentage error = ", err.2, "\\n")
 cat("The percentage error = ", err.3, "\\n")
 cat("The percentage error = ", err.4, "\\n")}
 }
+\references{
+D. Dubois and H. Prade, "Rough Fuzzy Sets and Fuzzy Rough Sets",
+International Journal of General Systems, vol. 17, p. 91 - 209 (1990).
+
+L.A. Zadeh, "Fuzzy Sets",
+Information and Control, vol. 8, p. 338 - 353 (1965).
+
+Z. Pawlak, "Rough Sets",
+International Journal of Computer and Information System,
+vol. 11, no. 5, p. 341 - 356 (1982).
+
+Z. Pawlak, "Rough Sets: Theoretical Aspects of Reasoning About Data, System Theory, Knowledge Engineering and Problem Solving",
+vol. 9, Kluwer Academic Publishers, Dordrecht, Netherlands (1991).
+}
 \author{
 Lala Septem Riza \email{lala.s.riza@decsai.ugr.es},
 
@@ -506,18 +520,3 @@ DiCITS Lab, SCI2S group, CITIC-UGR, DECSAI, University of Granada,
 
 Institute of Mathematics, University of Warsaw.
 }
-\references{
-D. Dubois and H. Prade, "Rough Fuzzy Sets and Fuzzy Rough Sets",
-International Journal of General Systems, vol. 17, p. 91 - 209 (1990).
-
-L.A. Zadeh, "Fuzzy Sets",
-Information and Control, vol. 8, p. 338 - 353 (1965).
-
-Z. Pawlak, "Rough Sets",
-International Journal of Computer and Information System,
-vol. 11, no. 5, p. 341 - 356 (1982).
-
-Z. Pawlak, "Rough Sets: Theoretical Aspects of Reasoning About Data, System Theory, Knowledge Engineering and Problem Solving",
-vol. 9, Kluwer Academic Publishers, Dordrecht, Netherlands (1991).
-}
-

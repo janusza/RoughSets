@@ -61,10 +61,9 @@ The function \code{\link{SF.read.DecisionTable}} can be used to import data from
 decision.table <- SF.asDecisionTable(dataset = iris, decision.attr = 5,
                   indx.nominal = 5)
 }
-\author{
-Andrzej Janusz
-}
 \seealso{
 \code{\link{SF.read.DecisionTable}}, \code{\link{SF.applyDecTable}}.
 }
-
+\author{
+Andrzej Janusz
+}

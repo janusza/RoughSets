@@ -192,9 +192,6 @@ control.2 <- list(epsilon = 0)
 res.2 <- BC.discernibility.mat.FRST(decision.table, type.discernibility = "gaussian.red",
                                     control = control.2)}
 }
-\author{
-Lala Septem Riza
-}
 \references{
 D. Chen, L. Zhang, S. Zhao, Q. Hu, and P. Zhu, "A Novel Algorithm for Finding Reducts 
 with Fuzzy Rough Sets", IEEE Trans. on Fuzzy Systems, vol. 20, no. 2, p. 385 - 389 (2012). 
@@ -214,4 +211,6 @@ IEEE Trans. on Fuzzy Systems, vol. 17, no. 2, p. 451 - 467 (2009).
 \seealso{
 \code{\link{BC.discernibility.mat.RST}}, \code{\link{BC.LU.approximation.RST}}, and \code{\link{BC.LU.approximation.FRST}}
 }
-
+\author{
+Lala Septem Riza
+}

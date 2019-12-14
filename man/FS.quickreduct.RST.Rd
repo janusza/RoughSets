@@ -56,9 +56,6 @@ res.1 <- FS.quickreduct.RST(decision.table)
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 Q. Shen and A. Chouchoulas, "A Modular Approach to Generating Fuzzy Rules with Reduced Attributes for the Monitoring of Complex Systems",
 Engineering Applications of Artificial Intelligence, vol. 13, p. 263 - 278 (2000).
@@ -66,4 +63,6 @@ Engineering Applications of Artificial Intelligence, vol. 13, p. 263 - 278 (2000
 \seealso{
 \code{\link{FS.quickreduct.FRST}}
 }
-
+\author{
+Lala Septem Riza
+}

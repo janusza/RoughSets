@@ -30,4 +30,3 @@ print(res.1)
 \author{
 Andrzej Janusz
 }
-

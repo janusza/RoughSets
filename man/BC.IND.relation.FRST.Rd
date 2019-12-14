@@ -4,7 +4,8 @@
 \alias{BC.IND.relation.FRST}
 \title{The indiscernibility relation based on fuzzy rough set theory}
 \usage{
-BC.IND.relation.FRST(decision.table, attributes = NULL, control = list())
+BC.IND.relation.FRST(decision.table, attributes = NULL,
+  control = list())
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -291,9 +292,6 @@ control.9 <- list(type.aggregation = c("t.tnorm", "lukasiewicz"),
 IND.9 <- BC.IND.relation.FRST(decision.table, attributes = attributes, control = control.9) 
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 M. Genton, "Classes of Kernels for Machine Learning: a Statistics Perspective", 
 J. Machine Learning Research, vol. 2, p. 299 - 312 (2001). 
@@ -315,4 +313,6 @@ IEEE Trans. Knowledge Data Eng., vol. 23, no. 11, p. 1649 - 1471 (2011).
 
 and \code{\link{BC.positive.reg.FRST}}
 }
-
+\author{
+Lala Septem Riza
+}

@@ -56,9 +56,6 @@ disc.matrix <- BC.discernibility.mat.RST(hiring.data, return.matrix = TRUE)
 disc.matrix
 
 }
-\author{
-Lala Septem Riza and Andrzej Janusz
-}
 \references{
 A. Skowron and C. Rauszer,  
 "The Discernibility Matrices and Functions in Information Systems", 
@@ -70,4 +67,6 @@ p. 331 - 362 (1992).
 \code{\link{BC.IND.relation.RST}}, \code{\link{BC.LU.approximation.RST}}, \code{\link{BC.LU.approximation.FRST}}
          and \code{\link{BC.discernibility.mat.FRST}}
 }
-
+\author{
+Lala Septem Riza and Andrzej Janusz
+}

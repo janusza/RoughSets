@@ -109,4 +109,3 @@ new.decTable
 \author{
 Lala Septem Riza and Andrzej Janusz
 }
-

@@ -4,8 +4,8 @@
 \alias{SF.read.DecisionTable}
 \title{Reading tabular data from files.}
 \usage{
-SF.read.DecisionTable(filename, decision.attr = NULL, indx.nominal = NULL,
-  ...)
+SF.read.DecisionTable(filename, decision.attr = NULL,
+  indx.nominal = NULL, ...)
 }
 \arguments{
 \item{filename}{a path with a file name.}
@@ -47,4 +47,3 @@ data <- data.frame(c(0.12, 0.23, 0.24), c(1,3,2), c(10, 12, 18), c("a", "a", "b"
 \author{
 Andrzej Janusz
 }
-

@@ -62,10 +62,9 @@ new.decTable.1 <- SF.applyDecTable(decision.table, reduct.1)
 new.decTable.2 <- SF.applyDecTable(decision.table, reduct.2)
 
 }
-\author{
-Andrzej Janusz
-}
 \seealso{
 \code{\link{D.discretization.RST}}, \code{\link{BC.LU.approximation.RST}}
 }
-
+\author{
+Andrzej Janusz
+}

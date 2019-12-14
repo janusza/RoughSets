@@ -57,4 +57,3 @@ summary(res.2)
 \author{
 Lala Septem Riza
 }
-

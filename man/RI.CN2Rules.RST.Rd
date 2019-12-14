@@ -56,9 +56,6 @@ pred.vals <- predict(rules, data.tst)
 mean(pred.vals == true.classes)
 
 }
-\author{
-Andrzej Janusz
-}
 \references{
 P.E. Clark and T. Niblett, "The CN2 Induction algorithm",
 Machine Learning, 3, p. 261 - 284 (1986).
@@ -67,4 +64,6 @@ Machine Learning, 3, p. 261 - 284 (1986).
 \code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.LEM2Rules.RST}},
          \code{\link{RI.AQRules.RST}}.
 }
-
+\author{
+Andrzej Janusz
+}

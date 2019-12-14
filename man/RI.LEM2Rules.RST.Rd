@@ -54,9 +54,6 @@ pred.vals <- predict(rules, data.tst)
 mean(pred.vals == true.classes)
 
 }
-\author{
-Andrzej Janusz
-}
 \references{
 J.W. Grzymala-Busse, "A New Version of the Rule Induction System LERS",
 Fundamenta Informaticae, 31, p. 27 - 39 (1997).
@@ -65,4 +62,6 @@ Fundamenta Informaticae, 31, p. 27 - 39 (1997).
 \code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
          \code{\link{RI.AQRules.RST}}.
 }
-
+\author{
+Andrzej Janusz
+}
