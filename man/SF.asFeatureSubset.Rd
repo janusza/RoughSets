@@ -47,8 +47,8 @@ class(attrNames)
 
 ## convertion into a FeatureSubset object
 reduct <- SF.asFeatureSubset(attrNames, wine.data,
-                             type.method = "greedy reduct from a discernibility matrix",
-                             model = reduct$type.model)
+                             type.method = "greedy reduct from a discernibility matrix")
+
 class(reduct)
 reduct
 
