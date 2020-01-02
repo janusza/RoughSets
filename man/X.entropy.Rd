@@ -16,10 +16,9 @@ a numeric value indicating entropy of an attribute.
 An auxiliary function for the \code{qualityF} parameter in the \code{\link{FS.greedy.heuristic.reduct.RST}}, \code{\link{FS.DAAR.heuristic.RST}} and \code{\link{FS.greedy.heuristic.superreduct.RST}} functions.
 It is based on \emph{entropy} as a measure of information(Shannon, 1948).
 }
-\author{
-Andrzej Janusz
-}
 \references{
 C. E. Shannon, "A Mathematical Theory of Communication", Bell System Technical Journal, vol. 27, p. 379 - 423, 623 - 656 (1948).
 }
-
+\author{
+Andrzej Janusz
+}

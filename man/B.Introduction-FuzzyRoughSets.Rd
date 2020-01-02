@@ -3,8 +3,8 @@
 \docType{package}
 \name{B.Introduction-FuzzyRoughSets}
 \alias{B.Introduction-FuzzyRoughSets}
-\alias{B.Introduction-FuzzyRoughSets-package}
 \alias{FuzzyRoughSets-intro}
+\alias{B.Introduction-FuzzyRoughSets-package}
 \title{Introduction to Fuzzy Rough Set Theory}
 \description{
 This part introduces briefly fuzzy rough set theory (FRST) and its application to data analysis. 
@@ -120,4 +120,3 @@ p. 824 - 838 (2009).
 Z. Pawlak, "Rough Sets", International Journal of Computer and Information Sciences, 
 vol. 11, no. 5, p. 341 - 356 (1982).
 }
-

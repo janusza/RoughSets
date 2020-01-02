@@ -43,4 +43,3 @@ summary(IND)
 \author{
 Lala Septem Riza
 }
-

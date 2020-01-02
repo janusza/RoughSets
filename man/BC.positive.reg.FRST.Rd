@@ -96,9 +96,6 @@ FRST.LU <- BC.LU.approximation.FRST(decision.table, IND.condAttr, IND.decAttr,
 res.2 <- BC.positive.reg.FRST(decision.table, FRST.LU)
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 R. Jensen and Q. Shen,  
 "New Approaches to Fuzzy-Rough Feature Selection", 
@@ -110,4 +107,6 @@ p. 824 - 838 (2009).
 
 \code{\link{BC.LU.approximation.RST}}, and \code{\link{BC.positive.reg.FRST}}.
 }
-
+\author{
+Lala Septem Riza
+}

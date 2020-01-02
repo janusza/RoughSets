@@ -74,9 +74,6 @@ control <- list(alpha.precision = 0.01, type.aggregation = c("t.tnorm", "lukasie
 rules <- RI.GFRS.FRST(decision.table, control)
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 S. Y. Zhao, E. C. C. Tsang, D. G. Chen, and X. Z. Wang, "Building a Rule-based
 Classifier -- A Fuzzy-rough Set Approach",
@@ -85,4 +82,6 @@ IEEE Trans. on Knowledge and Data Engineering, vol. 22, no. 5, p. 624 - 638 (201
 \seealso{
 \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{predict.RuleSetFRST}}, and \code{\link{RI.hybridFS.FRST}}.
 }
-
+\author{
+Lala Septem Riza
+}

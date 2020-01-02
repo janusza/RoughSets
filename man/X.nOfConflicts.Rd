@@ -18,4 +18,3 @@ It is an auxiliary function for the \code{qualityF} parameter in the \code{\link
 \author{
 Andrzej Janusz
 }
-

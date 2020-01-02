@@ -37,4 +37,3 @@ summary(roughset)
 \author{
 Lala Septem Riza
 }
-

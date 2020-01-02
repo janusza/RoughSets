@@ -6,8 +6,8 @@
 \usage{
 FS.greedy.heuristic.superreduct.RST(decision.table,
   attrDescriptions = attr(decision.table, "desc.attrs"),
-  decisionIdx = attr(decision.table, "decision.attr"), qualityF = X.gini,
-  nAttrs = NULL, inconsistentDecisionTable = NULL)
+  decisionIdx = attr(decision.table, "decision.attr"),
+  qualityF = X.gini, nAttrs = NULL, inconsistentDecisionTable = NULL)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table.
@@ -58,9 +58,6 @@ print(res.1)
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.1)
 }
-\author{
-Andrzej Janusz
-}
 \references{
 Andrzej Janusz and Dominik Slezak. "Rough Set Methods for Attribute
 Clustering and Selection". Applied Artificial Intelligence, 28(3):220–242, 2014.
@@ -75,4 +72,6 @@ J. Wroblewski, "Ensembles of Classifiers Based on Approximate Reducts", Fundamen
 \seealso{
 \code{\link{FS.quickreduct.RST}} and \code{\link{FS.feature.subset.computation}}.
 }
-
+\author{
+Andrzej Janusz
+}

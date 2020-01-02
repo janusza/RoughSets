@@ -41,4 +41,3 @@ summary(rules)
 \author{
 Lala Septem Riza and Andrzej Janusz
 }
-

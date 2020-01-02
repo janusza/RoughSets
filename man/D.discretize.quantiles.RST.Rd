@@ -43,9 +43,6 @@ dim(wine.discretized)
 lapply(wine.discretized, unique)
 
 }
-\author{
-Andrzej Janusz
-}
 \references{
 J. Dougherty, R. Kohavi, and M. Sahami, "Supervised and Unsupervised Discretization of Continuous Features",
 In A. Prieditis & S. J. Russell, eds. Work. Morgan Kaufmann, p. 194-202 (1995).
@@ -55,4 +52,6 @@ In A. Prieditis & S. J. Russell, eds. Work. Morgan Kaufmann, p. 194-202 (1995).
          \code{\link{D.local.discernibility.heuristic.RST}}, \code{\link{SF.applyDecTable}}.
          A wrapper function for all available discretization methods: \code{\link{D.discretization.RST}}
 }
-
+\author{
+Andrzej Janusz
+}

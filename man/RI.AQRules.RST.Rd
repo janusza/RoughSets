@@ -61,9 +61,6 @@ pred.vals <- predict(rules, data.tst)
 mean(pred.vals == true.classes)
 
 }
-\author{
-Andrzej Janusz
-}
 \references{
 R.S. Michalski, K. Kaufman, J. Wnek: "The AQ Family of Learning Programs: A Review of Recent Developments
 and an Exemplary Application", Reports of Machine Learning and Inference Laboratory, George Mason University (1991)
@@ -72,4 +69,6 @@ and an Exemplary Application", Reports of Machine Learning and Inference Laborat
 \code{\link{predict.RuleSetFRST}}, \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{RI.CN2Rules.RST}},
          \code{\link{RI.LEM2Rules.RST}}.
 }
-
+\author{
+Andrzej Janusz
+}

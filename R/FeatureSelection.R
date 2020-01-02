@@ -1428,7 +1428,7 @@ FS.nearOpt.fvprs.FRST <- function(decision.table, alpha.precision = 0.05) {
 	disc.list.temp <- c()
 	j <- 1
 	for (i in 1 : length(disc.list)){
-		if (!(is.character(disc.list[[i]]) & length(disc.list[[i]]) == 0) && !is.na(disc.list[[i]])){
+		if (!(is.character(disc.list[[i]]) & length(disc.list[[i]]) == 0) && !all(is.na(disc.list[[i]]))){
 			disc.list.temp[j] <- list(disc.list[[i]])
 			j <- j + 1
 		}

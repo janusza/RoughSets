@@ -60,9 +60,6 @@ control <- list(type.aggregation = c("t.tnorm", "lukasiewicz"), type.relation =
 res.2 <- RI.hybridFS.FRST(decision.table, control)
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 R. Jensen, C. Cornelis, and Q. Shen, "Hybrid Fuzzy-rough Rule Induction and Feature Selection",
 in: IEEE International Conference on Fuzzy Systems (FUZZ-IEEE), p. 1151 - 1156 (2009).
@@ -70,4 +67,6 @@ in: IEEE International Conference on Fuzzy Systems (FUZZ-IEEE), p. 1151 - 1156 (
 \seealso{
 \code{\link{RI.indiscernibilityBasedRules.RST}}, \code{\link{predict.RuleSetFRST}}, and \code{\link{RI.GFRS.FRST}}.
 }
-
+\author{
+Lala Septem Riza
+}

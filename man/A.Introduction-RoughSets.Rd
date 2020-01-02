@@ -3,8 +3,8 @@
 \docType{package}
 \name{A.Introduction-RoughSets}
 \alias{A.Introduction-RoughSets}
-\alias{A.Introduction-RoughSets-package}
 \alias{RoughSets-intro}
+\alias{A.Introduction-RoughSets-package}
 \title{Introduction to Rough Set Theory}
 \description{
 This part attempts to introduce rough set theory (RST) and its application to data analysis. 
@@ -98,4 +98,3 @@ vol. 11, no.5, p. 341 - 356 (1982).
 Z. Pawlak, "Rough Sets: Theoretical Aspects of Reasoning about Data, System Theory, Knowledge Engineering and Problem Solving",
 vol. 9, Kluwer Academic Publishers, Dordrecht, Netherlands (1991).
 }
-

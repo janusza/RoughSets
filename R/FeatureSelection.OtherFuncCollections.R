@@ -700,7 +700,7 @@ qualityGain <- function(vec, uniqueValues, decisionVec, uniqueDecisions,
                    NOfAttrValues = as.integer(length(uniqueValues)),
                    decValues = as.integer(decisionVec),
                    NOfDecs = as.integer(length(uniqueDecisions)),
-                   output = as.integer(rep(0,length(INDclassesList)*length(uniqueValues)*length(uniqueDecisions))))
+                   output = as.integer(rep(0,length(INDclassesList)*length(uniqueValues)*length(uniqueDecisions))), PACKAGE="RoughSets")
 
   classCounts = matrix(classCounts$output,
                        nrow = length(INDclassesList)*length(uniqueValues),

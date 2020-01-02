@@ -70,9 +70,6 @@ control <- list(m = 2)
                                  control = control)}
 
 }
-\author{
-Lala Septem Riza
-}
 \references{
 M. Sarkar, "Fuzzy-Rough Nearest-Neighbor Algorithm in Classification" 
 Fuzzy Sets and Systems, vol. 158, no. 19, p. 2123 - 2152 (2007).
@@ -81,4 +78,6 @@ Fuzzy Sets and Systems, vol. 158, no. 19, p. 2123 - 2152 (2007).
 \code{\link{C.FRNN.FRST}},  
 \code{\link{C.POSNN.FRST}}
 }
-
+\author{
+Lala Septem Riza
+}

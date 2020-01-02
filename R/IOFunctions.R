@@ -761,7 +761,7 @@ SF.applyDecTable <- function(decision.table, object, control = list()) {
       stop("there is no reducts at the given indx.reduct")
     }
 
-    tmpIdx = c(reducts[[indx.reduct]], names(attr(decision.table, "desc.attrs"))[attr(decision.table, "decision.attr")])
+    tmpIdx = c(names(reducts[[indx.reduct]]$reduct), names(attr(decision.table, "desc.attrs"))[attr(decision.table, "decision.attr")])
     new.data <- decision.table[, tmpIdx, drop = FALSE]
     attr(new.data, "nominal.attrs") = attr(decision.table, "nominal.attrs")[tmpIdx]
     attr(new.data, "desc.attrs") = attr(decision.table, "desc.attrs")[tmpIdx]
@@ -932,8 +932,8 @@ toStr.rules <- function(rules, type.task = "classification", nominal.att = NULL,
 #'
 #' ## convertion into a FeatureSubset object
 #' reduct <- SF.asFeatureSubset(attrNames, wine.data,
-#'                              type.method = "greedy reduct from a discernibility matrix",
-#'                              model = reduct$type.model)
+#'                              type.method = "greedy reduct from a discernibility matrix")
+#'
 #' class(reduct)
 #' reduct
 #' 

@@ -38,4 +38,3 @@ summary(region)
 \author{
 Lala Septem Riza
 }
-

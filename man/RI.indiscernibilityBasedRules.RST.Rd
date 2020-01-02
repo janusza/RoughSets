@@ -61,11 +61,10 @@ rules <- RI.indiscernibilityBasedRules.RST(hiring.data, reduct)
 rules
 
 }
-\author{
-Andrzej Janusz
-}
 \seealso{
 \code{\link{predict.RuleSetRST}}, \code{\link{RI.CN2Rules.RST}}, \code{\link{RI.LEM2Rules.RST}},
          \code{\link{RI.AQRules.RST}}.
 }
-
+\author{
+Andrzej Janusz
+}

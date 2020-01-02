@@ -41,9 +41,6 @@ decision.table <- SF.asDecisionTable(dataset = dt.ex1, decision.attr = 4,
                                     indx.nominal = c(2:4))
 indx = MV.globalClosestFit(decision.table)
 }
-\author{
-Lala Septem Riza
-}
 \references{
 J. Grzymala-Busse and W. Grzymala-Busse, "Handling Missing Attribute Values," in Data Mining and Knowledge Discovery Handbook, 
 O. Maimon and L. Rokach, Eds. New York : Springer, 2010, pp. 33-51
@@ -51,4 +48,6 @@ O. Maimon and L. Rokach, Eds. New York : Springer, 2010, pp. 33-51
 \seealso{
 \code{\link{MV.missingValueCompletion}}
 }
-
+\author{
+Lala Septem Riza
+}

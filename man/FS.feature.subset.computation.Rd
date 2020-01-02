@@ -62,10 +62,9 @@ res.2 <- FS.feature.subset.computation(decision.table,
 ## generate new decision table according to the reduct
 new.decTable <- SF.applyDecTable(decision.table, res.2)
 }
-\author{
-Andrzej Janusz
-}
 \seealso{
 \code{\link{FS.greedy.heuristic.superreduct.RST}}, \code{\link{FS.quickreduct.RST}}, \code{\link{FS.quickreduct.FRST}}.
 }
-
+\author{
+Andrzej Janusz
+}
