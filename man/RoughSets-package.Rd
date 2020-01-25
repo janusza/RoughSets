@@ -34,7 +34,7 @@ a list of domains considered in this package:
       indiscernibility relation, lower and upper approximations, positive region and discernibility matrix.
       All of those tasks have been explained briefly in Section \code{\link{A.Introduction-RoughSets}} and
 
-\code{\link{B.Introduction-FuzzyRoughSets}}.
+     \code{\link{B.Introduction-FuzzyRoughSets}}.
 \item Discretization: It is used to convert real-valued attributes into nominal/symbolic ones in an information system.
       In RST point of view, this task attempts to maintain the discernibility between objects.
 \item Feature selection: It is a process for finding a subset of features which have the same quality as the complete feature set.
@@ -109,7 +109,7 @@ The following description explains domains and their algorithms implemented in t
                                  \item Superreduct generation: It is based on some criteria:
                                                    entropy, gini index, discernibility measure, size of positive region.
 
-It is implemented in \code{\link{FS.greedy.heuristic.superreduct.RST}}.
+                                                   It is implemented in \code{\link{FS.greedy.heuristic.superreduct.RST}}.
                             }
                             Furthermore, we provide a wrapper function \code{\link{FS.feature.subset.computation}} in order to give a user interface for many methods of RST and FRST that are included in this group.
                       \item Reduct: The following are methods that produce a single decision reduct:
@@ -151,7 +151,7 @@ It is implemented in \code{\link{FS.greedy.heuristic.superreduct.RST}}.
 	   	 \item Lower and upper approximations: These approximations show to what extent objects can be classified with certainty or not.
           This task has been implemented in
 
-\code{\link{BC.LU.approximation.FRST}}. There are many approaches available in this package that can be selected by assigning the parameter \code{type.LU}.
+          \code{\link{BC.LU.approximation.FRST}}. There are many approaches available in this package that can be selected by assigning the parameter \code{type.LU}.
           The considered methods are
           implication/t-norm, \eqn{\beta}-precision fuzzy rough sets (\eqn{\beta}-PFRS), vaguely quantified rough sets (VQRS), fuzzy variable precision rough sets (FVPRS), ordered weighted average (OWA),
           soft fuzzy rough sets (SFRS), and robust fuzzy rough sets (RFRS). Furthermore, we provide a facility, which is \code{"custom"}, where users can create their own approximations by
@@ -187,7 +187,7 @@ It is implemented in \code{\link{FS.greedy.heuristic.superreduct.RST}}.
     The output of the above methods is a class containing a decision reduct/feature subset and other descriptions.
     For generating a new decision table according to the decision reduct, we provide the function \code{\link{SF.applyDecTable}}.
 
-\item Rule induction: It is a task used to generate
+    \item Rule induction: It is a task used to generate
           rules representing knowledge of a decision table. Commonly, this process is called learning phase in machine learning.
           The following methods are considered to generate rules:
           \itemize{
@@ -482,10 +482,10 @@ err.3 <- 100*sum(predValues.frnn.o!=real.val)/
 err.4 <- 100*sum(predValues.frnn!=real.val)/
   nrow(predValues.frnn)
 
-cat("The percentage error = ", err.1, "\\n")
-cat("The percentage error = ", err.2, "\\n")
-cat("The percentage error = ", err.3, "\\n")
-cat("The percentage error = ", err.4, "\\n")}
+cat("The percentage error = ", err.1, "\n")
+cat("The percentage error = ", err.2, "\n")
+cat("The percentage error = ", err.3, "\n")
+cat("The percentage error = ", err.4, "\n")}
 }
 \references{
 D. Dubois and H. Prade, "Rough Fuzzy Sets and Fuzzy Rough Sets",

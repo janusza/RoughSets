@@ -4,8 +4,11 @@
 \alias{FS.permutation.heuristic.reduct.RST}
 \title{The permutation heuristic algorithm for computation of a decision reduct}
 \usage{
-FS.permutation.heuristic.reduct.RST(decision.table, permutation = NULL,
-  decisionIdx = ncol(decision.table))
+FS.permutation.heuristic.reduct.RST(
+  decision.table,
+  permutation = NULL,
+  decisionIdx = ncol(decision.table)
+)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}

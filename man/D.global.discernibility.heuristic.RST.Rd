@@ -4,9 +4,14 @@
 \alias{D.global.discernibility.heuristic.RST}
 \title{Supervised discretization based on the maximum discernibility heuristic}
 \usage{
-D.global.discernibility.heuristic.RST(decision.table, maxNOfCuts = 2 *
-  ncol(decision.table), attrSampleSize = ncol(decision.table) - 1,
-  cutCandidatesList = NULL, discFunction = global.discernibility, ...)
+D.global.discernibility.heuristic.RST(
+  decision.table,
+  maxNOfCuts = 2 * ncol(decision.table),
+  attrSampleSize = ncol(decision.table) - 1,
+  cutCandidatesList = NULL,
+  discFunction = global.discernibility,
+  ...
+)
 }
 \arguments{
 \item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.

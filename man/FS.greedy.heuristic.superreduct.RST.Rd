@@ -4,10 +4,14 @@
 \alias{FS.greedy.heuristic.superreduct.RST}
 \title{The greedy heuristic method for determining superreduct based on RST}
 \usage{
-FS.greedy.heuristic.superreduct.RST(decision.table,
+FS.greedy.heuristic.superreduct.RST(
+  decision.table,
   attrDescriptions = attr(decision.table, "desc.attrs"),
   decisionIdx = attr(decision.table, "decision.attr"),
-  qualityF = X.gini, nAttrs = NULL, inconsistentDecisionTable = NULL)
+  qualityF = X.gini,
+  nAttrs = NULL,
+  inconsistentDecisionTable = NULL
+)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table.

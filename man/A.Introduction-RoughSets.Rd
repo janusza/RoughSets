@@ -4,7 +4,6 @@
 \name{A.Introduction-RoughSets}
 \alias{A.Introduction-RoughSets}
 \alias{RoughSets-intro}
-\alias{A.Introduction-RoughSets-package}
 \title{Introduction to Rough Set Theory}
 \description{
 This part attempts to introduce rough set theory (RST) and its application to data analysis. 
@@ -40,7 +39,7 @@ the \eqn{B}-lower and \eqn{B}-upper approximations of \eqn{X}:
 
 The tuple \eqn{\langle R_B \downarrow X, R_B \uparrow X \rangle} is called a rough set.
 The objects in \eqn{R_B \downarrow X} mean that they can be with certainty classified as members of \eqn{X} on the basis of knowledge in \eqn{B}, while
-the objects in \eqn{R_B \uparrow X} can be only classified as possible members of \eqn{X} on the basis of knowledge in \eqn{B}.
+the objects in \eqn{R_B \uparrow X} can be only classified as possible members of \eqn{X} on the basis of knowledge in \eqn{B}. 
 
 In a decision system, for \eqn{X} we use decision concepts (equivalence classes of decision attribute) \eqn{[x]_d}. 
 We can define \eqn{B}-lower and \eqn{B}-upper approximations as follows.
@@ -60,7 +59,7 @@ The boundary region, \eqn{BND_{B}}, is the set of objects that can possibly, but
 Furthermore, we can calculate the degree of dependency of the decision on a set of attributes. The decision attribute \eqn{d}
 depends totally on a set of attributes \eqn{B}, denoted \eqn{B \Rightarrow d},
 if all  attribute values from \eqn{d} are uniquely determined by values of attributes from \eqn{B}. It can be defined as follows.
-For \eqn{B \subseteq A}, it is said that \eqn{d} depends on \eqn{B} in a degree of dependency \eqn{\gamma_{B} = \frac{|POS_{B}|}{|U|}}.
+For \eqn{B \subseteq A}, it is said that \eqn{d} depends on \eqn{B} in a degree of dependency \eqn{\gamma_{B} = \frac{|POS_{B}|}{|U|}}. 
 
 A decision reduct is a set \eqn{B \subseteq A} such that \eqn{\gamma_{B} = \gamma_{A}} and \eqn{\gamma_{B'} < \gamma_{B}} for every \eqn{B' \subset B}.
 One algorithm to determine all reducts is by constructing the decision-relative discernibility matrix. 
@@ -78,9 +77,9 @@ corresponding to the attributes \eqn{a_1, \ldots, a_m} respectively, and defined
 where \eqn{\bar{c}_{ij}= \{ \bar{a}: a \in c_{ij}\}}. The decision reducts of \eqn{A} are then the prime implicants of the function \eqn{f_{\mathcal{A}}}. 
 The complete explanation of the algorithm can be seen in (Skowron and Rauszer, 1992).
 
-The implementations of the RST concepts can be seen in \code{\link{BC.IND.relation.RST}},
+The implementations of the RST concepts can be seen in \code{\link{BC.IND.relation.RST}}, 
 
-\code{\link{BC.LU.approximation.RST}}, \code{\link{BC.positive.reg.RST}}, and
+\code{\link{BC.LU.approximation.RST}}, \code{\link{BC.positive.reg.RST}}, and 
 
 \code{\link{BC.discernibility.mat.RST}}.
 }

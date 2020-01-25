@@ -1570,8 +1570,9 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
 #' @author Andrzej Janusz
 #'
 #' @param discernibilityMatrix a \code{"DiscernibilityMatrix"} class representing the discernibility matrix of RST and FRST.
-#' @param greedy a boolean value indicating whether the greedy heuristic or a randomized search should be used in computations.
-#' @param power a numeric representing a parameter of the randomized search heuristic.
+#' @param greedy a boolean value indicating whether the greedy heuristic or a stochastic search should be used in computations.
+#' @param sampSize an integer indicating the sample size for the stochastic search heuristic.
+#' @param power a numeric representing a parameter of the stochastic search heuristic.
 #'
 #' @return An object of a class \code{"ReductSet"}.
 #'
@@ -1620,7 +1621,8 @@ FS.all.reducts.computation <- function(discernibilityMatrix) {
 #' ## generate new decision table
 #' new.decTable <- SF.applyDecTable(decision.table, reduct, control = list(indx.reduct = 1))
 #' @export
-FS.one.reduct.computation <- function(discernibilityMatrix, greedy = TRUE, power = 1) {
+FS.one.reduct.computation <- function(discernibilityMatrix, 
+                                      greedy = TRUE, sampSize = 5, power = 1) {
 
   if(!inherits(discernibilityMatrix, "DiscernibilityMatrix")) {
     stop("The argument is not in the class of \'DiscernibilityMatrix\' objects.")
@@ -1632,28 +1634,41 @@ FS.one.reduct.computation <- function(discernibilityMatrix, greedy = TRUE, power
   reduct = character()
   tmpIdx = (clauseLengths > 0)
   attrInvertedIdx = list()
+  
+  attributeCounts = table(unlist(CNFclauses[tmpIdx], use.names = FALSE))
+  attrProbs = attributeCounts^power
+  #CNFclauses = sapply(CNFclauses[tmpIdx], paste, collapse = " ")
 
   while(any(tmpIdx)) {
-    attributeCounts = table(unlist(CNFclauses[tmpIdx], use.names = FALSE))
 
-    if(greedy) bestAttr = which.max(attributeCounts)
-    else bestAttr = sample(length(attributeCounts), 1, prob = attributeCounts^power)
+    if(greedy) {
+      bestAttr = which.max(attributeCounts)
+    } else {
+      tmpSub = sample(length(attributeCounts), sampSize, prob = attrProbs)
+      bestAttr = tmpSub[which.max(attributeCounts[tmpSub])]
+    }
+    
+    attributeCounts[bestAttr] = 0
 
     tmpName = names(attributeCounts)[bestAttr]
     reduct = append(reduct, tmpName)
     attrInvertedIdx = append(attrInvertedIdx, list(sapply(CNFclauses, function(clause) tmpName %in% clause)))
+    #attrInvertedIdx[[length(attrInvertedIdx) + 1]] = logical(length(CNFclauses))
+    #attrInvertedIdx[[length(attrInvertedIdx)]][grep(tmpName, CNFclauses)] = TRUE
     tmpIdx = tmpIdx & !attrInvertedIdx[[length(attrInvertedIdx)]]
   }
   rm(tmpIdx, tmpName, attributeCounts, bestAttr)
 
   if(length(reduct) > 1) {
     attrInvertedIdx = do.call(cbind, attrInvertedIdx)
+    #attrInvertedIdx = matrix(unlist(attrInvertedIdx, use.names = FALSE), ncol = length(attrInvertedIdx))
     tmpSums = rowSums(attrInvertedIdx)
     for(i in (ncol(attrInvertedIdx) - 1):1) {
-      if(all(tmpSums > 1) || !(any(attrInvertedIdx[tmpSums == 1,i]))) {
+      if(all(tmpSums > 1) || !(any(attrInvertedIdx[tmpSums == 1, i]))) {
         reduct = reduct[-i]
-        attrInvertedIdx = attrInvertedIdx[ , -i, drop = FALSE]
-        tmpSums = rowSums(attrInvertedIdx)
+        tmpSums = tmpSums - attrInvertedIdx[, i]
+        #attrInvertedIdx = attrInvertedIdx[ , -i, drop = FALSE]
+        #tmpSums = rowSums(attrInvertedIdx)
       }
     }
   }

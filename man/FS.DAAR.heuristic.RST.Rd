@@ -4,14 +4,18 @@
 \alias{FS.DAAR.heuristic.RST}
 \title{The DAAR heuristic for computation of decision reducts}
 \usage{
-FS.DAAR.heuristic.RST(decision.table,
+FS.DAAR.heuristic.RST(
+  decision.table,
   attrDescriptions = attr(decision.table, "desc.attrs"),
   decisionIdx = attr(decision.table, "decision.attr"),
-  qualityF = X.gini, nAttrs = NULL,
+  qualityF = X.gini,
+  nAttrs = NULL,
   allowedRandomness = 1/ncol(decision.table),
   nOfProbes = max(ncol(decision.table), 100),
-  permsWithinINDclasses = FALSE, semigreedy = FALSE,
-  inconsistentDecisionTable = NULL)
+  permsWithinINDclasses = FALSE,
+  semigreedy = FALSE,
+  inconsistentDecisionTable = NULL
+)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}

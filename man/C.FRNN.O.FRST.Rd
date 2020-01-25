@@ -30,7 +30,7 @@ proposed by (Sarkar, 2007).
 This method improves fuzzy \eqn{k}-nearest neighbors (FNN) by introducing rough sets into it. 
 To avoid determining \eqn{k} by trial and error procedure, this method uses all training data. Uncertainties in data are accommodated by 
 introducing the rough ownership function. It is the following equation \eqn{o_c} of each class expressing a squared weighted distance between a test pattern and all training data \eqn{d}
-and constrained fuzzy membership \eqn{\mu_{C_c}}.
+and constrained fuzzy membership \eqn{\mu_{C_c}}. 
 
 \eqn{o_c(y) = \frac{1}{|X|}\mu_{C_c}(x)\exp{(-d^{1/(q-1)})}}
 

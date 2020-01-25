@@ -4,8 +4,11 @@
 \alias{FS.feature.subset.computation}
 \title{The superreduct computation based on RST and FRST}
 \usage{
-FS.feature.subset.computation(decision.table,
-  method = "greedy.heuristic.superreduct", ...)
+FS.feature.subset.computation(
+  decision.table,
+  method = "greedy.heuristic.superreduct",
+  ...
+)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}

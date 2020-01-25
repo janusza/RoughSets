@@ -4,8 +4,7 @@
 \alias{SF.read.DecisionTable}
 \title{Reading tabular data from files.}
 \usage{
-SF.read.DecisionTable(filename, decision.attr = NULL,
-  indx.nominal = NULL, ...)
+SF.read.DecisionTable(filename, decision.attr = NULL, indx.nominal = NULL, ...)
 }
 \arguments{
 \item{filename}{a path with a file name.}

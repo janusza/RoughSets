@@ -4,8 +4,12 @@
 \alias{FS.quickreduct.FRST}
 \title{The fuzzy QuickReduct algorithm based on FRST}
 \usage{
-FS.quickreduct.FRST(decision.table, type.method = "fuzzy.dependency",
-  type.QR = "fuzzy.QR", control = list())
+FS.quickreduct.FRST(
+  decision.table,
+  type.method = "fuzzy.dependency",
+  type.QR = "fuzzy.QR",
+  control = list()
+)
 }
 \arguments{
 \item{decision.table}{an object of a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -91,7 +95,7 @@ assigning the following value to the parameter \code{type.method}.
                The detailed concepts about this approximation have been explained in \code{\link{B.Introduction-FuzzyRoughSets}}
                and
 
-\code{\link{BC.LU.approximation.FRST}}.
+               \code{\link{BC.LU.approximation.FRST}}.
    \item \code{"fuzzy.boundary.reg"}: It is based on the fuzzy boundary region proposed by (Jensen and Shen, 2009).
                This algorithm introduced the usage of the total uncertainty degree \eqn{\lambda_B(Q)}
                for all concepts of feature subset \eqn{B} and decision attribute \eqn{Q}.
@@ -140,7 +144,7 @@ The following is a list showing the components of \code{control} needed by each 
 
 \code{control <- list(t.implicator, type.relation, type.rfrs,}
 
-\code{k.rfrs, type.aggregation)}
+                \code{k.rfrs, type.aggregation)}
 
 \item \code{type.method = "min.positive.reg"}:
 

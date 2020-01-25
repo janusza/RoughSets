@@ -50,7 +50,7 @@ This algorithm assigns a class to a target instance \eqn{t} as follows.
 \item Assign new patterns to the class based on maximal value of fuzzy lower and upper approximations. 
 If a value of fuzzy lower approximation is high, it shows that neighbors of newdata belong to a particular class, e.g. \code{C}. On the other hand, 
 a high value of fuzzy upper approximation means that at least one neighbor belongs to that class. 
-}
+}  
 
 In this function, we provide two approaches based on types of fuzzy lower and upper approximations. The following is 
 a list of the considered approximations:
@@ -59,25 +59,25 @@ a list of the considered approximations:
       For more detail, it can be seen in \code{\link{BC.LU.approximation.FRST}}. When using this approach, 
       we need to assign the \code{control} parameter as follows:
 
-\code{control <- list(type.LU = "implicator.tnorm", k,}
+      \code{control <- list(type.LU = "implicator.tnorm", k,}
 
-\code{type.aggregation, type.relation, t.implicator)}
+                       \code{type.aggregation, type.relation, t.implicator)}
 
-The detailed description of the components in the \code{control} parameter can be seen in
+     The detailed description of the components in the \code{control} parameter can be seen in 
 
-\code{\link{BC.LU.approximation.FRST}}.
+     \code{\link{BC.LU.approximation.FRST}}.
 
 \item \code{"vqrs"}: It refers to lower and upper approximations based on vaguely quantified rough sets. 
       For more detail, it can be seen in \code{\link{BC.LU.approximation.FRST}}. When using this approach, 
       we need to assign the \code{control} parameter as follows:
 
-\code{control <- list(type.LU = "vqrs", k, q.some, q.most,}
+		\code{control <- list(type.LU = "vqrs", k, q.some, q.most,}
 
-\code{type.relation, type.aggregation)}
+                      \code{type.relation, type.aggregation)}
 
-The detailed description of the components in the \code{control} parameter can be seen in
+     The detailed description of the components in the \code{control} parameter can be seen in 
 
-\code{\link{BC.LU.approximation.FRST}}.
+     \code{\link{BC.LU.approximation.FRST}}.
 }
 }
 \examples{

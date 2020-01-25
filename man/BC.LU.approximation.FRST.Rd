@@ -4,8 +4,13 @@
 \alias{BC.LU.approximation.FRST}
 \title{The fuzzy lower and upper approximations based on fuzzy rough set theory}
 \usage{
-BC.LU.approximation.FRST(decision.table, IND.condAttr, IND.decAttr,
-  type.LU = "implicator.tnorm", control = list())
+BC.LU.approximation.FRST(
+  decision.table,
+  IND.condAttr,
+  IND.decAttr,
+  type.LU = "implicator.tnorm",
+  control = list()
+)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -96,46 +101,46 @@ The following is a list of all \code{type.LU} values:
    \item \code{"vqrs"}: It means vaguely quantified rough sets proposed by 
          (Cornelis et al, 2007). Basically, this concept proposed to replace fuzzy lower and upper approximations 
          based on Radzikowska and Kerre's technique (see \code{\link{B.Introduction-FuzzyRoughSets}})
-         with the following equations, respectively.
+         with the following equations, respectively. 
 
-\eqn{(R_{Q_u} \downarrow A)(y) = Q_u(\frac{|R_y \cap A|}{|R_y|})}
+         \eqn{(R_{Q_u} \downarrow A)(y) = Q_u(\frac{|R_y \cap A|}{|R_y|})} 
 
-\eqn{(R_{Q_l} \uparrow A)(y) = Q_l(\frac{|R_y \cap A|}{|R_y|})}
+         \eqn{(R_{Q_l} \uparrow A)(y) = Q_l(\frac{|R_y \cap A|}{|R_y|})}
 
-where the quantifier \eqn{Q_u} and \eqn{Q_l} represent the terms \code{most} and \code{some}.
+         where the quantifier \eqn{Q_u} and \eqn{Q_l} represent the terms \code{most} and \code{some}. 
 
-\item \code{"owa"}: It refers to ordered weighted average based fuzzy rough sets. 
+   \item \code{"owa"}: It refers to ordered weighted average based fuzzy rough sets. 
            This method was introduced by (Cornelis et al, 2010) and computes the approximations
            by an aggregation process proposed by (Yager, 1988). The OWA-based lower and upper approximations of 
            \eqn{A} under \eqn{R} with weight vectors \eqn{W_l} and \eqn{W_u} are defined as
 
-\eqn{(R \downarrow W_l A)(y) = OW A_{W_l}\langle I(R(x, y), A(y))\rangle}
+          \eqn{(R \downarrow W_l A)(y) = OW A_{W_l}\langle I(R(x, y), A(y))\rangle}
 
-\eqn{(R \uparrow W_u A)(y) = OW A_{W_u}\langle T(R(x, y), A(y))\rangle}
+          \eqn{(R \uparrow W_u A)(y) = OW A_{W_u}\langle T(R(x, y), A(y))\rangle}
 
-We provide two ways to define the weight vectors as follows:
+          We provide two ways to define the weight vectors as follows:
 
-\itemize{
+          \itemize{
           \item \code{m.owa}: Let \eqn{m.owa} be \eqn{m} and \eqn{m \le n}, this model is defined by
 
-\eqn{W_l = <w_i^l> = w_{n+1-i}^l = \frac{2^{m-i}}{2^{m}-1}} for \eqn{i = 1,\ldots, m} and \eqn{0} for \eqn{i = m + 1, \ldots, n}
+          \eqn{W_l = <w_i^l> = w_{n+1-i}^l = \frac{2^{m-i}}{2^{m}-1}} for \eqn{i = 1,\ldots, m} and \eqn{0} for \eqn{i = m + 1, \ldots, n}
 
-\eqn{W_u = <w_i^u> = w_i^u = \frac{2^{m - i}}{2^{m} - 1}} for \eqn{i = 1, \ldots, m} and \eqn{0} for \eqn{i = m + 1, \ldots, n}
+          \eqn{W_u = <w_i^u> = w_i^u = \frac{2^{m - i}}{2^{m} - 1}} for \eqn{i = 1, \ldots, m} and \eqn{0} for \eqn{i = m + 1, \ldots, n}
 
-where \eqn{n} is the number of data.
+          where \eqn{n} is the number of data.
 
-\item \code{custom}: In this case, users define the own weight vector.
+          \item \code{custom}: In this case, users define the own weight vector.
           It should be noted that the weight vectors \eqn{<w_i>} should satisfy \eqn{w_i \in [0, 1]} and 
           their summation is 1.
           }
 
-\item \code{"fvprs"}: It refers to fuzzy variable precision rough sets (FVPRS) introduced by 
+   \item \code{"fvprs"}: It refers to fuzzy variable precision rough sets (FVPRS) introduced by 
            (Zhao et al, 2009). It is a combination between variable precision rough sets (VPRS)
             and FRST. This function implements the construction of lower and upper approximations as follows.
       
 		  \eqn{(R_{\alpha} \downarrow A)(y) = inf_{A(y) \le \alpha} \mathcal{I}(R(x,y), \alpha) \wedge inf_{A(y) > \alpha} \mathcal{I}(R(x,y), A(y))}
 
-\eqn{(R_{\alpha} \uparrow A)(y) = sup_{A(y) \ge N(\alpha)} \mathcal{T}(R(x,y), N(\alpha)) \vee sup_{A(y) < N(\alpha)} \mathcal{T}(R(x,y), A(y))}
+          \eqn{(R_{\alpha} \uparrow A)(y) = sup_{A(y) \ge N(\alpha)} \mathcal{T}(R(x,y), N(\alpha)) \vee sup_{A(y) < N(\alpha)} \mathcal{T}(R(x,y), A(y))}
             
           where \eqn{\alpha}, \eqn{\mathcal{I}} and \eqn{\mathcal{T}} are the variable precision parameter, implicator and t-norm operators, respectively.
    \item \code{"rfrs"}: It refers to robust fuzzy rough sets (RFRS) proposed by (Hu et al, 2012). 
@@ -154,32 +159,32 @@ where \eqn{n} is the number of data.
                                 or \eqn{w_i^u = 0} otherwise.
            }
 
-\item \code{"beta.pfrs"}: It refers to \eqn{\beta}-precision fuzzy rough sets (\eqn{\beta}-PFRS) proposed by 
+   \item \code{"beta.pfrs"}: It refers to \eqn{\beta}-precision fuzzy rough sets (\eqn{\beta}-PFRS) proposed by 
            (Salido and Murakami, 2003). This algorithm uses \eqn{\beta}-precision quasi-\eqn{\mathcal{T}}-norm and 
            \eqn{\beta}-precision quasi-\eqn{\mathcal{T}}-conorm. The following are the \eqn{\beta}-precision versions of fuzzy lower and upper approximations of a fuzzy set \eqn{A} in \eqn{U}
 
-\eqn{(R_B \downarrow A)(y) = T_{\beta_{x \in U}} \mathcal{I}(R_B(x,y), A(x))}
+				\eqn{(R_B \downarrow A)(y) = T_{\beta_{x \in U}} \mathcal{I}(R_B(x,y), A(x))}
 
-\eqn{(R_B \uparrow A)(y) = S_{\beta_{x \in U}} \mathcal{T}(R_B(x,y), A(x))}
+				\eqn{(R_B \uparrow A)(y) = S_{\beta_{x \in U}} \mathcal{T}(R_B(x,y), A(x))} 
 
-where \eqn{T_{\beta}} and \eqn{S_{\beta}} are \eqn{\beta}-precision quasi-\eqn{\mathcal{T}}-norm and \eqn{\beta}-precision quasi-\eqn{\mathcal{T}}-conorm.
+           where \eqn{T_{\beta}} and \eqn{S_{\beta}} are \eqn{\beta}-precision quasi-\eqn{\mathcal{T}}-norm and \eqn{\beta}-precision quasi-\eqn{\mathcal{T}}-conorm.
            Given a t-norm \eqn{\mathcal{T}}, a t-conorm \eqn{S}, \eqn{\beta \in [0,1]} and \eqn{n \in N \setminus \{0, 1\}}, the corresponding 
            \eqn{\beta}-precision quasi-t-norm \eqn{T_{\beta}} and \eqn{\beta}-precision-\eqn{\mathcal{T}}-conorm \eqn{S_{\beta}} of order \eqn{n} are
            \eqn{[0,1]^n \to [0,1]} mappings such that for all \eqn{x = (x_1,...,x_n)} in \eqn{[0,1]^n},
 
-\eqn{T_{\beta}(x) = \mathcal{T}(y_1,...,y_{n-m})},
+            \eqn{T_{\beta}(x) = \mathcal{T}(y_1,...,y_{n-m})},
 
-\eqn{S_{\beta}(x) = \mathcal{T}(z_1,...,z_{n-p})},
+            \eqn{S_{\beta}(x) = \mathcal{T}(z_1,...,z_{n-p})},
 
-where \eqn{y_i} is the \eqn{i^{th}} greatest element of \eqn{x} and \eqn{z_i} is the \eqn{i^{th}} smallest element of \eqn{x}, and
+            where \eqn{y_i} is the \eqn{i^{th}} greatest element of \eqn{x} and \eqn{z_i} is the \eqn{i^{th}} smallest element of \eqn{x}, and
 
-\eqn{m = max(i \in \{0,...,n\}|i \le (1-\beta)\sum_{j=1}^{n}x_j)},
+            \eqn{m = max(i \in \{0,...,n\}|i \le (1-\beta)\sum_{j=1}^{n}x_j)},
 
-\eqn{p = max(i \in \{0,...,n\}|i \le (1-\beta)\sum_{j=1}^{n}(a - x_j))}.
+            \eqn{p = max(i \in \{0,...,n\}|i \le (1-\beta)\sum_{j=1}^{n}(a - x_j))}.
 
-In this package we use \code{min} and \code{max} for \eqn{\mathcal{T}}-norm and \eqn{\mathcal{T}}-conorm, respectively.
+           In this package we use \code{min} and \code{max} for \eqn{\mathcal{T}}-norm and \eqn{\mathcal{T}}-conorm, respectively. 
 
-\item \code{"custom"}: It refers to user-defined lower and upper approximations. An example can be seen in Section \code{Examples}.
+   \item \code{"custom"}: It refers to user-defined lower and upper approximations. An example can be seen in Section \code{Examples}.
    }
 The parameter \code{type.LU}, which is explained above, is related with parameter \code{control}. 
 In other words, when choosing a specific value of \code{type.LU}, we should take into account to set values of related components in \code{control}.
@@ -187,41 +192,41 @@ The components that are considered depend on what kind of lower and upper approx
 So, we do not need to assign all components for a particular approach but only components related with \code{type.LU}.
 The following is a list showing the components of each approaches.
                \itemize{
-               \item \code{type.LU = "implicator.tnorm"}:
+               \item \code{type.LU = "implicator.tnorm"}: 
 
-\code{control <- list(t.implicator, t.tnorm)}
+                \code{control <- list(t.implicator, t.tnorm)}
 
-\item \code{type.LU = "vqrs"}:
+                \item \code{type.LU = "vqrs"}:
 
-\code{control <- list(q.some, q.most, type.aggregation, t.tnorm)}
+                \code{control <- list(q.some, q.most, type.aggregation, t.tnorm)}
 
-\item \code{type.LU = "owa"}:
+                \item \code{type.LU = "owa"}:
 
-\code{control <- list(t.implicator, t.tnorm, m.owa)} 
+                \code{control <- list(t.implicator, t.tnorm, m.owa)} 
                 
                 or
 
-\code{control <- list(t.implicator, t.tnorm, w.owa)}
+               \code{control <- list(t.implicator, t.tnorm, w.owa)} 
 
-\item \code{type.LU = "fvprs"}:
+                \item \code{type.LU = "fvprs"}:
 
-\code{control <- list(t.implicator, t.tnorm, alpha)}
+                \code{control <- list(t.implicator, t.tnorm, alpha)}
 
-\item \code{type.LU = "beta.pfrs"}:
+               \item \code{type.LU = "beta.pfrs"}: 
 
-\code{control <- list(t.implicator, t.tnorm, beta.quasi)}
+                \code{control <- list(t.implicator, t.tnorm, beta.quasi)}
 
-\item \code{type.LU = "rfrs"}:
+                \item \code{type.LU = "rfrs"}:
 
-\code{control <- list(t.implicator, t.tnorm, type.rfrs, k.rfrs)}
+                \code{control <- list(t.implicator, t.tnorm, type.rfrs, k.rfrs)}
 
-\item \code{type.LU = "custom"}:
+                \item \code{type.LU = "custom"}:
 
-\code{control <- list(t.implicator, t.tnorm, FUN.lower, FUN.upper)}
+                \code{control <- list(t.implicator, t.tnorm, FUN.lower, FUN.upper)}
                }
 The description of the components can be seen in the \code{control} parameter.
 In Section \code{Examples}, we provide two examples showing different cases which are
-when we have to handle a nominal decision attribute and a continuous one.
+when we have to handle a nominal decision attribute and a continuous one. 
 
 It should be noted that this function depends on \code{\link{BC.IND.relation.FRST}}
 which is a function used to calculate the fuzzy indiscernibility relation as input data. 

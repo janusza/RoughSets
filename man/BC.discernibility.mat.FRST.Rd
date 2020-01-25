@@ -4,8 +4,11 @@
 \alias{BC.discernibility.mat.FRST}
 \title{The decision-relative discernibility matrix based on fuzzy rough set theory}
 \usage{
-BC.discernibility.mat.FRST(decision.table,
-  type.discernibility = "standard.red", control = list())
+BC.discernibility.mat.FRST(
+  decision.table,
+  type.discernibility = "standard.red",
+  control = list()
+)
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing the decision table. See \code{\link{SF.asDecisionTable}}. 
@@ -73,55 +76,55 @@ The concept has been explained briefly in \code{\link{B.Introduction-FuzzyRoughS
 In order to use this algorithm, we assign the \code{control} parameter
        with the following components:
 
-\code{control = list(type.aggregation, type.relation, type.LU, t.implicator)}
+       \code{control = list(type.aggregation, type.relation, type.LU, t.implicator)}
 
-The detailed description of the components can be seen in \code{\link{BC.IND.relation.FRST}} and
+       The detailed description of the components can be seen in \code{\link{BC.IND.relation.FRST}} and 
 
-\code{\link{BC.LU.approximation.FRST}}. Furthermore, in this case the authors suggest to use the "min" t-norm  
+       \code{\link{BC.LU.approximation.FRST}}. Furthermore, in this case the authors suggest to use the "min" t-norm  
       (i.e., \code{type.aggregation = c("t.tnorm", "min")}) and the implicator operator "kleene_dienes" (i.e., \code{t.implicator = "kleene_dienes"}).
   
 \item \code{"alpha.red"}: It is based on (Zhao et al, 2009)'s approach where all reductions will 
       be found by building an \eqn{\alpha}-discernibility matrix. This matrix contains elements which are defined by
 
-1) if \eqn{x_i} and \eqn{x_j} belong to different decision concept,
+      1) if \eqn{x_i} and \eqn{x_j} belong to different decision concept,
 
-\eqn{c_{ij} = \{R : \mathcal{T}(R(x_i, x_j), \lambda) \le \alpha \}},
+      \eqn{c_{ij} = \{R : \mathcal{T}(R(x_i, x_j), \lambda) \le \alpha \}},
 
-where \eqn{\lambda = (R_{\alpha} \downarrow A)(u)} which is lower approximation 
-      of FVPRS (See \code{\link{BC.LU.approximation.FRST}}).
+      where \eqn{\lambda = (R_{\alpha} \downarrow A)(u)} which is lower approximation 
+      of FVPRS (See \code{\link{BC.LU.approximation.FRST}}). 
 
-2) \eqn{c_{ij}={\oslash}}, otherwise.
+      2) \eqn{c_{ij}={\oslash}}, otherwise.
 
-To generate the discernibility matrix based on this approach, we use the \code{control} parameter
+      To generate the discernibility matrix based on this approach, we use the \code{control} parameter
       with the following components:
 
-\code{control = list(type.aggregation, type.relation, t.implicator, alpha.precision)}
+       \code{control = list(type.aggregation, type.relation, t.implicator, alpha.precision)} 
 
-where the lower approximation \eqn{\lambda} is fixed to \code{type.LU = "fvprs"}. The detailed
+       where the lower approximation \eqn{\lambda} is fixed to \code{type.LU = "fvprs"}. The detailed
        description of the components can be seen in \code{\link{BC.IND.relation.FRST}} and \code{\link{BC.LU.approximation.FRST}}.
-       Furthermore, in this case the authors suggest to use \eqn{\mathcal{T}}-similarity relation
+       Furthermore, in this case the authors suggest to use \eqn{\mathcal{T}}-similarity relation 
 
-e.g., \code{type.relation = c("transitive.closure", "eq.3")},
+       e.g., \code{type.relation = c("transitive.closure", "eq.3")},
 
-the "lukasiewicz" t-norm  (i.e., \code{type.aggregation = c("t.tnorm", "lukasiewicz")}), and \code{alpha.precision} from 0 to 0.5.
+       the "lukasiewicz" t-norm  (i.e., \code{type.aggregation = c("t.tnorm", "lukasiewicz")}), and \code{alpha.precision} from 0 to 0.5.
    
 \item \code{"gaussian.red"}: It is based on (Chen et al, 2011)'s approach. The discernibility matrix contains elements which are defined by: 
        
-       1) if \eqn{x_i} and \eqn{x_j} belong to different decision concept,
+       1) if \eqn{x_i} and \eqn{x_j} belong to different decision concept, 
 
-\eqn{c_{ij}= \{R : R(x_i, x_j) \le \sqrt{1 - \lambda^2(x_i)}\}},
+        \eqn{c_{ij}= \{R : R(x_i, x_j) \le \sqrt{1 - \lambda^2(x_i)}\}},
 
-where \eqn{\lambda = inf_{u \in U}\mathcal{I}_{cos}(R(x_i, u), A(u)) - \epsilon}. To generate fuzzy relation \eqn{R} , we use the fixed parameters as follows:
+       where \eqn{\lambda = inf_{u \in U}\mathcal{I}_{cos}(R(x_i, u), A(u)) - \epsilon}. To generate fuzzy relation \eqn{R} , we use the fixed parameters as follows:
 
-\code{t.tnorm = "t.cos"} and \code{type.relation = c("transitive.kernel", "gaussian")}. 
+       \code{t.tnorm = "t.cos"} and \code{type.relation = c("transitive.kernel", "gaussian")}. 
        
        2) \eqn{c_{ij}={\oslash}}, otherwise.
 
-In this case, we need to define \code{control} parameter as follows.
+       In this case, we need to define \code{control} parameter as follows.
 
-\code{control <- list(epsilon)}
+       \code{control <- list(epsilon)}
 
-It should be noted that when having nominal values on all attributes then \code{epsilon} (\eqn{\epsilon}) should be 0.
+      It should be noted that when having nominal values on all attributes then \code{epsilon} (\eqn{\epsilon}) should be 0. 
 
 \item \code{"min.element"}: It is based on (Chen et al, 2012)'s approach where we only consider finding 
       the minimal element of the discernibility matrix by introducing the binary relation \eqn{DIS(R)} the relative discernibility relation 
@@ -129,16 +132,16 @@ It should be noted that when having nominal values on all attributes then \code{
      
      \eqn{DIS(R) = \{(x_i, x_j) \in U \times U: 1 - R(x_i, x_j) > \lambda_i, x_j \notin [x_i]_d\}},
 
-where \eqn{\lambda_i = (Sim(R) \downarrow [x_i]_d)(x_i)} with \eqn{Sim(R)} a fuzzy equivalence relation. 
+     where \eqn{\lambda_i = (Sim(R) \downarrow [x_i]_d)(x_i)} with \eqn{Sim(R)} a fuzzy equivalence relation. 
      In other words, this algorithm does not need to build the discernibility matrix. 
      To generate the fuzzy relation \eqn{R} and lower approximation \eqn{\lambda}, we use the \code{control} parameter
        with the following components:
 
-\code{control = list(type.aggregation, type.relation, type.LU, t.implicator)}.
+       \code{control = list(type.aggregation, type.relation, type.LU, t.implicator)}. 
 
-The detailed description of the components can be seen in \code{\link{BC.IND.relation.FRST}} and
+       The detailed description of the components can be seen in \code{\link{BC.IND.relation.FRST}} and 
 
-\code{\link{BC.LU.approximation.FRST}}.
+       \code{\link{BC.LU.approximation.FRST}}.
 }
 }
 \examples{

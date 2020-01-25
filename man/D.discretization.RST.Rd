@@ -4,8 +4,11 @@
 \alias{D.discretization.RST}
 \title{The wrapper function for discretization methods}
 \usage{
-D.discretization.RST(decision.table,
-  type.method = "unsupervised.quantiles", ...)
+D.discretization.RST(
+  decision.table,
+  type.method = "unsupervised.quantiles",
+  ...
+)
 }
 \arguments{
 \item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.

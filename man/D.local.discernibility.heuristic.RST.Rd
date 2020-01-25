@@ -4,8 +4,12 @@
 \alias{D.local.discernibility.heuristic.RST}
 \title{Supervised discretization based on the local discernibility heuristic}
 \usage{
-D.local.discernibility.heuristic.RST(decision.table, maxNOfCuts = 2,
-  cutCandidatesList = NULL, discFunction = local.discernibility)
+D.local.discernibility.heuristic.RST(
+  decision.table,
+  maxNOfCuts = 2,
+  cutCandidatesList = NULL,
+  discFunction = local.discernibility
+)
 }
 \arguments{
 \item{decision.table}{an object inheriting from the \code{"DecisionTable"} class, which represents a decision system.

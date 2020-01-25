@@ -4,8 +4,7 @@
 \alias{BC.IND.relation.FRST}
 \title{The indiscernibility relation based on fuzzy rough set theory}
 \usage{
-BC.IND.relation.FRST(decision.table, attributes = NULL,
-  control = list())
+BC.IND.relation.FRST(decision.table, attributes = NULL, control = list())
 }
 \arguments{
 \item{decision.table}{a \code{"DecisionTable"} class representing a decision table. See \code{\link{SF.asDecisionTable}}.}
@@ -55,17 +54,17 @@ is as follows:
 \item \code{"tolerance"}: It refers to fuzzy tolerance relations proposed by (Jensen and Shen, 2009). 
 		In order to represent the \code{"tolerance"} relation, we must set \code{type.relation} as follows:
 
-\code{type.relation = c("tolerance", <chosen equation>)}
+		\code{type.relation = c("tolerance", <chosen equation>)} 
 
-where the chosen equation called as \code{t.similarity} is one of the
+     where the chosen equation called as \code{t.similarity} is one of the
 		\code{"eq.1"}, \code{"eq.2"}, and \code{"eq.3"} equations which have been explained in \code{\link{B.Introduction-FuzzyRoughSets}}.
      
 \item \code{"transitive.kernel"}: It refers to the relations employing kernel functions (Genton, 2001).
 		In order to represent the relation, we must set the \code{type.relation} parameter as follows.
 
-\code{type.relation = c("transitive.kernel", <chosen equation>, <delta>)}
+		\code{type.relation = c("transitive.kernel", <chosen equation>, <delta>)}      
 
-where the chosen equation is one of five following equations (called \code{t.similarity}):
+     where the chosen equation is one of five following equations (called \code{t.similarity}):
       \itemize{
       \item \code{"gaussian"}: It means Gaussian kernel which is \eqn{R_G(x,y) = \exp (-\frac{|x - y|^2}{\delta})}
       \item \code{"exponential"}: It means exponential kernel which is \eqn{R_E(x,y) = \exp(-\frac{|x - y|}{\delta})}
@@ -79,45 +78,45 @@ where the chosen equation is one of five following equations (called \code{t.sim
       For example: let us assume we are going to use \code{"transitive.kernel"} as the fuzzy relation,
       \code{"gaussian"} as its equation and the delta is 0.2. So, we assign the \code{type.relation} parameter as follows:
 
-\code{type.relation = c("transitive.kernel", "gaussian", 0.2)}
+      \code{type.relation = c("transitive.kernel", "gaussian", 0.2)}
 
-If we omit the \code{delta} parameter then we are using \code{"gaussian"} defined as \eqn{R_E(x,y) = \exp(-\frac{|x - y|}{2\sigma^2})}, where \eqn{\sigma} is the variance.
-      Furthermore, when using this relation, usually we set
+      If we omit the \code{delta} parameter then we are using \code{"gaussian"} defined as \eqn{R_E(x,y) = \exp(-\frac{|x - y|}{2\sigma^2})}, where \eqn{\sigma} is the variance.
+      Furthermore, when using this relation, usually we set 
 
-\code{type.aggregation = c("t.tnorm", "t.cos")}.
+      \code{type.aggregation = c("t.tnorm", "t.cos")}.  
 
 \item \code{"kernel.frst"}: It refers to \eqn{T}-equivalence relation proposed by (Hu, 2004).
 		In order to represent the relation, we must set \code{type.relation} parameter as follows.
 
-\code{type.relation = c("kernel.frst", <chosen equation>, <delta>)}
+		\code{type.relation = c("kernel.frst", <chosen equation>, <delta>)}      
 
-where the chosen equation is one of the kernel functions, but they have different names corresponding to previous ones: 
+     where the chosen equation is one of the kernel functions, but they have different names corresponding to previous ones: 
      \code{"gaussian.kernel"}, \code{"exponential.kernel"}, \code{"rational.kernel"}, \code{"circular.kernel"}, and \code{"spherical.kernel"}. And
      \code{delta} is a specified value. 
       For example: let us assume we are going to use \code{"gaussian.kernel"} as its equation and the delta is 0.2. 
       So, we assign the \code{type.relation} parameter as follows:
 
-\code{type.relation = c("kernel.frst", "gaussian.kernel", 0.2)}
+      \code{type.relation = c("kernel.frst", "gaussian.kernel", 0.2)}
 
-In this case, we do not need to define type of aggregation. Furthemore, regarding the distance used in the equations if objects \eqn{x} and \eqn{y} contains mixed values (nominal and continuous)
-      then we use the Gower distance and we use the euclidean distance for continuous only.
+      In this case, we do not need to define type of aggregation. Furthemore, regarding the distance used in the equations if objects \eqn{x} and \eqn{y} contains mixed values (nominal and continuous)
+      then we use the Gower distance and we use the euclidean distance for continuous only. 
 
-\item \code{"transitive.closure"}: It refers to similarity relation (also called fuzzy equivalence relation). 
+ \item \code{"transitive.closure"}: It refers to similarity relation (also called fuzzy equivalence relation). 
       We consider a simple algorithm to calculate this relation as follows:
 
-Input: a fuzzy relation R
+      Input: a fuzzy relation R
 
-Output: a min-transitive fuzzy relation \eqn{R^m}
+      Output: a min-transitive fuzzy relation \eqn{R^m}
 
-Algorithm:
+      Algorithm:
 
-1. For every x, y: compute
+      1. For every x, y: compute
 
-\eqn{R'(x,y) = max(R(x,y), max_{z \in U}min(R(x,z), R(z,y)))}
+      \eqn{R'(x,y) = max(R(x,y), max_{z \in U}min(R(x,z), R(z,y)))}
 
-2. If \eqn{R' \not= R}, then \eqn{R \gets R'} and go to 1, else \eqn{R^m \gets R'}
+      2. If \eqn{R' \not= R}, then \eqn{R \gets R'} and go to 1, else \eqn{R^m \gets R'}
 
-For interested readers, other algorithms can be seen in (Naessens et al, 2002). Let \code{"eq.1"} be the \eqn{R} fuzzy relations, to define it as parameter is
+     For interested readers, other algorithms can be seen in (Naessens et al, 2002). Let \code{"eq.1"} be the \eqn{R} fuzzy relations, to define it as parameter is
      
      \code{type.relation = c("transitive.closure", "eq.1")}. We can also use other equations that have been explained in \code{"tolerance"} and \code{"transitive.kernel"}.
 
@@ -127,11 +126,11 @@ For interested readers, other algorithms can be seen in (Naessens et al, 2002). 
       and otherwise if \eqn{R(x_i, x_j) = 1}. 
       
  \item \code{"custom"}: this value means that we define our own equation for the indiscernibility relation.
-       The equation should be defined in parameter \code{FUN.relation}.
+       The equation should be defined in parameter \code{FUN.relation}. 
 
-\code{type.relation = c("custom", <FUN.relation>)}
+      \code{type.relation = c("custom", <FUN.relation>)}
 
-The function \code{FUN.relation} should consist of three arguments which are \code{decision.table}, 
+       The function \code{FUN.relation} should consist of three arguments which are \code{decision.table}, 
        \code{x}, and \code{y}, where \code{x} and \code{y} represent two objects which we want to compare. 
        It should be noted that the user must ensure that the values of this equation are always between 0 and 1. 
        An example can be seen in Section \code{Examples}.
@@ -155,11 +154,11 @@ The following is a description about it.
                              
 								\code{FUN.tnorm <- function(left.side, right.side)}
 
-\code{if ((left.side + right.side) > 1)}
+              					 \code{if ((left.side + right.side) > 1)}
 
-\code{return(min(left.side, right.side))}
+                 					  \code{return(min(left.side, right.side))}
 
-\code{else return(0)}
+               					 \code{else return(0)}
               	}
 		  			 The default value is \code{type.aggregation = c("t.tnorm", "lukasiewicz")}.
    \item \code{type.aggregation = c("custom", <FUN.agg>)}: It is used to define our own function for a type of aggregations. \code{<FUN.agg>} is 
@@ -167,12 +166,12 @@ The following is a description about it.
          The data is a list of one or many matrices which depend on the number of considered attributes and has dimension: 
          the number of object \eqn{\times} the number of object. For example:
 
-\code{FUN.agg <- function(data) return(Reduce("+", data)/length(data))}
+        \code{FUN.agg <- function(data) return(Reduce("+", data)/length(data))}
 
-which is a function to calculate average along all attributes. Then,
+        which is a function to calculate average along all attributes. Then,
         we can set \code{type.aggregation} as follows:
 
-\code{type.aggregation = c("general.custom", <FUN.agg>)}. An example can be seen in Section \code{Examples}.        
+       \code{type.aggregation = c("general.custom", <FUN.agg>)}. An example can be seen in Section \code{Examples}.        
    }
 
 Furthermore, the use of this function has been illustrated in Section \code{Examples}. 

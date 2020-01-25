@@ -4,7 +4,6 @@
 \name{B.Introduction-FuzzyRoughSets}
 \alias{B.Introduction-FuzzyRoughSets}
 \alias{FuzzyRoughSets-intro}
-\alias{B.Introduction-FuzzyRoughSets-package}
 \title{Introduction to Fuzzy Rough Set Theory}
 \description{
 This part introduces briefly fuzzy rough set theory (FRST) and its application to data analysis. 
@@ -19,25 +18,25 @@ in datasets) and \eqn{A} is a non-empty finite set of attributes, such that \eqn
 The set \eqn{V_{a}} is the set of values that attribute \eqn{a} may take. Information systems that involve a decision attribute, 
 containing classes or decision values of each objects, are called decision systems (or said as decision tables). More formally, it is a pair \eqn{\mathcal{A} = (U, A \cup \{d\})},
 where \eqn{d \notin A} is the decision attribute. The elements of \eqn{A} are called conditional attributes. However, different from RST, FRST has several ways
-to express indiscernibility.
+to express indiscernibility. 
 
 Fuzzy indiscernibility relation (FIR) is used for any fuzzy relation that determines the degree to which two objects are indiscernible. 
 We consider some special cases of FIR.
 \itemize{
 \item fuzzy tolerance relation: this relation has properties which are reflexive and symmetric where
 
-reflexive: \eqn{R(x,x) = 1}
+      reflexive: \eqn{R(x,x) = 1}
 
-symmetric: \eqn{R(x,y) = R(y,x)}
+      symmetric: \eqn{R(x,y) = R(y,x)}
 
 \item similarity relation (also called fuzzy equivalence relation): this relation has properties not only reflexive and symmetric but also
       transitive defined as
 
-\eqn{min(R(x,y), R(y,z)) \le R(x,z)}
+      \eqn{min(R(x,y), R(y,z)) \le R(x,z)}
 
 \item \eqn{\mathcal{T}}-similarity relation (also called fuzzy \eqn{\mathcal{T}}-equivalence relation): this relation is a fuzzy tolerance relation that is also \eqn{\mathcal{T}}-transitive.
 
-\eqn{\mathcal{T}(R(x,y), R(y,z)) \le R(x,z)}, for a given triangular norm \eqn{\mathcal{T}}. 
+      \eqn{\mathcal{T}(R(x,y), R(y,z)) \le R(x,z)}, for a given triangular norm \eqn{\mathcal{T}}. 
 }
 
 The following equations are the tolerance relations on a quantitative attribute \eqn{a}, \eqn{R_a}, proposed by (Jensen and Shen, 2009).
@@ -78,7 +77,7 @@ We can define the degree of dependency of \eqn{d} on \eqn{B}, \eqn{\gamma_{B}} b
 
 \eqn{\gamma_{B} = \frac{|POS_{B}|}{|U|} = \frac{\sum_{x \in U} POS_{B}(x)}{|U|}}
 
-A decision reduct is a set \eqn{B \subseteq A} such that \eqn{\gamma_{B} = \gamma_{A}} and \eqn{\gamma_{B'} = \gamma_{B}} for every \eqn{B' \subset B}.
+A decision reduct is a set \eqn{B \subseteq A} such that \eqn{\gamma_{B} = \gamma_{A}} and \eqn{\gamma_{B'} = \gamma_{B}} for every \eqn{B' \subset B}. 
 
 As we know from rough set concepts (See \code{\link{A.Introduction-RoughSets}}), we are able to calculate the 
 decision reducts by constructing the decision-relative discernibility matrix. Based on (Tsang et al, 2008), the discernibility matrix
@@ -88,13 +87,13 @@ for \eqn{i,j = 1, \ldots, n}
        
 1) \eqn{c_{ij}= \{a \in A : 1 - R_{a}(x_i, x_j) \ge	\lambda_i\}} if \eqn{\lambda_j < \lambda_i}.
 
-2) \eqn{c_{ij}={\oslash}}, otherwise.
+2) \eqn{c_{ij}={\oslash}}, otherwise. 
 
 with \eqn{\lambda_i = (R_A \downarrow R_{d}x_{i})(x_i)} and \eqn{\lambda_j = (R_A \downarrow R_{d}x_{j})(x_{j})}
 
 Other approaches of discernibility matrix can be read at \code{\link{BC.discernibility.mat.FRST}}.
 
-The other implementations of the FRST concepts can be seen at \code{\link{BC.IND.relation.FRST}},
+The other implementations of the FRST concepts can be seen at \code{\link{BC.IND.relation.FRST}}, 
 
 \code{\link{BC.LU.approximation.FRST}}, and \code{\link{BC.positive.reg.FRST}}.
 }
